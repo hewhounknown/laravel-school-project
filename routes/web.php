@@ -17,6 +17,5 @@ use App\Http\Controllers\SchoolController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-
-Route::get('home', [SchoolController::class, 'home'])->name('home');
+Route::get('school', [SchoolController::class, 'home'])->name('home');
 Route::get('programmes/languages', [SchoolController::class, 'languagesPage'])->name('languages');
