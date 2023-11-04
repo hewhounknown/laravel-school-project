@@ -26,21 +26,6 @@
     </div> <br> <br> <br>
 
     <div class="container">
-        <div class="row my-5 justify-content-evenly " style="height: 400px;">
-            <div class="col-4 d-sm-block">
-                <div>
-                    <img src="{{asset('img/default.png')}}" alt="" style="height: 400px;" class="w-100 rounded shadow">
-                </div>
-            </div>
-            <div class="col-4 d-sm-block">
-                <h3>Lorem, ipsum dolor sit amet consectetur</h3> <hr>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus tempore ad nobis quisquam natus sed impedit, quod ipsum neque consequatur culpa non eveniet eos recusandae. Eaque aspernatur modi nemo vel.Sit harum suscipit minus asperiores animi quos commodi officiis voluptas reiciendis obcaecati, quas, quaerat illo facilis molestiae. Expedita alias accusantium modi officia. Delectus, laborum repellendus qui nulla laudantium provident iste!</p>
-                <a href="" class="w-25 btn btn-outline-primary float-end">
-                    <span>more...</span>
-                </a>
-            </div>
-        </div>
-
         <div class="row my-5 justify-content-around" style="height: 400px;">
             <div class="col">
                 <div class="card">
