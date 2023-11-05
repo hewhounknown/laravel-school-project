@@ -3,5 +3,9 @@
 @section('title', 'languages')
 
 @section('content')
-    <h1>Hello world</h1>
+    <div class="container">
+        <div class="row bg-danger" style="background-image: url({{asset('img/p2.jpg')}}); background-size: cover; width: 100%; height: 100%;">
+            <h1>hhh</h1>
+        </div>
+    </div>
 @endsection
