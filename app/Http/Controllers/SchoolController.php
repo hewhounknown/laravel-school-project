@@ -14,6 +14,6 @@ class SchoolController extends Controller
 
     public function languagesPage()
     {
-        return view('programmes.languages');
+        return view('programmes.courses');
     }
 }

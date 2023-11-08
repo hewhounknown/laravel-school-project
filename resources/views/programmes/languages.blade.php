@@ -3,13 +3,10 @@
 @section('title', 'languages')
 
 @section('content')
-    <div class="container-fluid" style="">
-        {{-- <div class="row bg-danger" style=" height:auto;
-        background: url({{asset('img/p3.jpg')}});
-        background-repeat: no-repeat; background-size: 100%"> --}}
+    <div class="container-fluid" style="width:100wh; height:60vh;">
         <div
         class="bg-image p-5 shadow-1-strong rounded mb-5 text-white"
-        style="background: url({{asset('img/globe.png')}});  width:100wh; height:60vh;
+        style="background: url({{asset('img/globe.png')}});
                background-color: #E6E6FA; background-position: bottom 50px right 30px; background-repeat: no-repeat;">
             <div class="row">
                 <div class="mt-5 col-6 text-dark align-self-center">
@@ -18,5 +15,9 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="container-fluid">
+        @yield('languages')
     </div>
 @endsection
