@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Languages;
 use Illuminate\Http\Request;
 
 class SchoolController extends Controller
@@ -14,6 +15,7 @@ class SchoolController extends Controller
 
     public function languagesPage()
     {
-        return view('programmes.courses');
+        $languages = Languages::select('name')->get();
+        return view('programmes.courses', ['languages' => $languages]);
     }
 }
