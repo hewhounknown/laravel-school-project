@@ -18,4 +18,8 @@ use App\Http\Controllers\SchoolController;
 //     return view('welcome');
 // });
 Route::get('school', [SchoolController::class, 'home'])->name('home');
-Route::get('programmes/languages', [SchoolController::class, 'languagesPage'])->name('languages');
+
+Route::prefix('programmes')->group(function () {
+    Route::get('languages', [SchoolController::class, 'languagesPage'])->name('languages');
+    Route::get('languages/class={title}', [SchoolController::class, 'coursesDetail'])->name('coursesDetail');
+});
