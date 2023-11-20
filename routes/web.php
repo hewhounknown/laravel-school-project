@@ -21,5 +21,6 @@ Route::get('school', [SchoolController::class, 'home'])->name('home');
 
 Route::prefix('programmes')->group(function () {
     Route::get('languages', [SchoolController::class, 'languagesPage'])->name('languages');
+    Route::get('languages/{name}', [SchoolController::class, 'coursesGroup'])->name('coursesGroup');
     Route::get('languages/class={title}', [SchoolController::class, 'coursesDetail'])->name('coursesDetail');
 });

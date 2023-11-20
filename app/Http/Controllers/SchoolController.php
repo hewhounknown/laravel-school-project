@@ -18,12 +18,21 @@ class SchoolController extends Controller
     {
         $languages = Languages::select('name')->get();
         $courses = Courses::get()->all();
+        //$lists = Languages::where('name', $name)->leftjoin('courses', 'languages.id', '=', 'courses.language_id')->get();
         return view('programmes.courses', ['languages' => $languages, 'courses' => $courses]);
     }
 
-    public function coursesDetail($title){
-        $courses = Courses::where('title', $title)->first();
+    public function coursesGroup($name){
+        $lists = Languages::where('name', $name)->leftjoin('courses', 'languages.id', '=', 'courses.language_id')->get();
+        echo $lists;
+       return redirect()->route('languages')->with(['lists' => $lists]);
+    }
 
-        return view('programmes.detail', compact('courses'));
+    public function coursesDetail($title){
+        $courses = Courses::where('title', $title)
+                            ->leftjoin('languages', 'courses.language_id', '=', 'languages.id')
+                            ->first();
+        // echo $courses->name;
+        return view('programmes.detail', ['courses' => $courses]);
     }
 }
