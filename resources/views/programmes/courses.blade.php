@@ -9,72 +9,63 @@
             {{-- <select name="sorting" id="languaes" class="col"> --}}
                 {{-- <option value="opt">Choose option...</option> --}}
                 @foreach ($languages as $l)
-                    <option value="{{$l->name}}" class="badge text-black-50 border btn inline languages">{{$l->name}}</option>
+                    <a data-value="{{$l->name}}" onclick="getValue(this)" class="badge text-black-50 border btn inline languages">{{$l->name}}</a>
                 @endforeach
             {{-- </select> --}}
         </div>
     </div>
 
     <div class="row mx-3 my-4" id="listOfCourses">
-        <div class="col-3 mb-3">
-            <div class="card">
-                <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
         @foreach ($courses as $c)
         <div class="col-3 mb-3">
-            <div class="card">
+            <div class="card courses">
+                <input type="hidden" class="languageName" value="{{$c->name}}">
+                {{-- <h1>{{$c->name}}</h1> --}}
                 <img src="{{asset('img/'.$c->photo_path)}}" style="height: 200px;" class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">{{ $c->title }}</h5>
                   <p class="card-text">{{ $c->description }}</p>
-                  <a href="{{route('coursesDetail', $c->title)}}" class="btn btn-primary">Go somewhere</a>
+                  <a href="{{route('coursesDetail', $c->title)}}" class="btn btn-primary">View</a>
                 </div>
             </div>
         </div>
         @endforeach
-
-        <div class="col-3 mb-3">
-            <div class="card">
-                <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-3 mb-3">
-            <div class="card">
-                <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-3 mb-3">
-            <div class="card">
-                <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
     </div>
 
+
+
     <script>
-        const coursesList = document.getElementById('listOfCourses');
-        const languageChoice = Array.from(document.getElementsByClassName('languages'));
-        console.log(languageChoice);
+        getValue = (course) => {
+            const languageChoice = course.innerText;
+            const coursesList = document.getElementById('listOfCourses');
+
+            const data = @json($courses);
+            let avaliableCourses = data.filter(c => c.name === languageChoice);
+            //console.log(avaliableCourses);
+
+            let coursesToShow = "";
+            if(avaliableCourses.length > 0) {
+                //console.log(avaliableCourses);
+                for (let i = 0; i < avaliableCourses.length; i++) {
+                    coursesToShow += `<div class="col-3 mb-3">
+                                        <div class="card courses">
+                                            <input type="hidden" class="languageName" value="">
+                                            <img src="{{asset('img/${avaliableCourses[i].photo_path}')}}" style="height: 200px;" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${avaliableCourses[i].title}</h5>
+                                                <p class="card-text">${avaliableCourses[i].description}</p>
+                                                <a href="languages/class=${avaliableCourses[i].title}" class="btn btn-primary">View</a>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                }
+            }
+            else {
+                coursesToShow = `<h1 class="text-black-50"> There is no avaliable courses... </h1>`
+            }
+            coursesList.innerHTML = coursesToShow;
+        }
     </script>
+    <script src="{{asset('school/js/courses.js')}}"></script>
 @endsection
 

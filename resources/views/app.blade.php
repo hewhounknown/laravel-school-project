@@ -32,7 +32,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{route('languages')}}">Languages</a></li>
-                                <li><a class="dropdown-item" href="#">IT</a></li>
+                                <li><a class="dropdown-item" href="school">IT</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
