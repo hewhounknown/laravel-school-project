@@ -1,9 +1,9 @@
-@extends('app')
+@extends('layout.app')
 
 @section('title',$courses->title)
 
 @section('content')
-    <div class="container-fluid" style="width:100wh; height:270px;">
+    <div class="container-fluid" style="width:auto; height:auto;">
         <div
             class="bg-image p-5 shadow-1-strong rounded mb-5 text-white"
             style="background: url({{asset('img/'. $courses->photo_path)}}); background-size: 820px 270px;

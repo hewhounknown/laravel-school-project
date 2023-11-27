@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SchoolController;
 
 /*
@@ -17,7 +18,13 @@ use App\Http\Controllers\SchoolController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('school', [SchoolController::class, 'home'])->name('home');
+Route::get('/', [SchoolController::class, 'home']);
+Route::get('home', [SchoolController::class, 'home'])->name('home');
+Route::get('register', [AuthController::class, 'registerForm'])->name('register');
+Route::post('register', [AuthController::class, 'register']);
+Route::get('login', [AuthController::class, 'loginForm'])->name('login');
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('programmes')->group(function () {
     Route::get('languages', [SchoolController::class, 'languagesPage'])->name('languages');

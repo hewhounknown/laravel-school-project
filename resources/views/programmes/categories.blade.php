@@ -1,10 +1,10 @@
-@extends('app')
+@extends('layout.app')
 
 @section('title', 'languages')
 
 @section('content')
-    <div class="container-fluid mb-4">
-        <div style="width:100vw; height:70vh;">
+    <div class="container-fluid mb-4 mx-2" style="height: auto; width: auto;">
+        <div>
             <div
                 class="bg-image p-5 shadow-1-strong rounded mb-5 text-white"
                 style="background: url({{asset('img/globe.png')}});
