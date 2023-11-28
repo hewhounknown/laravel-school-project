@@ -25,6 +25,8 @@ Route::post('register', [AuthController::class, 'register']);
 Route::get('login', [AuthController::class, 'loginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('profile', [AuthController::class, 'profileForm'])->name('profile');
+Route::post('profile', [AuthController::class, 'editProfile']);
 
 Route::prefix('programmes')->group(function () {
     Route::get('languages', [SchoolController::class, 'languagesPage'])->name('languages');

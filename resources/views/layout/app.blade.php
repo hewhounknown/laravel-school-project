@@ -67,7 +67,7 @@
                                 </div>
                                 @else
                                 <div class="">
-                                    <a href="http://" class="dropdown-item">{{Auth::user()->name}}</a>
+                                    <a href="{{route('profile')}}" class="dropdown-item">{{Auth::user()->name}}</a>
                                 </div>
                                 <div class="">
                                     <a href="" class="dropdown-item" onclick="event.preventDefault();

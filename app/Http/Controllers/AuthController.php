@@ -67,4 +67,18 @@ class AuthController extends Controller
 
         return redirect('/')->with('success', 'Logged out successfully.');
     }
+
+    public function profileForm()
+    {
+        return view('profile');
+    }
+
+    public function editProfile(Request $req)
+    {
+        print($req->name);
+        echo $req->email;
+        echo $req->phone;
+        echo $req->address;
+        echo $req->image;
+    }
 }
