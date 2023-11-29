@@ -10,7 +10,7 @@
                     @if (Auth::user()->image == null)
                     <img src="{{asset('img/defaultprofile.jpg')}}" alt="profile picture" class="border rounded-circle" style="width: 15rem; hieght: 38rem;">
                     @else
-                    <img src="{{asset('img/'.Auth::user()->image)}}" alt="profile picture" class="border rounded-circle" style="width: 15rem; hieght: 38rem;">
+                    <img src="{{asset('storage/uploads/'.Auth::user()->image)}}" alt="profile picture" class="border rounded-circle" style="width: 15rem; hieght: 38rem;">
                     @endif
                 </div>
             </div>
@@ -28,7 +28,7 @@
                 </div>
                 <div>
                     @if (Auth::user()->phone != null)
-                    <i class="fa-regular fa-mobile"></i> <small>{{Auth::user()->phone}}</small>
+                    <i class="fa-solid fa-mobile"></i> <small>{{Auth::user()->phone}}</small>
                     @endif
                 </div>
             </div>
@@ -49,16 +49,18 @@
                 </div>
                 <div class="modal-body">
                     <!-- Your form content goes here -->
-                    <form id="myForm" method="post">
+                    <form id="myForm" enctype="multipart/form-data" method="post" action="{{route('profile')}}">
                         @csrf
                         <div class="row justify-content-evenly">
+                            <input type="hidden" name="id" value="{{Auth::user()->id}}">
                             <div class="col-4">
                                 @if (Auth::user()->image == null)
                                     <img src="{{asset('img/defaultprofile.jpg')}}" alt="profile picture" class="rounded mx-auto d-block mb-2"  style="width:20rem; hieght: 38rem;">
                                 @else
-                                    <img src="{{asset('img/'.Auth::user()->image)}}" alt="profile picture" class="rounded mx-auto d-block mb-2"  style="width: 15rem; hieght: 38rem;">
+                                    <img src="{{asset('storage/uploads/'.Auth::user()->image)}}" alt="profile picture" class="rounded mx-auto d-block mb-2"  style="width: 15rem; hieght: 38rem;">
                                 @endif
                                 <div>
+                                    {{-- <input type="file" name="image" id="" class="form-control"> --}}
                                     <input type="file" name="image" id="" class="form-control">
                                 </div>
                                 <div class="mt-3">

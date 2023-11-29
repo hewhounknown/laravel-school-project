@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -29,7 +30,7 @@ class AuthController extends Controller
             'password' => Hash::make($req->password),
         ]);
 
-        return redirect('/')->with('success', 'Registration successful!');
+        return redirect()->route('login')->with('success', 'Registration successful!');
     }
 
     public function loginForm()
@@ -73,12 +74,29 @@ class AuthController extends Controller
         return view('profile');
     }
 
-    public function editProfile(Request $req)
+    public function editProfile( Request $req)
     {
-        print($req->name);
-        echo $req->email;
-        echo $req->phone;
-        echo $req->address;
-        echo $req->image;
+        $req->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+        ]);
+
+        $userInfo = $req->except('_token');  // remove CSRF token & create array to store in DB
+
+        if($req->hasFile('image')){
+            $image = $req->file('image');
+           $imageInDB = User::where('id',$req->id)->first();
+           $imageInDB = $imageInDB->image;
+           if($imageInDB != null){
+                Storage::disk('public')->delete('uploads/'. $imageInDB);  // Storage == storage/app
+           }
+           $imageName = time() . '_' . $image->getClientOriginalName();  // give a name combination with time
+           Storage::disk('public')->putFileAs('uploads', $image, $imageName); // store in storage / app / public / uploads
+           $userInfo['image'] = $imageName;
+
+        }
+
+       User::where('id', $userInfo['id'])->update($userInfo);
+       return redirect('/profile')->with('success', 'your profile is updated.');
     }
 }
