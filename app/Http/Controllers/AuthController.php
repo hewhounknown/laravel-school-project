@@ -49,6 +49,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             // Authentication successful
             $req->session()->regenerate();
+
             return redirect()->intended('/');
         }
 
@@ -84,19 +85,25 @@ class AuthController extends Controller
         $userInfo = $req->except('_token');  // remove CSRF token & create array to store in DB
 
         if($req->hasFile('image')){
-            $image = $req->file('image');
-           $imageInDB = User::where('id',$req->id)->first();
-           $imageInDB = $imageInDB->image;
-           if($imageInDB != null){
-                Storage::disk('public')->delete('uploads/'. $imageInDB);  // Storage == storage/app
-           }
-           $imageName = time() . '_' . $image->getClientOriginalName();  // give a name combination with time
-           Storage::disk('public')->putFileAs('uploads', $image, $imageName); // store in storage / app / public / uploads
-           $userInfo['image'] = $imageName;
 
+            $image = $req->file('image');
+
+            $imageInDB = User::where('id',$req->id)->first();
+            $imageInDB = $imageInDB->image;
+
+            if($imageInDB != null){
+                Storage::disk('public')->delete('uploads/'. $imageInDB);  // Storage == storage/app
+                }
+
+            $imageName = time() . '_' . $image->getClientOriginalName();  // give a name combination with time
+
+            Storage::disk('public')->putFileAs('uploads', $image, $imageName); // store in storage / app / public / uploads
+
+            $userInfo['image'] = $imageName;
         }
 
        User::where('id', $userInfo['id'])->update($userInfo);
+
        return redirect('/profile')->with('success', 'your profile is updated.');
     }
 }

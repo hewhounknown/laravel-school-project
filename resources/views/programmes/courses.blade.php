@@ -3,8 +3,8 @@
 @section('languages')
     <div class="row my-5 fs-4">
         <div class="col">
-            @foreach ($languages as $l)
-                <a data-value="{{$l->name}}" onclick="getValue(this)" class="badge text-black-50 border btn inline languages">{{$l->name}}</a>
+            @foreach ($category as $c)
+                <a data-value="{{$c->category_name}}" onclick="getValue(this)" class="badge text-black-50 border btn inline languages">{{$c->category_name}}</a>
             @endforeach
         </div>
     </div>
@@ -15,9 +15,9 @@
             <div class="card courses">
                 <img src="{{asset('img/'.$c->photo_path)}}" style="height: 200px;" class="card-img-top" alt="...">
                 <div class="card-body">
-                  <h5 class="card-title">{{ $c->title }}</h5>
-                  <p class="card-text">{{ $c->description }}</p>
-                  <a href="{{route('coursesDetail', $c->title)}}" class="btn btn-primary">View</a>
+                  <h5 class="card-title">{{ $c->course_name }}</h5>
+                  <p class="card-text">{{ $c->course_description }}</p>
+                  <a href="{{route('coursesDetail', $c->course_name)}}" class="btn btn-primary">View</a>
                 </div>
             </div>
         </div>
@@ -25,14 +25,13 @@
     </div>
 
 
-
     <script>
-        getValue = (language) => {
-            const languageChoice = language.innerText;
+        getValue = (category) => {
+            const Choice = category.innerText;
             const coursesList = document.getElementById('listOfCourses');
 
-            const courses = @json($courses);
-            let avaliableCourses = courses.filter(c => c.name === languageChoice);
+           const courses = @json($courses);
+            let avaliableCourses = courses.filter(c => c.category_name === Choice);
             //console.log(avaliableCourses);
 
             let coursesToShow = "";
@@ -43,9 +42,9 @@
                                         <div class="card courses">
                                             <img src="{{asset('img/${avaliableCourses[i].photo_path}')}}" style="height: 200px;" class="card-img-top" alt="...">
                                             <div class="card-body">
-                                                <h5 class="card-title">${avaliableCourses[i].title}</h5>
-                                                <p class="card-text">${avaliableCourses[i].description}</p>
-                                                <a href="languages/class=${avaliableCourses[i].title}" class="btn btn-primary">View</a>
+                                                <h5 class="card-title">${avaliableCourses[i].course_name}</h5>
+                                                <p class="card-text">${avaliableCourses[i].course_description}</p>
+                                                <a href="languages/class=${avaliableCourses[i].course_name}" class="btn btn-primary">View</a>
                                             </div>
                                         </div>
                                       </div>`;
@@ -56,7 +55,8 @@
             }
             coursesList.innerHTML = coursesToShow;
         }
-    </script>
-    <script src="{{asset('school/js/courses.js')}}"></script>
+        </script>
+
+    {{-- <script src="{{asset('school/js/courses.js')}}"></script> --}}
 @endsection
 
