@@ -111,4 +111,7 @@
             </div>
         </div>
     </div>
+
+    @yield('dashboard')
+
 @endsection

@@ -21,6 +21,6 @@
     </div>
 
     <div class="container-fluid my-3">
-        @yield('languages')
+        @yield('courses')
     </div>
 @endsection
