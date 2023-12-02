@@ -28,11 +28,21 @@ class SchoolController extends Controller
         return view('programmes.courses',['category'=>$category, 'courses'=>$courses]);
     }
 
-    public function coursesDetail($title){
+    public function coursesDetail($title)
+    {
         // $courses = Courses::where('title', $title)
         //                     ->leftjoin('languages', 'courses.language_id', '=', 'languages.id')
         //                     ->first();
         // echo $courses->name;
         return view('programmes.detail');
+    }
+
+    public function courseForm(Request $req)
+    {
+       $category = Category::where('program_id', $req->id)->get();
+       //echo $category;
+
+
+       return view('teacher.coursecreate', ['category' => $category]);
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Courses;
+use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -72,7 +74,19 @@ class AuthController extends Controller
 
     public function profileForm()
     {
-        return view('profile');
+      if (Auth::user()->role == 'student') {
+        # code...
+        return view('student.profile');
+      }
+      elseif (Auth::user()->role == 'teacher') {
+        # code...
+        $courses = Courses::where('teacher', Auth::user()->name)->get();
+
+        $program = Program::get();
+
+        return view('teacher.profile', ['courses' => $courses, 'program' => $program]);
+      }
+      //
     }
 
     public function editProfile( Request $req)
@@ -104,6 +118,6 @@ class AuthController extends Controller
 
        User::where('id', $userInfo['id'])->update($userInfo);
 
-       return redirect('/profile')->with('success', 'your profile is updated.');
+       return redirect('')->route('profile')->with('success', 'your profile is updated.');
     }
 }
