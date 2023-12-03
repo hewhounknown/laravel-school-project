@@ -29,7 +29,7 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('profile', [AuthController::class, 'profileForm'])->name('profile');
 Route::post('profile', [AuthController::class, 'editProfile']);
 
-Route::post('course/create', [SchoolController::class, 'courseForm'])->name('courseCreate');
+Route::get('course/create/{id}', [SchoolController::class, 'courseForm'])->name('courseCreate');
 
 Route::prefix('programmes')->group(function () {
     Route::get('languages', [SchoolController::class, 'languagesPage'])->name('languages');

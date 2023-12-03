@@ -55,13 +55,13 @@
                             <input type="hidden" name="id" value="{{Auth::user()->id}}">
                             <div class="col-4">
                                 @if (Auth::user()->image == null)
-                                    <img src="{{asset('img/defaultprofile.jpg')}}" alt="profile picture" class="rounded mx-auto d-block mb-2"  style="width:20rem; hieght: 38rem;">
+                                    <img id="img" src="{{asset('img/defaultprofile.jpg')}}" alt="profile picture" class="rounded mx-auto d-block mb-2"  style="width:20rem; hieght: 38rem;">
                                 @else
-                                    <img src="{{asset('storage/uploads/'.Auth::user()->image)}}" alt="profile picture" class="rounded mx-auto d-block mb-2"  style="width: 15rem; hieght: 38rem;">
+                                    <img id="img" src="{{asset('storage/uploads/'.Auth::user()->image)}}" alt="profile picture" class="rounded mx-auto d-block mb-2"  style="width: 15rem; hieght: 38rem;">
                                 @endif
                                 <div>
                                     {{-- <input type="file" name="image" id="" class="form-control"> --}}
-                                    <input type="file" name="image" id="" class="form-control">
+                                    <input type="file" name="image" id="" class="form-control" onchange="readURL(this )">
                                 </div>
                                 <div class="mt-3">
                                     <input type="submit" value="Update" class="btn btn-outline-dark form-control">
@@ -114,4 +114,18 @@
 
     @yield('dashboard')
 
+
+    <script>
+        function readURL(input){
+            if(input.files && input.files[0]){
+                let reader = new FileReader();
+                //let img = document.getElementById('img');
+
+                reader.onload = e => $('#img').attr('src', e.target.result);
+
+                reader.readAsDataURL(input.files[0]);
+                //console.log(reader);
+            }
+        }
+    </script>
 @endsection

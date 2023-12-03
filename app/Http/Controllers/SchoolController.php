@@ -37,12 +37,18 @@ class SchoolController extends Controller
         return view('programmes.detail');
     }
 
-    public function courseForm(Request $req)
+    public function courseForm($id)
     {
-       $category = Category::where('program_id', $req->id)->get();
+       $category = Category::where('program_id', $id)->get();
        //echo $category;
 
 
        return view('teacher.coursecreate', ['category' => $category]);
     }
+
+    // public function __construct() {
+    //     $program = Program::all();
+    //    // echo $program;
+    //    return ['program' => $program];
+    // }
 }

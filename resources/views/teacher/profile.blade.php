@@ -26,12 +26,9 @@
                     <div class="row justify-content-between p-3">
                         @foreach ($program as $p)
                             <div class="col-4 bg-text-light rounded mb-2">
-                                <form action="{{route('courseCreate')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{$p->id}}">
-                                    <button type="submit" class="btn btn-outline-dark w-100" style="height: 5rem;">{{$p->name}}</button>
-                                </form>
-
+                                    <a href="{{route('courseCreate', $p->id)}}">
+                                        <button type="submit" class="btn btn-outline-dark w-100" style="height: 5rem;">{{$p->name}}</button>
+                                    </a>
 
                             </div>
                         @endforeach
