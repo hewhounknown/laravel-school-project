@@ -7,6 +7,8 @@ use App\Models\Program;
 use App\Models\Category;
 use App\Models\Languages;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class SchoolController extends Controller
 {
@@ -42,13 +44,37 @@ class SchoolController extends Controller
        $category = Category::where('program_id', $id)->get();
        //echo $category;
 
-
        return view('teacher.coursecreate', ['category' => $category]);
     }
 
-    // public function __construct() {
-    //     $program = Program::all();
-    //    // echo $program;
-    //    return ['program' => $program];
-    // }
+    public function createCourse(Request $req)
+    {
+        $req->validate([
+                'title' => 'required',
+                'description' => 'required',
+                'image' => 'required'
+        ]);
+        //dd($req->teacher);
+         if (Courses::where(['course_name' => $req->title, 'teacher' => $req->teacher])->exists()) {
+            print_r($req->all());
+        } else{
+        //dd($req->category);
+            $categoryId = Category::where('category_name', $req->category)->first();
+            $categoryId = $categoryId->id;
+
+            $image = $req->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();    // give a name combination with time
+            Storage::disk('public')->putFileAs('course', $image, $imageName); // store in storage / app / public / uploads
+
+            Courses::create([
+                'course_name' => $req->title,
+                'course_description' => $req->description,
+                'course_image' => $imageName,
+                'category_id' => $categoryId,
+                'teacher' => Auth::user()->name
+            ]);
+
+            return redirect()->route('profile')->with(['success' => 'you created new course']);
+        }
+    }
 }

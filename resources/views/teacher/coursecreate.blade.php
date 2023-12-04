@@ -3,18 +3,27 @@
 @section('title', 'course create')
 
 @section('content')
-    <h1>course create form</h1>
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <div class="container">
         {{-- <div class="row border"> --}}
-            <form action="" method="post">
+            <form enctype="multipart/form-data" action="{{route('courseCreate')}}" method="post">
                 @csrf
-
-                <div class="row border justify-content-around p-3">
-
+                <input type="hidden" name="teacher" value="{{Auth::user()->name}}">
+                <div class="row border justify-content-around p-3 mt-5 rounded">
+                    <h4 class="default text-center">create course here!</h4> <hr>
                     <div class="col-12 mt-3">
                         <label for="category" class="form-label">Choose category</label>
-                        <select name="categroy" id="" class="form-select">
+                        <select name="category" id="" class="form-select">
                             @foreach ($category as $cat)
                                 <option value="{{$cat->category_name}}">{{$cat->category_name}}</option>
                             @endforeach
@@ -25,20 +34,23 @@
                         <label for="image">
                             <img id="img" src="{{asset('img/add_image.png')}}" alt="profile picture" class="rounded d-block mb-2"  style="width:20rem; hieght: 38rem;">
                         </label>
-                        <input type="file" name="image" id="image" class="form-control d-none" onchange="readURL(this)">
-
+                        <input type="file" name="image" id="image" class="form-control" onchange="readURL(this)">
                     </div>
 
                     <div class="col-md-6 mt-3">
                         <div class="mb-3">
                             <label for="title" class="form-label">Course Title</label>
-                            <input type="text" name="title" id="" class="form-control">
+                            <input type="text" name="title" id="title" class="form-control">
                         </div>
 
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
-                            <textarea name="description" class="form-control" id="" cols="30" rows="10"></textarea>
+                            <textarea id="description" name="description" class="form-control" cols="30" rows="10"></textarea>
                         </div>
+                    </div>
+
+                    <div class="col text-center mt-3">
+                        <button type="submit" class="btn btn-outline-dark w-50">Create</button>
                     </div>
                 </div>
             </form>

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('course_description');
             $table->string('course_image')->nullable();
             $table->integer('enroll_count')->default(0);
-            $table->integer('program_id');
             $table->integer('category_id');
             $table->string('teacher');
             $table->timestamps();

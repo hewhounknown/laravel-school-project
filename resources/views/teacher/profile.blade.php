@@ -1,6 +1,18 @@
 @extends('auth')
 
 @section('dashboard')
+
+    <div class="row">
+        <div class="col-3 offset-7">
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+        </div>
+    </div>
+
     <div class="container mb-5">
         <div class="row shadow-sm p-3 mb-5 bg-body-tertiary rounded">
             <div class="d-grid col-7 mx-auto">
@@ -26,10 +38,9 @@
                     <div class="row justify-content-between p-3">
                         @foreach ($program as $p)
                             <div class="col-4 bg-text-light rounded mb-2">
-                                    <a href="{{route('courseCreate', $p->id)}}">
+                                    <a href="{{route('courseForm', $p->id)}}">
                                         <button type="submit" class="btn btn-outline-dark w-100" style="height: 5rem;">{{$p->name}}</button>
                                     </a>
-
                             </div>
                         @endforeach
                     </div>
@@ -48,12 +59,15 @@
                     @if ($c->course_image == null)
                         <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
                     @else
-                        <img src="{{asset('image/'.$c->course_image)}}" class="card-img-top" alt="...">
+                        <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
                     @endif
-                    <div class="card-body">
+                    <div class="card-body" style="height: 9rem">
                       <h5 class="card-title">{{$c->course_name}}</h5>
                       <p class="card-text">{{$c->course_description}}</p>
-                      <a href="#" class="btn btn-primary">View</a>
+
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary">View</a>
                     </div>
                 </div>
             </div>
