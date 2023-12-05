@@ -51,11 +51,11 @@
     </div>
 
     <div class="container mb-5">
-        <div class="row shadow-sm justify-content-evenly p-2 bg-body-tertiary rounded">
+        <div class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
             <h3 class="default">Your courses</h3>
             @foreach ($courses as $c)
-            <div class="col-md-3 mx-2 mb-3">
-                <div class="card" style="width: 18rem;">
+            <div class="col-md-3 mx-5 my-3">
+                <div class="card " style="width: 20rem;">
                     @if ($c->course_image == null)
                         <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
                     @else
@@ -67,7 +67,7 @@
 
                     </div>
                     <div class="card-footer">
-                        <a href="#" class="btn btn-primary">View</a>
+                        <a href="{{route('courseDetail', $c->course_name)}}" class="btn btn-primary">View</a>
                     </div>
                 </div>
             </div>

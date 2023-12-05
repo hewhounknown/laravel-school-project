@@ -31,6 +31,7 @@ Route::post('profile', [AuthController::class, 'editProfile']);
 
 Route::get('course/create/{id}', [SchoolController::class, 'courseForm'])->name('courseForm');
 Route::post('course/create', [SchoolController::class, 'createCourse'])->name('courseCreate');
+Route::get('course/detail/name={name}', [SchoolController::class, 'detailCourse'])->name('courseDetail');
 
 Route::prefix('programmes')->group(function () {
     Route::get('languages', [SchoolController::class, 'languagesPage'])->name('languages');

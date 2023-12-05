@@ -55,8 +55,8 @@ class SchoolController extends Controller
                 'image' => 'required'
         ]);
         //dd($req->teacher);
-         if (Courses::where(['course_name' => $req->title, 'teacher' => $req->teacher])->exists()) {
-            print_r($req->all());
+         if (Courses::where(['course_name' => $req->title, 'teacher' => Auth::user()->name])->exists()) {
+            return redirect()->back()->with(['fails' => 'this course is already existed!']);
         } else{
         //dd($req->category);
             $categoryId = Category::where('category_name', $req->category)->first();
@@ -76,5 +76,12 @@ class SchoolController extends Controller
 
             return redirect()->route('profile')->with(['success' => 'you created new course']);
         }
+    }
+
+    public function detailCourse($courseName)
+    {
+        $course = Courses::where('course_name', $courseName)->first();
+
+        return view('teacher.coursedetail', ['course' => $course]);
     }
 }
