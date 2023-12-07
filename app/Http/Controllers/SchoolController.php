@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Topic;
 use App\Models\Courses;
 use App\Models\Program;
 use App\Models\Category;
@@ -81,7 +82,22 @@ class SchoolController extends Controller
     public function detailCourse($courseName)
     {
         $course = Courses::where('course_name', $courseName)->first();
+        $topic = Topic::where('course_id', $course->id)->get();
+        //dd($topic);
 
-        return view('teacher.coursedetail', ['course' => $course]);
+        return view('teacher.coursedetail', ['course' => $course, 'topic' => $topic]);
+    }
+
+    public function addTopic($courseName, Request $req)
+    {
+        $req->validate(['topicTitle' => 'required|unique:topics,topic_name']);
+
+        Topic::create([
+            'topic_name' => $req->topicTitle,
+            'topic_description' => $req->topicDescription,
+            'course_id' => $req->courseId,
+        ]);
+
+        return redirect()->back()->with(['success' => 'you created ' . $req->topicTitle . ' successfully.']);
     }
 }
