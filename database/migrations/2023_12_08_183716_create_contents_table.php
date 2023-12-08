@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->enum('content_type', ['text', 'image', 'video']);
-            $table->string('content_path');
+            $table->enum('content_type', ['text', 'video', 'image', 'file']);
+            $table->text('content_body')->nullable();
+            $table->string('content_path')->nullable();
             $table->integer('topic_id');
             $table->timestamps();
         });
