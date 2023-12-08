@@ -33,6 +33,7 @@ Route::get('course/create/{id}', [SchoolController::class, 'courseForm'])->name(
 Route::post('course/create', [SchoolController::class, 'createCourse'])->name('courseCreate');
 Route::get('course/detail/name={name}', [SchoolController::class, 'detailCourse'])->name('courseDetail');
 Route::post('course/name={name}/add/topic', [SchoolController::class, 'addTopic'])->name('topicAdd');
+Route::post('course/topic={name}/add/content', [SchoolController::class, 'addContent'])->name('contentAdd');
 
 Route::prefix('programmes')->group(function () {
     Route::get('languages', [SchoolController::class, 'languagesPage'])->name('languages');

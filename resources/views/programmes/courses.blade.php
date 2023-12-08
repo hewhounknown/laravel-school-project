@@ -9,14 +9,14 @@
         </div>
     </div>
 
-    <div class="row mx-3 my-4" id="listOfCourses">
+    <div class="row mx-3 my-4 justify-content-evenly" id="listOfCourses">
         @foreach ($courses as $c)
-        <div class="col-3 mb-3">
-            <div class="card courses" style="width: 18rem;">
+        <div class="col-3 mb-3 ">
+            <div class="card courses" style="width: 20rem;">
                 @if ($c->course_image == null)
                     <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
                 @else
-                    <img src="{{asset('image/'.$c->course_image)}}" class="card-img-top" alt="...">
+                    <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="...">
                 @endif
                 <div class="card-body">
                   <h5 class="card-title">{{$c->course_name}}</h5>

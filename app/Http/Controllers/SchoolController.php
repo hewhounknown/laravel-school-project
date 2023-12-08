@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Topic;
+use App\Models\Content;
 use App\Models\Courses;
 use App\Models\Program;
 use App\Models\Category;
@@ -99,5 +100,31 @@ class SchoolController extends Controller
         ]);
 
         return redirect()->back()->with(['success' => 'you created ' . $req->topicTitle . ' successfully.']);
+    }
+
+    public function addContent($topicName, Request $req)
+    {
+
+        //dd($req->all());
+        if ($req->fileContent == null) {
+            $req->validate([
+                'contentTitle' => 'required|unique:contents,title',
+                'textContent' => 'required'
+            ]);
+
+            Content::create([
+                'title' => $req->contentTitle,
+                'content_type' => $req->contentType,
+                'content_body' => $req->textContent,
+                'topic_id' => $req->topicId
+            ]);
+        } else{
+            $req->validate([
+                'contentTitle' => 'required',
+                'fileContent' => 'required'
+            ]);
+        }
+
+        return back()->with(['success' => 'you created '. $req->contentTitle . ' successfully.']);
     }
 }

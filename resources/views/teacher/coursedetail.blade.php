@@ -13,6 +13,15 @@
             @endforeach
     @endif
 
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
+
+
     <div class="container mt-5 ">
         <div class="row align-items-center justify-content-center shadow-lg p-3 rounded position-relative ">
             <div class="col-md-7 mb-2">
@@ -90,11 +99,11 @@
                             <div>
                                 <table class="table table-hover">
                                     <tbody>
-                                        <hr>  <a href="http://">
-                                            <tr><h5>1</h5></tr>
-                                                </a>
-                                        <hr>   <tr><h5>2</h5></tr>
-                                        <hr>   <tr><h5>3</h5></tr>
+                                        @foreach ($t->contents as $content)
+                                            <hr> <a href="http://">
+                                                <tr>{{$content->title}}</tr>
+                                            </a>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -104,7 +113,6 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
                 {{-- modal --}}
                 <div class="modal fade" id="addContentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -113,9 +121,11 @@
                           <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                          <form enctype="multipart/form-data" action="" method="post" >
+
+                        <form enctype="multipart/form-data" action="{{route('contentAdd', $t->topic_name)}}" method="post" >
                             @csrf
+                        <div class="modal-body">
+                            <input type="hidden" name="topicId" value="{{$t->id}}">
 
                             <div class="mb-3">
                                 <label for="contentTitle">Title</label>
@@ -123,19 +133,37 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="contentBody">content</label>
-                                <textarea name="contentBody" id="contentBody" cols="30" rows="10" class="form-control"></textarea>
+                                <select id="selectBox" name="contentType" onclick="getOption(this.value)" class="form-select" aria-label="Default select example">
+                                    <option selected>Choose your content type</option>
+                                    <option value="text">Text</option>
+                                    <option value="video">video</option>
+                                    <option value="image">image</option>
+                                    <option value="file">file</option>
+                                </select>
                             </div>
 
-                          </form>
+                            <div id="textBox" class="mb-3">
+                                <label for="contentBody">content</label>
+                                <textarea name="textContent" id="contentBody" cols="30" rows="10" class="form-control"></textarea>
+                            </div>
+
+                            <div id="inputFile" class="mb-3">
+                                <label for="contentBody">content</label>
+                                <input type="file" name="fileContent" id="contentBody" class="form-control">
+                            </div>
+
+
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">Save changes</button>
+                          <button type="submit" class="btn btn-outline-primary">Save</button>
                         </div>
+                       </form>
                       </div>
                     </div>
                 </div>
+                @endforeach
+
                 @endif
             </div>
         </div>
@@ -150,5 +178,23 @@
             .catch(error => {
                 console.error(error);
             });
+
+
+        const textBox = document.getElementById('textBox');
+        textBox.style.display = 'none';
+
+        const inputFile = document.getElementById('inputFile');
+        inputFile.style.display = 'none';
+
+        getOption = (val) => {
+           // console.log(val);
+            if (val == 'text') {
+                inputFile.style.display = 'none';
+                textBox.style.display = 'block';
+            } else{
+                textBox.style.display = 'none';
+                inputFile.style.display = 'block';
+            }
+        }
     </script>
 @endsection
