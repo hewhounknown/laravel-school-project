@@ -119,9 +119,22 @@ class SchoolController extends Controller
                 'topic_id' => $req->topicId
             ]);
         } else{
+            dd($req->all());
             $req->validate([
-                'contentTitle' => 'required',
+                'contentTitle' => 'required|unique:contents,title',
                 'fileContent' => 'required'
+            ]);
+            //dd($req->all());
+
+            $content = $req->file('fileContent');
+            $fileName = time() . '_' . $content->getClientOriginalName();
+            Storage::disk('public')->putFileAs('course/topic/content', $content, $fileName);
+
+            Content::create([
+                'title' => $req->contentTitle,
+                'content_type' => $req->contentType,
+                'content_path' => $content,
+                'topic_id' => $req->topicId
             ]);
         }
 
