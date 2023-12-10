@@ -108,7 +108,7 @@ class SchoolController extends Controller
         //dd($req->all());
         if ($req->fileContent == null) {
             $req->validate([
-                'contentTitle' => 'required|unique:contents,title',
+                'contentTitle' => 'required|unique:contents,title,'.$req->topicId,
                 'textContent' => 'required'
             ]);
 
@@ -121,7 +121,7 @@ class SchoolController extends Controller
         } else{
             dd($req->all());
             $req->validate([
-                'contentTitle' => 'required|unique:contents,title',
+                'contentTitle' => 'required|unique:contents,title'.$req->topicId,
                 'fileContent' => 'required'
             ]);
             //dd($req->all());

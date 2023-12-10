@@ -119,7 +119,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
 
-                                    <form id="contentInput" enctype="multipart/form-data" action="" method="post" >
+                                    <form id="contentInput" class="contentInput" enctype="multipart/form-data" action="{{route('contentAdd', $t->topic_name)}}" method="post" >
                                         @csrf
                                     <div class="modal-body">
                                         <input type="hidden" name="topicId" value="{{$t->id}}">
@@ -130,7 +130,7 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <select id="selectBox" name="contentType" onclick="getOption(this.value)" class="form-select" aria-label="Default select example">
+                                            <select id="selectBox" name="contentType" class="form-select choiceContentType" aria-label="Default select example">
                                                 <option selected>Choose your content type</option>
                                                 <option value="text">Text</option>
                                                 <option value="video">video</option>
@@ -141,7 +141,7 @@
 
                                         <div id="textBox" class="mb-3 textBox">
                                             <label for="contentBody">content</label>
-                                            <textarea name="textContent" id="contentBody" cols="30" rows="10" class="form-control"></textarea>
+                                            <textarea name="textContent" id="contentBody" cols="30" rows="10" class="form-control contentBody"></textarea>
                                         </div>
 
                                         <div id="inputFile" class="mb-3 inputFile">
@@ -156,7 +156,7 @@
                                     <button type="submit" class="btn btn-outline-primary">Save</button>
                                     </div>
                                 </form>
-                                    <div id="spinner" class="text-center m-5">
+                                    <div id="spinner" class="text-center m-5 spin">
                                         <div class="spinner-border text-info" role="status">
                                             <span class="visually-hidden">Loading...</span>
                                            </div>
@@ -176,46 +176,60 @@
     </div>
 
     <script>
-        ClassicEditor
-            .create(document.querySelector('#contentBody'))
-            .then(editor => {
-                console.log(editor);
-            })
-            .catch(error => {
-                console.error(error);
+        document.querySelectorAll('.contentBody').forEach(element => {
+            ClassicEditor
+                .create(element)
+                .then(editor => {
+                    console.log(editor);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
+
+        const textBox = Array.from(document.getElementsByClassName('textBox'));
+        textBox.forEach(t => t.style.display = 'none');
+
+        const inputFile = Array.from(document.getElementsByClassName('inputFile'));
+        inputFile.forEach(i => i.style.display = 'none');
+
+        const contentChoice = Array.from(document.getElementsByClassName('choiceContentType'));
+        contentChoice.forEach(choice => {
+
+            choice.addEventListener('click', e => {
+               let  val = e.target.value;
+               console.log(val);
+
+                if (val == 'text') {
+                    inputFile.forEach(i => i.style.display = 'none');
+                    textBox.forEach(t => t.style.display = 'block');
+                }else if (val == 'image' || val == 'video' || val == 'file'){
+                    textBox.forEach(t => t.style.display = 'none');
+                    inputFile.forEach(i => i.style.display = 'block');
+                } else{
+                    textBox.forEach(t => t.style.display = 'none');
+                    inputFile.forEach(i => i.style.display = 'none');
+                }
             });
+        })
 
+        const spinner = Array.from(document.getElementsByClassName('spin'));
+        spinner.forEach(s => s.style.display = 'none');
 
-        const textBox = document.getElementsByClassName('textBox');
-        textBox.style.display = 'none';
+        const contentForm = Array.from(document.getElementsByClassName('contentInput'));
+        contentForm.forEach(form => {
+            //console.log(form);
+            form.addEventListener('submit', e=>{
+                e.preventDefault();
 
-        const inputFile = document.getElementsByClassName('inputFile');
-        inputFile.style.display = 'none';
+                form.style.display = 'none';
+                spinner.forEach(s => s.style.display = 'block');
 
-        getOption = (val) => {
-           // console.log(val);
-            if (val == 'text') {
-                inputFile.style.display = 'none';
-                textBox.style.display = 'block';
-            } else{
-                textBox.style.display = 'none';
-                inputFile.style.display = 'block';
-            }
-        }
-
-        const contentForm = document.getElementById('contentInput');
-        const spinner = document.getElementById('spinner');
-        spinner.style.display = 'none';
-
-        contentForm.addEventListener('submit', e=>{
-            e.preventDefault();
-
-            contentForm.style.display = 'none';
-            spinner.style.display = 'block';
-
-            setTimeout(() => {
-                contentForm.submit();
-            }, 1000);
+                setTimeout(() => {
+                    form.submit();
+                }, 1000);
+            })
         })
     </script>
 @endsection
