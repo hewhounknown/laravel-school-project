@@ -23,28 +23,24 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal to add course -->
     <div class="modal fade" id="choiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Choose your course's type</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Choose your course's type</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
-
-
-                    <div class="row justify-content-between p-3">
-                        @foreach ($program as $p)
-                            <div class="col-4 bg-text-light rounded mb-2">
-                                    <a href="{{route('courseForm', $p->id)}}">
-                                        <button type="submit" class="btn btn-outline-dark w-100" style="height: 5rem;">{{$p->name}}</button>
-                                    </a>
-                            </div>
-                        @endforeach
-                    </div>
-
+                <div class="row justify-content-between p-3">
+                    @foreach ($program as $p)
+                        <div class="col-4 bg-text-light rounded mb-2">
+                                <a href="{{route('courseForm', $p->id)}}">
+                                    <button type="submit" class="btn btn-outline-dark w-100" style="height: 5rem;">{{$p->name}}</button>
+                                </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
         </div>
@@ -62,9 +58,8 @@
                         <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
                     @endif
                     <div class="card-body" style="height: 9rem">
-                      <h5 class="card-title">{{$c->course_name}}</h5>
-                      <p class="card-text">{{$c->course_description}}</p>
-
+                        <h5 class="card-title">{{$c->course_name}}</h5>
+                        <p class="card-text">{{$c->course_description}}</p>
                     </div>
                     <div class="card-footer">
                         <a href="{{route('courseDetail', $c->course_name)}}" class="btn btn-primary">View</a>

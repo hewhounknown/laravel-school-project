@@ -36,6 +36,7 @@
         </div>
     </div>
 
+
     <div class="container mt-5">
         <div class="row">
             <div class="col">
@@ -44,7 +45,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal for add topic start -->
     <div class="modal fade" id="addTopicModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -77,7 +78,10 @@
             </div>
         </div>
     </div>
+    {{-- Modal for add topic end --}}
 
+
+    {{-- Topic session start --}}
     <div class="container mt-5">
         <div class="row shadow-lg p-3 rounded">
             <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -91,16 +95,16 @@
                             {{ $t->topic_name }}
                         </button>
                     </h2>
+
+                    {{-- content session start --}}
                     <div id="collapse{{ $t->id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $t->id }}" data-bs-parent="#accordionTopics">
                         <div class="accordion-body">
-                            <!-- Display topic content or any other relevant information -->
                             {{ $t->topic_description }}
-
                             <div>
                                 <table class="table table-hover">
                                     <tbody>
                                         @foreach ($t->contents as $content)
-                                            <hr> <a href="http://">
+                                            <hr> <a href="{{route('contentView',['name'=>$t->topic_name, 'title'=>$content->title])}}">
                                                 <tr>{{$content->title}}</tr>
                                             </a>
                                         @endforeach
@@ -110,72 +114,76 @@
                             <div class="my-2" style="height: 3rem">
                                 <button class="btn btn-outline-dark float-end mb-2" data-bs-toggle="modal" data-bs-target="#addContentModal{{$t->id}}">+ content {{$t->id}}</button>
                             </div>
-                            {{-- modal --}}
+                            {{-- modal for add content start --}}
                             <div class="modal fade" id="addContentModal{{$t->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title {{$t->id}}</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-
-                                    <form id="contentInput" class="contentInput" enctype="multipart/form-data" action="{{route('contentAdd', $t->topic_name)}}" method="post" >
-                                        @csrf
-                                    <div class="modal-body">
-                                        <input type="hidden" name="topicId" value="{{$t->id}}">
-
-                                        <div class="mb-3">
-                                            <label for="contentTitle">Title</label>
-                                            <input type="text" name="contentTitle" id="contentTitle" class="form-control">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title {{$t->id}}</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <select id="selectBox" name="contentType" class="form-select choiceContentType" aria-label="Default select example">
-                                                <option selected>Choose your content type</option>
-                                                <option value="text">Text</option>
-                                                <option value="video">video</option>
-                                                <option value="image">image</option>
-                                                <option value="file">file</option>
-                                            </select>
+                                        <form id="contentInput" class="contentInput" enctype="multipart/form-data" action="{{route('contentAdd', $t->topic_name)}}" method="post" >
+                                            @csrf
+                                        <div class="modal-body">
+                                            <input type="hidden" name="topicId" value="{{$t->id}}">
+
+                                            <div class="mb-3">
+                                                <label for="contentTitle">Title</label>
+                                                <input type="text" name="contentTitle" id="contentTitle" class="form-control">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <select id="selectBox" name="contentType" class="form-select choiceContentType" aria-label="Default select example">
+                                                    <option selected>Choose your content type</option>
+                                                    <option value="text">Text</option>
+                                                    <option value="video">video</option>
+                                                    <option value="image">image</option>
+                                                    <option value="file">file</option>
+                                                </select>
+                                            </div>
+
+                                            <div id="textBox" class="mb-3 textBox">
+                                                <label for="contentBody">content</label>
+                                                <textarea name="textContent" id="contentBody" cols="30" rows="10" class="form-control contentBody"></textarea>
+                                            </div>
+
+                                            <div id="inputFile" class="mb-3 inputFile">
+                                                <label for="contentBody">content</label>
+                                                <input type="file" name="fileContent" id="contentBody" class="form-control">
+                                            </div>
                                         </div>
 
-                                        <div id="textBox" class="mb-3 textBox">
-                                            <label for="contentBody">content</label>
-                                            <textarea name="textContent" id="contentBody" cols="30" rows="10" class="form-control contentBody"></textarea>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-outline-primary">Save</button>
                                         </div>
+                                        </form>
 
-                                        <div id="inputFile" class="mb-3 inputFile">
-                                            <label for="contentBody">content</label>
-                                            <input type="file" name="fileContent" id="contentBody" class="form-control">
+                                        <div id="spinner" class="text-center m-5 spin">
+                                            <div class="spinner-border text-info" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
                                         </div>
-
-
                                     </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-outline-primary">Save</button>
-                                    </div>
-                                </form>
-                                    <div id="spinner" class="text-center m-5 spin">
-                                        <div class="spinner-border text-info" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                           </div>
-                                    </div>
-                                </div>
                                 </div>
                             </div>
+                            {{-- modal for add content end --}}
                         </div>
                     </div>
+                    {{-- content session end --}}
                 </div>
 
                 @endforeach
-
                 @endif
             </div>
         </div>
     </div>
+    {{-- topic session end --}}
+
 
     <script>
+        // add ckeditor to each content textarea
         document.querySelectorAll('.contentBody').forEach(element => {
             ClassicEditor
                 .create(element)
@@ -187,7 +195,7 @@
                 });
         });
 
-
+        // when user select text or file input
         const textBox = Array.from(document.getElementsByClassName('textBox'));
         textBox.forEach(t => t.style.display = 'none');
 
@@ -214,6 +222,7 @@
             });
         })
 
+        // when input data is too long, show spinner to wait
         const spinner = Array.from(document.getElementsByClassName('spin'));
         spinner.forEach(s => s.style.display = 'none');
 

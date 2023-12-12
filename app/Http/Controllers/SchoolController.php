@@ -118,6 +118,7 @@ class SchoolController extends Controller
                 'content_body' => $req->textContent,
                 'topic_id' => $req->topicId
             ]);
+
         } else{
             dd($req->all());
             $req->validate([
@@ -133,11 +134,24 @@ class SchoolController extends Controller
             Content::create([
                 'title' => $req->contentTitle,
                 'content_type' => $req->contentType,
-                'content_path' => $content,
+                'content_path' => $fileName,
                 'topic_id' => $req->topicId
             ]);
+
         }
 
         return back()->with(['success' => 'you created '. $req->contentTitle . ' successfully.']);
+    }
+
+    public function content($name, $title){
+        $content = Content::where('title', $title)->first();
+        //dd($content);
+        return view('programmes.content', ['content' => $content]);
+    }
+
+    public function downloadFile($fileName){
+        //dd($fileName);
+        $filePath = public_path('storage/course/topic/content/'.$fileName);
+        return response()->download($filePath, $fileName);
     }
 }
