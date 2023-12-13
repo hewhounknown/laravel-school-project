@@ -84,7 +84,7 @@ class SchoolController extends Controller
     {
         $course = Courses::where('course_name', $courseName)->first();
         $topic = Topic::where('course_id', $course->id)->get();
-        //dd($topic);
+        //print_r($topic);
 
         return view('teacher.coursedetail', ['course' => $course, 'topic' => $topic]);
     }
@@ -145,13 +145,19 @@ class SchoolController extends Controller
 
     public function content($name, $title){
         $content = Content::where('title', $title)->first();
-        //dd($content);
-        return view('programmes.content', ['content' => $content]);
+        $topic = Topic::where('topic_name', $name)->first();
+        // print_r($topic);
+        return view('programmes.content', ['content' => $content, 'topic' => $topic]);
     }
 
     public function downloadFile($fileName){
         //dd($fileName);
         $filePath = public_path('storage/course/topic/content/'.$fileName);
-        return response()->download($filePath, $fileName);
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath, $fileName);
+        }
+
+        abort(404, 'File not found');
     }
 }

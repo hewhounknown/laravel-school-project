@@ -3,6 +3,13 @@
 @section('title', 'content')
 
 @section('content')
+
+    {{-- {{ Breadcrumbs::render('content', $topic, $content) }} --}}
+
+
+        {{-- {{$topic->course->teacher}} --}}
+
+
     <div class="border-info border-start border-5 m-3 text-muted p-2 ">
       <h3>{{__($content->title)}}</h3>
     </div>
