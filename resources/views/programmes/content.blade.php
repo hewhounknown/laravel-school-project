@@ -4,8 +4,13 @@
 
 @section('content')
 
-    {{-- {{ Breadcrumbs::render('content', $topic, $content) }} --}}
-
+    {{-- {{Breadcrumbs::render('contentView', $topic, $content)}} --}}
+    <nav style="--bs-breadcrumb-divider: '>';" class="fs-3 bg-white"  aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <!-- Loop through each breadcrumb item -->
+            {!! Breadcrumbs::render('contentView', $topic, $content) !!}
+        </ol>
+    </nav>
 
         {{-- {{$topic->course->teacher}} --}}
 

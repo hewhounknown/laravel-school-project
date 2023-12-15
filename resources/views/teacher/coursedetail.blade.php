@@ -4,7 +4,20 @@
 
 @section('content')
 
-    {{-- {{ Breadcrumbs::render('course', $course) }} --}}
+    <nav style="--bs-breadcrumb-divider: '>';" class="fs-3"  aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <!-- Loop through each breadcrumb item -->
+            @foreach ($breadcrumbs as $breadcrumb)
+                <!-- Check if it's the last item in the breadcrumbs array -->
+                @if ($loop->last)
+                    <li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb->title }}</li>
+                @else
+                    <!-- Output the breadcrumb link -->
+                    <li class="breadcrumb-item"><a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a></li>
+                @endif
+            @endforeach
+        </ol>
+    </nav>
 
     @if ($errors->any())
             @foreach ($errors->all() as $error)

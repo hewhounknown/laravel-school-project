@@ -12,15 +12,15 @@ use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 // Course
-Breadcrumbs::for('course', function (BreadcrumbTrail $trail,Courses $course) {
-    $trail->push($course->course_name, route('courseDetail', $course));
+Breadcrumbs::for('courseDetail', function (BreadcrumbTrail $trail, $courseName) {
+    $trail->push($courseName, route('courseDetail', ['name' => $courseName]));
 });
 
 
 
 // Course/Topic/content
-Breadcrumbs::for('content', function ($trail, $topic, $content) {
-    $trail->parent('course', $topic->course);
+Breadcrumbs::for('contentView', function ($trail, $topic, $content) {
+    $trail->parent('courseDetail', $topic->course->course_name);
     $trail->push($topic->topic_name) ;
     $trail->push($content->title, route('contentView', ['name' => $topic->topic_name, 'title' => $content->title]));
 });

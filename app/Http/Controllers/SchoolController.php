@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Languages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Diglactic\Breadcrumbs\Breadcrumbs;
 use Illuminate\Support\Facades\Storage;
 
 class SchoolController extends Controller
@@ -85,8 +86,9 @@ class SchoolController extends Controller
         $course = Courses::where('course_name', $courseName)->first();
         $topic = Topic::where('course_id', $course->id)->get();
         //print_r($topic);
+        $breadcrumbs = Breadcrumbs::generate(); // for using breadcrumbs
 
-        return view('teacher.coursedetail', ['course' => $course, 'topic' => $topic]);
+        return view('teacher.coursedetail', ['course' => $course, 'topic' => $topic, 'breadcrumbs' => $breadcrumbs]);
     }
 
     public function addTopic($courseName, Request $req)
@@ -147,6 +149,9 @@ class SchoolController extends Controller
         $content = Content::where('title', $title)->first();
         $topic = Topic::where('topic_name', $name)->first();
         // print_r($topic);
+        //dd($topic->course);
+        // $breadcrumbs = Breadcrumbs::render('contentView', $topic, $content); // for using breadcrumbs
+        // dd($breadcrumbs);
         return view('programmes.content', ['content' => $content, 'topic' => $topic]);
     }
 
