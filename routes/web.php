@@ -34,8 +34,9 @@ Route::post('course/create', [SchoolController::class, 'createCourse'])->name('c
 Route::get('course/detail/name={name}', [SchoolController::class, 'detailCourse'])->name('courseDetail');
 Route::post('course/name={name}/add/topic', [SchoolController::class, 'addTopic'])->name('topicAdd');
 Route::post('course/topic={name}/add/content', [SchoolController::class, 'addContent'])->name('contentAdd');
-Route::get('course/topic={name}/view/content={title}', [SchoolController::class, 'content'])->name('contentView');
-
+Route::get('course/topic={topicId}/view/content={contentId}', [SchoolController::class, 'content'])->name('contentView');
+Route::post('course/topic={topicId}/edit/content={contentId}', [SchoolController::class, 'editContent'])->name('contentEdit');
+Route::get('course/topic={topicId}/delete/content={contentId}', [SchoolController::class, 'deleteContent'])->name('content.delete');
 Route::get('download/{filename}', [SchoolController::class, 'downloadFile'])->name('file.download');
 
 Route::prefix('programmes')->group(function () {

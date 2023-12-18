@@ -36,7 +36,6 @@
     @endif
 
 
-
     <div class="container mt-5 ">
         <div class="row align-items-center justify-content-center shadow-lg p-3 rounded position-relative ">
             <div class="col-md-7 mb-2">
@@ -119,7 +118,7 @@
                                 <table class="table table-hover">
                                     <tbody>
                                         @foreach ($t->contents as $content)
-                                            <hr> <a href="{{route('contentView',['name'=>$t->topic_name, 'title'=>$content->title])}}">
+                                            <hr> <a href="{{route('contentView',['topicId'=>$t->id, 'contentId'=>$content->id])}}">
                                                 <tr>{{$content->title}}</tr>
                                             </a>
                                         @endforeach

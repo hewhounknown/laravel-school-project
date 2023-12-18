@@ -122,7 +122,7 @@ class SchoolController extends Controller
             ]);
 
         } else{
-            dd($req->all());
+            //dd($req->all());
             $req->validate([
                 'contentTitle' => 'required|unique:contents,title'.$req->topicId,
                 'fileContent' => 'required'
@@ -145,11 +145,11 @@ class SchoolController extends Controller
         return back()->with(['success' => 'you created '. $req->contentTitle . ' successfully.']);
     }
 
-    public function content($name, $title){
-        $content = Content::where('title', $title)->first();
-        $topic = Topic::where('topic_name', $name)->first();
+    public function content($topicId, $contentId){
+        $content = Content::where('id', $topicId)->first();
+        $topic = Topic::where('id', $contentId)->first();
         // print_r($topic);
-        //dd($topic->course);
+        //dd($content->topic);
         // $breadcrumbs = Breadcrumbs::render('contentView', $topic, $content); // for using breadcrumbs
         // dd($breadcrumbs);
         return view('programmes.content', ['content' => $content, 'topic' => $topic]);
@@ -164,5 +164,60 @@ class SchoolController extends Controller
         }
 
         abort(404, 'File not found');
+    }
+
+    public function editContent($topicId, $contentId, Request $req)
+    {
+       // $content = $req->except('_token');
+       // dd($content);
+        if($req->fileContent == null){
+            $req->validate([
+                'contentTitle' => 'required',
+                'textContent' => 'required',
+            ]);
+
+            Content::where('id', $contentId)->update([
+                'title' => $req->contentTitle,
+                'content_type' => $req->contentType,
+                'content_body' => $req->textContent,
+                'topic_id' => $contentId
+            ]);
+        } else {
+            //dd($req->all());
+            $req->validate([
+                'contentTitle' => 'required',
+                'fileContent' => 'required'
+            ]);
+
+            $file = $req->file('fileContent');
+
+            $fileInDB = Content::where('id',$contentId)->first();
+            $fileInDB = $fileInDB->content_path;
+
+            if($fileInDB != null){
+                Storage::disk('public')->delete('course/topic/content'. $fileInDB);  // Storage == storage/app
+            }
+
+            $fileName = time() . '_' . $file->getClientOriginalName();  // give a name combination with time
+
+            Storage::disk('public')->putFileAs('course/topic/content', $file, $fileName); // store in storage / app / public / course/topic/content
+
+            Content::where('id', $contentId)->update([
+                'title' => $req->contentTitle,
+                'content_type' => $req->contentType,
+                'content_path' => $fileName,
+                'topic_id' => $topicId
+            ]);
+        }
+
+        return back()->with(['success' => 'you updated '. $req->contentTitle . ' successfully.']);
+    }
+
+    public function deleteContent($topicId, $contentId)
+    {
+        Content::where('id', $contentId)->delete();
+
+        $topic = Topic::where('id', $topicId)->first();
+        return redirect()->route('courseDetail', $topic->course->course_name)->with(['success' => 'you deleted one content']);
     }
 }
