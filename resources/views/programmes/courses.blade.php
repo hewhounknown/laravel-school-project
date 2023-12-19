@@ -9,23 +9,27 @@
         </div>
     </div>
 
-    <div class="row mx-3 my-4 justify-content-evenly" id="listOfCourses">
-        @foreach ($courses as $c)
-        <div class="col-3 mb-3 ">
-            <div class="card courses" style="width: 20rem;">
-                @if ($c->course_image == null)
-                    <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                @else
-                    <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="...">
-                @endif
-                <div class="card-body">
-                  <h5 class="card-title">{{$c->course_name}}</h5>
-                  <p class="card-text">{{$c->course_description}}</p>
-                  <a href="{{route('coursesDetail', $c->course_name)}}" class="btn btn-primary">View</a>
+    <div class="container mb-5">
+        <div id="listOfCourses" class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
+            @foreach ($courses as $c)
+            <div class="col-md-3 mx-5 my-3">
+                <div class="card " style="width: 20rem;">
+                    @if ($c->course_image == null)
+                        <img src="{{asset('img/default.png')}}" class="card-img-top"  style="height: 10rem"  alt="...">
+                    @else
+                        <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
+                    @endif
+                    <div class="card-body" style="height: 9rem">
+                        <h5 class="card-title">{{$c->course_name}}</h5>
+                        <p class="card-text">{{$c->course_description}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{route('courseDetail', $c->course_name)}}" class="btn btn-primary">View</a>
+                    </div>
                 </div>
             </div>
+            @endforeach
         </div>
-        @endforeach
     </div>
 
 
@@ -47,18 +51,20 @@
 
                     if(avaliableCourses[i].course_image == null){
                         console.log('lee pl');
-                        image = `<img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">`;
+                        image = `<img src="{{asset('img/default.png')}}" class="card-img-top" style="height: 10rem" alt="...">`;
                     } else{
-                        image = `<img src="{{asset('image/${avaliableCourses[i].course_image}')}}" class="card-img-top" alt="...">`
+                        image = `<img src="{{asset('storage/course/${avaliableCourses[i].course_image}')}}" class="card-img-top" style="height: 10rem" alt="...">`
                     }
                     //console.log(image);
                     coursesToShow += `<div class="col-3 mb-3">
                                         <div class="card courses" style="width: 18rem;">
                                             ${image}
-                                            <div class="card-body">
+                                            <div class="card-body" style="height: 9rem">
                                                 <h5 class="card-title">${avaliableCourses[i].course_name}</h5>
                                                 <p class="card-text">${avaliableCourses[i].course_description}</p>
-                                                <a href="languages/class=${avaliableCourses[i].course_name}" class="btn btn-primary">View</a>
+                                            </div>
+                                            <div class="card-footer">
+                                                <a href="course/detail/name=${avaliableCourses[i].course_name}" class="btn btn-primary">View</a>
                                             </div>
                                         </div>
                                       </div>`;

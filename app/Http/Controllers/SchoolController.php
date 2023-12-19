@@ -88,7 +88,7 @@ class SchoolController extends Controller
         //print_r($topic);
         $breadcrumbs = Breadcrumbs::generate(); // for using breadcrumbs
 
-        return view('teacher.coursedetail', ['course' => $course, 'topic' => $topic, 'breadcrumbs' => $breadcrumbs]);
+        return view('programmes.coursedetail', ['course' => $course, 'topic' => $topic, 'breadcrumbs' => $breadcrumbs]);
     }
 
     public function addTopic($courseName, Request $req)
@@ -145,11 +145,13 @@ class SchoolController extends Controller
         return back()->with(['success' => 'you created '. $req->contentTitle . ' successfully.']);
     }
 
-    public function content($topicId, $contentId){
-        $content = Content::where('id', $topicId)->first();
-        $topic = Topic::where('id', $contentId)->first();
+    public function content($topicId, $contentId)
+    {
+        //dd($contentId);
+        $content = Content::where('id', $contentId)->first();
+        $topic = Topic::where('id', $topicId)->first();
         // print_r($topic);
-        //dd($content->topic);
+        //dd($content);
         // $breadcrumbs = Breadcrumbs::render('contentView', $topic, $content); // for using breadcrumbs
         // dd($breadcrumbs);
         return view('programmes.content', ['content' => $content, 'topic' => $topic]);
