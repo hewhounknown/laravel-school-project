@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Courses;
 use App\Models\Program;
+use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -75,8 +76,16 @@ class AuthController extends Controller
     public function profileForm()
     {
       if (Auth::user()->role == 'student') {
-        # code...
-        return view('student.profile');
+        if(Enrollment::where('user_id', Auth::user()->id)->exists()){
+            $enroll = Enrollment::where('user_id', Auth::user()->id)->get();
+            //dd($enroll);
+            foreach($enroll as $e){
+                //dd($e->course_id);
+                $course = Courses::where('id', $e->course_id)->get();
+                //dd($course);
+            }
+        }
+        return view('student.profile', ['course' => $course]);
       }
       elseif (Auth::user()->role == 'teacher') {
         # code...

@@ -8,6 +8,7 @@ use App\Models\Courses;
 use App\Models\Program;
 use App\Models\Category;
 use App\Models\Languages;
+use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Diglactic\Breadcrumbs\Breadcrumbs;
@@ -21,15 +22,18 @@ class SchoolController extends Controller
         return view('index');
     }
 
-    public function languagesPage()
+    public function courseList($programName)
     {
-        $category = Category::where('program_id', 1)->get();
-
-        $courses = Courses::join('categories', 'courses.category_id', '=', 'categories.id')->get();
-        //echo $languages;
-       // $courses = Courses::leftjoin('languages', 'courses.language_id', '=', 'languages.id')->get();
-        //echo $courses;
-        //$lists = Languages::where('name', $name)->leftjoin('courses', 'languages.id', '=', 'courses.language_id')->get();
+        //dd($programName);
+        $program = Program::where('name', $programName)->first();
+        //dd($program->id);
+        $category = Category::where('program_id', $program->id)->get();
+        //dd($category);
+        foreach($category as $cat){
+           // dd($cat->id);
+            $courses = Courses::where('category_id', $cat->id)->get();
+        }
+        //dd($courses);
         return view('programmes.courses',['category'=>$category, 'courses'=>$courses]);
     }
 
@@ -221,5 +225,19 @@ class SchoolController extends Controller
 
         $topic = Topic::where('id', $topicId)->first();
         return redirect()->route('courseDetail', $topic->course->course_name)->with(['success' => 'you deleted one content']);
+    }
+
+    public function enrollCourse($courseId)
+    {
+        if(Enrollment::where('user_id', Auth::user()->id)->exists()){
+            return redirect()->back()->with(['status' => "sorry, you've already enrolled!"]);
+        }
+
+        Enrollment::create([
+            'user_id' => Auth::user()->id,
+            'course_id' => $courseId,
+        ]);
+
+        return redirect()->route('profile')->with(['success' => 'you enrolled successfully!']);
     }
 }

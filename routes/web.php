@@ -39,7 +39,9 @@ Route::post('course/topic={topicId}/edit/content={contentId}', [SchoolController
 Route::get('course/topic={topicId}/delete/content={contentId}', [SchoolController::class, 'deleteContent'])->name('content.delete');
 Route::get('download/{filename}', [SchoolController::class, 'downloadFile'])->name('file.download');
 
+Route::get('enroll/course={id}', [SchoolController::class, 'enrollCourse'])->name('course.enroll');
+
 Route::prefix('programmes')->group(function () {
-    Route::get('languages', [SchoolController::class, 'languagesPage'])->name('languages');
+    Route::get('{program}', [SchoolController::class, 'courseList'])->name('course.list');
     Route::get('languages/class={title}', [SchoolController::class, 'coursesDetail'])->name('coursesDetail');
 });

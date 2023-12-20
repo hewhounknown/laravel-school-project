@@ -159,7 +159,7 @@
                                 Programmes
                             </a>
                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{route('languages')}}">Languages</a></li>
+                                <li><a class="dropdown-item" href="{{route('course.list', 'language')}}">Languages</a></li>
                                 <li><a class="dropdown-item" href="school">IT</a></li>
                             </ul>
                         </li>

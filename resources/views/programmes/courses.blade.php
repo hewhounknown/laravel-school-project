@@ -1,10 +1,17 @@
 @extends('programmes.categories')
 
 @section('courses')
+
+    @if (session('status'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ session('status') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
     <div class="row my-5 fs-4">
         <div class="col">
-            @foreach ($category as $c)
-                <a data-value="{{$c->category_name}}" onclick="getValue(this)" class="badge text-black-50 border btn inline languages">{{$c->category_name}}</a>
+            @foreach ($category as $cat)
+                <a data-value="{{$cat->category_name}}" onclick="getValue(this)" class="badge text-black-50 border btn inline languages">{{$cat->category_name}}</a>
             @endforeach
         </div>
     </div>
@@ -12,6 +19,7 @@
     <div class="container mb-5">
         <div id="listOfCourses" class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
             @foreach ($courses as $c)
+            {{$c->id}}
             <div class="col-md-3 mx-5 my-3">
                 <div class="card " style="width: 20rem;">
                     @if ($c->course_image == null)
@@ -25,6 +33,7 @@
                     </div>
                     <div class="card-footer">
                         <a href="{{route('courseDetail', $c->course_name)}}" class="btn btn-primary">View</a>
+                        <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
                     </div>
                 </div>
             </div>
