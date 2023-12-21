@@ -3,42 +3,77 @@
 @section('title', Auth::user()->name . "'s profile")
 
 @section('content')
-    <div class="container mt-5">
-        <div class="row shadow-sm p-3 mb-5 bg-body-tertiary rounded position-relative">
-            <div class="col-3">
-                <div>
-                    @if (Auth::user()->image == null)
-                    <img src="{{asset('img/defaultprofile.jpg')}}" alt="profile picture" class="border rounded-circle" style="width: 15rem; hieght: 38rem;">
-                    @else
-                    <img src="{{asset('storage/uploads/'.Auth::user()->image)}}" alt="profile picture" class="border rounded-circle" style="width: 15rem; hieght: 38rem;">
-                    @endif
+
+    <div class="container-fluid mt-5">
+        <div class="row g-3">
+            <div class="col-9">
+                {{-- profile start --}}
+                <div class="container">
+                    <div class="row shadow-sm p-3 mb-5 bg-body-tertiary rounded position-relative">
+                        <div class="col-3">
+                            <div>
+                                @if (Auth::user()->image == null)
+                                <img src="{{asset('img/defaultprofile.jpg')}}" alt="profile picture" class="border rounded-circle" style="width: 13rem; hieght: 38rem;">
+                                @else
+                                <img src="{{asset('storage/uploads/'.Auth::user()->image)}}" alt="profile picture" class="border rounded-circle" style="width: 13rem; hieght: 38rem;">
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col border-start border-dark text-bg-light">
+                            <div>
+                                <h3>{{Auth::user()->name}} | {{Auth::user()->role}}</h3>
+                            </div>
+                            <div>
+                                <i class="fa-solid fa-envelope"></i>  <small>{{Auth::user()->email}}</small>
+                            </div>
+                            <div>
+                                @if (Auth::user()->address != null)
+                                <i class="fa-solid fa-location-dot"></i> <small>{{Auth::user()->address}}</small>
+                                @endif
+                            </div>
+                            <div>
+                                @if (Auth::user()->phone != null)
+                                <i class="fa-solid fa-mobile"></i> <small>{{Auth::user()->phone}}</small>
+                                @endif
+                            </div>
+                        </div>
+                        <span class="position-absolute top-0 start-100 translate-middle p-2 border border-light rounded-circle" style="width: auto;">
+                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editForm">
+                                <i class="fa-regular fa-pen-to-square fa-xl"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                {{-- profile end --}}
+            </div>
+
+            <div class="col">
+                <div class="list-group mb-2 text-lg-start">
+                    <span class="disabled list-group-item d-none d-lg-block">
+                        <h5>CONTROLS</h5>
+                    </span>
+                    <a href="" class="list-group-item active">
+                        <i class="fa-solid fa-house"></i>
+                        <span class="d-none d-lg-inline">Dashboard</span>
+                    </a>
+                    <a href="" class="list-group-item">
+                        <i class="fa-solid fa-folder-plus"></i>
+                        <span class="d-none d-lg-inline">Courses</span>
+                    </a>
+                    <a href="" class="list-group-item">
+                        <i class="fas fa-users"></i>
+                        <span class="d-none d-lg-inline">Users</span> <span class="bandge bg-danger rounded-pill float-end text-white d-none d-lg-inline"> 20 </span>
+                    </a>
+
+                    <a href="" class="list-group-item">
+                        <i class="fas fa-flag"></i>
+                        <span class="d-none d-lg-inline">Reports</span>
+                    </a>
                 </div>
             </div>
-            <div class="col border-start border-dark text-bg-light">
-                <div>
-                    <h3>{{Auth::user()->name}} | {{Auth::user()->role}}</h3>
-                </div>
-                <div>
-                    <i class="fa-solid fa-envelope"></i>  <small>{{Auth::user()->email}}</small>
-                </div>
-                <div>
-                    @if (Auth::user()->address != null)
-                    <i class="fa-solid fa-location-dot"></i> <small>{{Auth::user()->address}}</small>
-                    @endif
-                </div>
-                <div>
-                    @if (Auth::user()->phone != null)
-                    <i class="fa-solid fa-mobile"></i> <small>{{Auth::user()->phone}}</small>
-                    @endif
-                </div>
-            </div>
-            <span class="position-absolute top-0 start-100 translate-middle p-2 border border-light rounded-circle" style="width: auto;">
-                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editForm">
-                    <i class="fa-regular fa-pen-to-square fa-xl"></i>
-                </button>
-            </span>
         </div>
     </div>
+
     <!-- Modal -->
     <div class="modal" id="editForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" style="max-width: 730px;">

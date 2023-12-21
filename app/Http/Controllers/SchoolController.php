@@ -240,4 +240,9 @@ class SchoolController extends Controller
 
         return redirect()->route('profile')->with(['success' => 'you enrolled successfully!']);
     }
+
+    public function studentTable()
+    {
+        return view('teacher.studentcontrol');
+    }
 }

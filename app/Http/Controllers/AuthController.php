@@ -91,7 +91,7 @@ class AuthController extends Controller
         # code...
         $courses = Courses::where('teacher', Auth::user()->name)->get();
 
-        $program = Program::get();
+        $program = Program::get(); // foe course create
 
         return view('teacher.profile', ['courses' => $courses, 'program' => $program]);
       }
