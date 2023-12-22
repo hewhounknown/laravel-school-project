@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('course_image')->nullable();
             $table->integer('enroll_count')->default(0);
             $table->integer('category_id');
-            $table->string('teacher');
+            $table->string('teacher_id');
             $table->timestamps();
         });
     }

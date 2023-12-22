@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Topic;
 use App\Models\Content;
 use App\Models\Courses;
@@ -78,7 +79,7 @@ class SchoolController extends Controller
                 'course_description' => $req->description,
                 'course_image' => $imageName,
                 'category_id' => $categoryId,
-                'teacher' => Auth::user()->name
+                'teacher_id' => Auth::user()->id
             ]);
 
             return redirect()->route('profile')->with(['success' => 'you created new course']);
@@ -161,7 +162,8 @@ class SchoolController extends Controller
         return view('programmes.content', ['content' => $content, 'topic' => $topic]);
     }
 
-    public function downloadFile($fileName){
+    public function downloadFile($fileName)
+    {
         //dd($fileName);
         $filePath = public_path('storage/course/topic/content/'.$fileName);
 
@@ -229,7 +231,7 @@ class SchoolController extends Controller
 
     public function enrollCourse($courseId)
     {
-        if(Enrollment::where('user_id', Auth::user()->id)->exists()){
+        if(Enrollment::where(['user_id'=>Auth::user()->id, 'course_id'=>$courseId])->exists()){
             return redirect()->back()->with(['status' => "sorry, you've already enrolled!"]);
         }
 
@@ -238,11 +240,37 @@ class SchoolController extends Controller
             'course_id' => $courseId,
         ]);
 
+        Courses::where('id', $courseId)->increment('enroll_count');
+
         return redirect()->route('profile')->with(['success' => 'you enrolled successfully!']);
     }
 
     public function studentTable()
     {
-        return view('teacher.studentcontrol');
+        $course = Courses::where('teacher_id', Auth::user()->id)->get();
+
+        foreach ($course as $c) {
+            $enroll = Enrollment::where('course_id', $c->id)->get();
+
+            $students = User::whereIn('id', $enroll->pluck('user_id'))->get();
+
+            $enrollCourses = Courses::whereIn('id', $enroll->pluck('course_id'))->get();
+
+            $lists[] = [
+                'course' => $enrollCourses,
+                'student' => $students,
+            ];
+        }
+        // dd($lists);
+
+        return view('teacher.studentcontrol', ['lists'=>$lists]);
+    }
+
+    public function acceptStudent($studentId, $courseId)
+    {
+        Enrollment::where(['user_id' => $studentId, 'course_id' => $courseId])
+                        ->update(['status' => true]);
+
+        return back()->with(['status' => 'you accepted!']);
     }
 }

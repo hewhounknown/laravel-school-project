@@ -42,6 +42,7 @@ Route::get('download/{filename}', [SchoolController::class, 'downloadFile'])->na
 Route::get('enroll/course={id}', [SchoolController::class, 'enrollCourse'])->name('course.enroll');
 
 Route::get('control/students', [SchoolController::class, 'studentTable'])->name('student.control');
+Route::get('accept/student={studentId}/enroll/course={courseId}', [SchoolController::class, 'acceptStudent'])->name('student.accept');
 
 Route::prefix('programmes')->group(function () {
     Route::get('{program}', [SchoolController::class, 'courseList'])->name('course.list');

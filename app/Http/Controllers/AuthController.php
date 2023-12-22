@@ -78,18 +78,19 @@ class AuthController extends Controller
       if (Auth::user()->role == 'student') {
         if(Enrollment::where('user_id', Auth::user()->id)->exists()){
             $enroll = Enrollment::where('user_id', Auth::user()->id)->get();
-            //dd($enroll);
+            //dd(count($enroll));
             foreach($enroll as $e){
                 //dd($e->course_id);
-                $course = Courses::where('id', $e->course_id)->get();
-                //dd($course);
+                $course[] = Courses::where('id', $e->course_id)->get();
+                //
             }
+            //dd($course);
         }
         return view('student.profile', ['course' => $course]);
       }
       elseif (Auth::user()->role == 'teacher') {
         # code...
-        $courses = Courses::where('teacher', Auth::user()->name)->get();
+        $courses = Courses::where('teacher_id', Auth::user()->id)->get();
 
         $program = Program::get(); // foe course create
 
