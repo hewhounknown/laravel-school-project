@@ -9,31 +9,35 @@
     </div>
     @endif
 
-    @if ($course != null)
+    @if ($list != null)
     <div class="container mb-5">
         <div class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
             <h3 class="default">Your enrolled courses</h3>
-            @foreach ($course as $c)
-                @foreach ($c as $data)
+
+            @foreach ($list as $l)
+                @foreach ($l['course'] as $course)
                     {{-- {{$data}} --}}
                     <div class="col-md-3 mx-5 my-3">
                         <div class="card " style="width: 20rem;">
-                            @if ($data->course_image == null)
+                            @if ($course->course_image == null)
                                 <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
                             @else
-                                <img src="{{asset('storage/course/'.$data->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
+                                <img src="{{asset('storage/course/'.$course->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
                             @endif
                             <div class="card-body" style="height: 9rem">
-                                <h5 class="card-title">{{$data->course_name}}</h5>
-                                <p class="card-text">{{$data->course_description}}</p>
+                                <h5 class="card-title">{{$course->course_name}}</h5>
+                                <p class="card-text">{{$course->course_description}}</p>
                             </div>
                             <div class="card-footer">
-                                <a href="{{route('courseDetail', $data->course_name)}}" class="btn btn-primary">View</a>
+                                @if ($l['enroll']->status == false)
+                                <a href="//" class="btn btn-outline-dark">View</a>
+                                @else
+                                <a href="{{route('courseDetail', $course->course_name)}}" class="btn btn-outline-primary">View</a>
+                                @endif
                             </div>
                         </div>
                     </div>
                 @endforeach
-
             @endforeach
         </div>
     </div>

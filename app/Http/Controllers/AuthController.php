@@ -81,18 +81,24 @@ class AuthController extends Controller
             //dd(count($enroll));
             foreach($enroll as $e){
                 //dd($e->course_id);
-                $course[] = Courses::where('id', $e->course_id)->get();
+                $course = Courses::where('id', $e->course_id)->get();
+                $list[] = [
+                    'course' => $course,
+                    'enroll' => $e
+                ];
                 //
             }
             //dd($course);
+
+            // dd($list);
         }
-        return view('student.profile', ['course' => $course]);
+        return view('student.profile', ['list' => $list]);
       }
       elseif (Auth::user()->role == 'teacher') {
         # code...
         $courses = Courses::where('teacher_id', Auth::user()->id)->get();
 
-        $program = Program::get(); // foe course create
+        $program = Program::get(); // for course create
 
         return view('teacher.profile', ['courses' => $courses, 'program' => $program]);
       }

@@ -47,7 +47,7 @@
                 {{-- profile end --}}
             </div>
 
-            <div class="col">
+            {{-- <div class="col">
                 <div class="list-group mb-2 text-lg-start">
                     <span class="disabled list-group-item d-none d-lg-block">
                         <h5>CONTROLS</h5>
@@ -70,7 +70,7 @@
                         <span class="d-none d-lg-inline">Reports</span>
                     </a>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 
