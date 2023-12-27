@@ -30,9 +30,9 @@
                             </div>
                             <div class="card-footer">
                                 @if ($l['enroll']->status == false)
-                                <a href="//" class="btn btn-outline-dark">View</a>
+                                <a href="//" class="btn btn-outline-dark">pls wait</a>
                                 @else
-                                <a href="{{route('courseDetail', $course->course_name)}}" class="btn btn-outline-primary">View</a>
+                                <a href="{{route('courseDetail', $course->id)}}" class="btn btn-outline-primary">View Courses</a>
                                 @endif
                             </div>
                         </div>

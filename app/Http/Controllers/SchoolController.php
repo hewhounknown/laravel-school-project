@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Topic;
 use App\Models\Content;
-use App\Models\Courses;
+use App\Models\Course;
 use App\Models\Program;
 use App\Models\Category;
 use App\Models\Languages;
@@ -32,19 +32,11 @@ class SchoolController extends Controller
         //dd($category);
         foreach($category as $cat){
            // dd($cat->id);
-            $courses = Courses::where('category_id', $cat->id)->get();
+            $courses = Course::where('category_id', $cat->id)->get();
+            // dd($courses->enrolls);
         }
-        //dd($courses);
-        return view('programmes.courses',['category'=>$category, 'courses'=>$courses]);
-    }
 
-    public function coursesDetail($title)
-    {
-        // $courses = Courses::where('title', $title)
-        //                     ->leftjoin('languages', 'courses.language_id', '=', 'languages.id')
-        //                     ->first();
-        // echo $courses->name;
-        return view('programmes.detail');
+        return view('programmes.courses',['category'=>$category, 'courses'=>$courses]);
     }
 
     public function courseForm($id)
@@ -63,7 +55,7 @@ class SchoolController extends Controller
                 'image' => 'required'
         ]);
         //dd($req->teacher);
-         if (Courses::where(['course_name' => $req->title, 'teacher' => Auth::user()->name])->exists()) {
+         if (Course::where(['course_name' => $req->title, 'teacher' => Auth::user()->name])->exists()) {
             return redirect()->back()->with(['fails' => 'this course is already existed!']);
         } else{
         //dd($req->category);
@@ -74,7 +66,7 @@ class SchoolController extends Controller
             $imageName = time() . '_' . $image->getClientOriginalName();    // give a name combination with time
             Storage::disk('public')->putFileAs('course', $image, $imageName); // store in storage / app / public / uploads
 
-            Courses::create([
+            Course::create([
                 'course_name' => $req->title,
                 'course_description' => $req->description,
                 'course_image' => $imageName,
@@ -86,14 +78,14 @@ class SchoolController extends Controller
         }
     }
 
-    public function detailCourse($courseName)
+    public function detailCourse($id)
     {
-        $course = Courses::where('course_name', $courseName)->first();
+        $course = Course::where('id', $id)->first();
         $topic = Topic::where('course_id', $course->id)->get();
         //print_r($topic);
-        $breadcrumbs = Breadcrumbs::generate(); // for using breadcrumbs
-
-        return view('programmes.coursedetail', ['course' => $course, 'topic' => $topic, 'breadcrumbs' => $breadcrumbs]);
+        // $breadcrumbs = Breadcrumbs::generate(); // for using breadcrumbs
+        //dd($course->topics);
+        return view('programmes.coursedetail', ['course' => $course, 'topic' => $topic]);
     }
 
     public function addTopic($courseName, Request $req)
@@ -240,21 +232,21 @@ class SchoolController extends Controller
             'course_id' => $courseId,
         ]);
 
-        Courses::where('id', $courseId)->increment('enroll_count');
+        Course::where('id', $courseId)->increment('enroll_count');
 
         return redirect()->route('profile')->with(['success' => 'you enrolled successfully!']);
     }
 
     public function studentTable()
     {
-        $course = Courses::where('teacher_id', Auth::user()->id)->get();
+        $course = Course::where('teacher_id', Auth::user()->id)->get();
 
         foreach ($course as $c) {
             $enroll = Enrollment::where('course_id', $c->id)->get();
 
             $students = User::whereIn('id', $enroll->pluck('user_id'))->get();
 
-            $enrollCourses = Courses::whereIn('id', $enroll->pluck('course_id'))->get();
+            $enrollCourses = Course::whereIn('id', $enroll->pluck('course_id'))->get();
 
             $lists[] = [
                 'course' => $enrollCourses,

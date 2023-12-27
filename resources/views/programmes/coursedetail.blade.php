@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <nav style="--bs-breadcrumb-divider: '>';" class="fs-3"  aria-label="breadcrumb">
+    {{-- <nav style="--bs-breadcrumb-divider: '>';" class="fs-3"  aria-label="breadcrumb">
         <ol class="breadcrumb bg-white">
             <!-- Loop through each breadcrumb item -->
             @foreach ($breadcrumbs as $breadcrumb)
@@ -17,7 +17,8 @@
                 @endif
             @endforeach
         </ol>
-    </nav>
+    </nav> --}}
+    {{-- {{$course->topics}} --}}
 
     @if ($errors->any())
             @foreach ($errors->all() as $error)
@@ -101,7 +102,7 @@
     <div class="container mt-5">
         <div class="row shadow-lg p-3 rounded">
             <div class="accordion accordion-flush" id="accordionFlushExample">
-                @if ($topic->isEmpty())
+                @if ($topic == null)
                     <h2 class="default">There are no topic to learn</h2>
                 @else
                 @foreach($topic as $t)

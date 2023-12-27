@@ -31,7 +31,7 @@ Route::post('profile', [AuthController::class, 'editProfile']);
 
 Route::get('course/create/{id}', [SchoolController::class, 'courseForm'])->name('courseForm');
 Route::post('course/create', [SchoolController::class, 'createCourse'])->name('courseCreate');
-Route::get('course/detail/name={name}', [SchoolController::class, 'detailCourse'])->name('courseDetail');
+Route::get('course/detail/{id}', [SchoolController::class, 'detailCourse'])->name('courseDetail');
 Route::post('course/name={name}/add/topic', [SchoolController::class, 'addTopic'])->name('topicAdd');
 Route::post('course/topic={name}/add/content', [SchoolController::class, 'addContent'])->name('contentAdd');
 Route::get('course/topic={topicId}/view/content={contentId}', [SchoolController::class, 'content'])->name('contentView');

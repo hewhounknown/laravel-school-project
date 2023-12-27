@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Courses;
+use App\Models\Course;
 use App\Models\Program;
 use App\Models\Enrollment;
 use Illuminate\Http\Request;
@@ -81,7 +81,7 @@ class AuthController extends Controller
             //dd(count($enroll));
             foreach($enroll as $e){
                 //dd($e->course_id);
-                $course = Courses::where('id', $e->course_id)->get();
+                $course = Course::where('id', $e->course_id)->get();
                 $list[] = [
                     'course' => $course,
                     'enroll' => $e
@@ -96,7 +96,7 @@ class AuthController extends Controller
       }
       elseif (Auth::user()->role == 'teacher') {
         # code...
-        $courses = Courses::where('teacher_id', Auth::user()->id)->get();
+        $courses = Course::where('teacher_id', Auth::user()->id)->get();
 
         $program = Program::get(); // for course create
 

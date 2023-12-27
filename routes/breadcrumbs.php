@@ -12,9 +12,9 @@ use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 // Course
-Breadcrumbs::for('courseDetail', function (BreadcrumbTrail $trail, $courseName) {
-    $trail->push($courseName, route('courseDetail', ['name' => $courseName]));
-});
+// Breadcrumbs::for('courseDetail', function (BreadcrumbTrail $trail, $courseName) {
+//     $trail->push($courseName, route('courseDetail', ['name' => $courseName]));
+// });
 
 
 

@@ -19,7 +19,7 @@
     <div class="container mb-5">
         <div id="listOfCourses" class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
             @foreach ($courses as $c)
-            {{$c->id}}
+            {{-- {{$c->enrolls}} --}}
             <div class="col-md-3 mx-5 my-3">
                 <div class="card " style="width: 20rem;">
                     @if ($c->course_image == null)
@@ -32,8 +32,14 @@
                         <p class="card-text">{{$c->course_description}}</p>
                     </div>
                     <div class="card-footer">
-                        <a href="{{route('courseDetail', $c->course_name)}}" class="btn btn-primary">View</a>
-                        <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
+                        @foreach ($c->enrolls as $e)
+                            @if ($e->status == false)
+                            <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
+                            @else
+                            <a href="{{route('courseDetail', $c->id)}}" class="btn btn-primary">View</a>
+                            @endif
+                        @endforeach
+
                     </div>
                 </div>
             </div>
@@ -73,7 +79,7 @@
                                                 <p class="card-text">${avaliableCourses[i].course_description}</p>
                                             </div>
                                             <div class="card-footer">
-                                                <a href="course/detail/name=${avaliableCourses[i].course_name}" class="btn btn-primary">View</a>
+                                                <a href="course/detail/name=${avaliableCourses[i].id}" class="btn btn-primary">View</a>
                                             </div>
                                         </div>
                                       </div>`;
