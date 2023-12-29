@@ -26,49 +26,40 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {{-- @for ($i=0; $i< count($list); $i++)
-                        <tr>
-                            <th scope="row">{{__($i+1)}}</th>
-                            <td>{{__($list[$i]['student']->name)}}</td>
-                            <td>{{__($list[$i]['course']->course_name)}}</td>
-                            <td>
-                                <div class="btn-group" role="group" aria-label="Default button group">
-                                    <a href="{{route('student.accept', ['studentId'=>$list[$i]['student']->id, 'courseId'=>$list[$i]['course']->id])}}">
-                                        <button type="button" class="btn btn-outline-primary">
-                                        Accept
-                                        </button>
-                                    </a>
-                                    <a href="http://">
-                                        <button type="button" class="btn btn-outline-danger">
-                                        Cancle
-                                        </button>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    @endfor --}}
                     @foreach ($lists as $l)
                         @foreach ($l['student'] as $student)
                             @foreach ($l['course'] as $course)
-                                 <tr>
-                                    <th scope="row">{{__($rowNumber++)}}</th>
-                                    <td>{{__($student->name)}}</td>
-                                    <td>{{__($course->course_name)}}</td>
-                                    <td>
-                                        <div class="btn-group" role="group" aria-label="Default button group">
-                                            <a href="{{route('student.accept', ['studentId'=>$student->id, 'courseId'=>$course->id])}}">
-                                                <button type="button" class="btn btn-outline-primary">
-                                                Accept
-                                                </button>
-                                            </a>
-                                            <a href="http://">
-                                                <button type="button" class="btn btn-outline-danger">
-                                                Cancle
-                                                </button>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    @foreach ($l['enroll'] as $enroll)
+                                        @if ($enroll->status == false)
+                                        <tr>
+                                            <th scope="row">{{__($rowNumber++)}}</th>
+                                            <td>{{__($student->name)}}</td>
+                                            <td>{{__($course->course_name)}}</td>
+                                            <td>
+                                                <a class="btn btn-outline-primary" href="{{route('student.accept', ['studentId'=>$student->id, 'courseId'=>$course->id])}}">
+                                                    Accept
+                                                </a>
+                                                <a class="btn btn-outline-danger" href="http://">
+                                                    Cancle
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        @else
+                                        <tr>
+                                            <th scope="row">{{__($rowNumber++)}}</th>
+                                            <td>{{__($student->name)}}</td>
+                                            <td>{{__($course->course_name)}}</td>
+                                            <td>
+                                                <a href="{{route('student.kick',['studentId'=>$student->id, 'courseId'=>$course->id])}}" class="btn btn-outline-danger">
+                                                    Kick
+                                                </a>
+                                                <a href="" class="btn btn-outline-warning">
+                                                    Ban
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        @endif
+                                    @endforeach
                             @endforeach
                         @endforeach
                     @endforeach
@@ -76,6 +67,10 @@
               </table>
         </div>
     </div>
+
+    {{-- @for ($i=0; $i<count($lists); $i++)
+    {{$lists[$i]['enroll']}}
+    @endfor --}}
 @endsection
 
  {{-- <tr>

@@ -43,6 +43,7 @@ Route::get('enroll/course={id}', [SchoolController::class, 'enrollCourse'])->nam
 
 Route::get('control/students', [SchoolController::class, 'studentTable'])->name('student.control');
 Route::get('accept/student={studentId}/enroll/course={courseId}', [SchoolController::class, 'acceptStudent'])->name('student.accept');
+Route::get('kick/student={studentId}/from/course={courseId}', [SchoolController::class, 'kickStudent'])->name('student.kick');
 
 Route::prefix('programmes')->group(function () {
     Route::get('{program}', [SchoolController::class, 'courseList'])->name('course.list');

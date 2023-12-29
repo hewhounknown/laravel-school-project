@@ -251,10 +251,17 @@ class SchoolController extends Controller
             $lists[] = [
                 'course' => $enrollCourses,
                 'student' => $students,
+                'enroll' => $enroll,
             ];
-        }
-        // dd($lists);
 
+            $enro[] = $enroll;
+        }
+        //dd($lists);
+        for ($i=0; $i < count($enro) ; $i++) {
+            // dd($enro[1][0]->id);
+            $stu[] = User::where('id', $enro[$i][0]->user_id)->get();
+            //dd($stu);
+        }
         return view('teacher.studentcontrol', ['lists'=>$lists]);
     }
 
@@ -264,5 +271,13 @@ class SchoolController extends Controller
                         ->update(['status' => true]);
 
         return back()->with(['status' => 'you accepted!']);
+    }
+
+    public function kickStudent($studentId, $courseId)
+    {
+        Enrollment::where(['user_id' => $studentId, 'course_id' => $courseId])
+        ->update(['status' => false]);
+
+        return back()->with(['status' => 'you kicked student successfully!']);
     }
 }
