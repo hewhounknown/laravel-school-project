@@ -55,7 +55,7 @@ class SchoolController extends Controller
                 'image' => 'required'
         ]);
         //dd($req->teacher);
-         if (Course::where(['course_name' => $req->title, 'teacher' => Auth::user()->name])->exists()) {
+         if (Course::where(['course_name' => $req->title, 'teacher_id' => Auth::user()->id])->exists()) {
             return redirect()->back()->with(['fails' => 'this course is already existed!']);
         } else{
         //dd($req->category);
@@ -237,6 +237,15 @@ class SchoolController extends Controller
         return redirect()->route('profile')->with(['success' => 'you enrolled successfully!']);
     }
 
+    public function unenrollCourse($courseId)
+    {
+        Enrollment::where(['user_id' => Auth::user()->id, 'course_id' => $courseId])->delete();
+
+        Course::where('id', $courseId)->decrement('enroll_count');
+
+        return back()->with(['status' => 'you kicked student successfully!']);
+    }
+
     public function studentTable()
     {
         $course = Course::where('teacher_id', Auth::user()->id)->get();
@@ -265,7 +274,7 @@ class SchoolController extends Controller
         return view('teacher.studentcontrol', ['lists'=>$lists]);
     }
 
-    public function acceptStudent($studentId, $courseId)
+    public function acceptEnroll($studentId, $courseId)
     {
         Enrollment::where(['user_id' => $studentId, 'course_id' => $courseId])
                         ->update(['status' => true]);
@@ -277,6 +286,8 @@ class SchoolController extends Controller
     {
         Enrollment::where(['user_id' => $studentId, 'course_id' => $courseId])
         ->update(['status' => false]);
+
+        Course::where('id', $courseId)->decrement('enroll_count');
 
         return back()->with(['status' => 'you kicked student successfully!']);
     }

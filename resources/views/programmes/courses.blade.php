@@ -32,13 +32,17 @@
                         <p class="card-text">{{$c->course_description}}</p>
                     </div>
                     <div class="card-footer">
-                        @foreach ($c->enrolls as $e)
-                            @if ($e->status == false)
-                            <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
-                            @else
-                            <a href="{{route('courseDetail', $c->id)}}" class="btn btn-primary">View</a>
-                            @endif
-                        @endforeach
+                        @if ($c->enrolls->isEmpty())
+                        <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
+                        @else
+                            @foreach ($c->enrolls as $e)
+                                @if ($e->status == false)
+                                <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
+                                @else
+                                <a href="{{route('courseDetail', $c->id)}}" class="btn btn-primary">View</a>
+                                @endif
+                            @endforeach
+                        @endif
 
                     </div>
                 </div>

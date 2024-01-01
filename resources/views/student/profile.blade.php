@@ -30,7 +30,26 @@
                             </div>
                             <div class="card-footer">
                                 @if ($l['enroll']->status == false)
-                                <a href="//" class="btn btn-outline-dark">pls wait</a>
+                                <a href="//" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#enrollModal">pls wait</a>
+
+                                <div id="enrollModal" class="modal" tabindex="-1">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title">Modal title</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <p>You can unenroll this {{$course->course_name}} , Do you want to?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
+                                          <a href="{{route('course.unenroll', $course->id)}}" type="button" class="btn btn-primary">Unenroll</a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+
                                 @else
                                 <a href="{{route('courseDetail', $course->id)}}" class="btn btn-outline-primary">View Courses</a>
                                 @endif

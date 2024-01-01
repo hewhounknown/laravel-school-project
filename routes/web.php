@@ -40,9 +40,10 @@ Route::get('course/topic={topicId}/delete/content={contentId}', [SchoolControlle
 Route::get('download/{filename}', [SchoolController::class, 'downloadFile'])->name('file.download');
 
 Route::get('enroll/course={id}', [SchoolController::class, 'enrollCourse'])->name('course.enroll');
+Route::get('unenroll/course={id}', [SchoolController::class, 'unenrollCourse'])->name('course.unenroll');
 
 Route::get('control/students', [SchoolController::class, 'studentTable'])->name('student.control');
-Route::get('accept/student={studentId}/enroll/course={courseId}', [SchoolController::class, 'acceptStudent'])->name('student.accept');
+Route::get('accept/student={studentId}/for/course={courseId}', [SchoolController::class, 'acceptEnroll'])->name('student.accept');
 Route::get('kick/student={studentId}/from/course={courseId}', [SchoolController::class, 'kickStudent'])->name('student.kick');
 
 Route::prefix('programmes')->group(function () {
