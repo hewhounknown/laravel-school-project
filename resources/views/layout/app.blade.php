@@ -167,7 +167,7 @@
                             <a class="nav-link" href="#">Opportunities</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Library</a>
+                            <a class="nav-link" href="{{route('library')}}">Library</a>
                         </li>
                     </ul>
                     <div class="d-block ms-lg-auto align-items-center justify-content-end">

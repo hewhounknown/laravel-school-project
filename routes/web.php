@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\LibraryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,4 +50,8 @@ Route::get('kick/student={studentId}/from/course={courseId}', [SchoolController:
 Route::prefix('programmes')->group(function () {
     Route::get('{program}', [SchoolController::class, 'courseList'])->name('course.list');
     Route::get('languages/class={title}', [SchoolController::class, 'coursesDetail'])->name('coursesDetail');
+});
+
+Route::prefix('library')->group(function() {
+    Route::get('center', [LibraryController::class, 'center'])->name('library');
 });
