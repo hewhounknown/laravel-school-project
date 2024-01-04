@@ -71,6 +71,9 @@
                             </div>
                         </div>
                     </form>
+                    <div class="mt-2 float-end text-info">
+                        <p>if you already have a account <a href="{{route('login')}}">login here!</a></p>
+                    </div>
                 </div>
             </div>
         </div>

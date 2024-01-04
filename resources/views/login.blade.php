@@ -61,6 +61,10 @@
                             </div>
                         </div>
                     </form>
+
+                    <div class="mt-2 float-end text-info">
+                        <p>if you don't have a account <a href="{{route('register')}}">Sign up here!</a></p>
+                    </div>
                 </div>
             </div>
         </div>

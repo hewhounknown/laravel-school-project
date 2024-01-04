@@ -11,4 +11,9 @@ class LibraryController extends Controller
     {
         return view('library.center');
     }
+
+    public function viewBook()
+    {
+        return view('library.book');
+    }
 }

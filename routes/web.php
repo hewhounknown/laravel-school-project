@@ -54,4 +54,5 @@ Route::prefix('programmes')->group(function () {
 
 Route::prefix('library')->group(function() {
     Route::get('center', [LibraryController::class, 'center'])->name('library');
+    Route::get('view/book', [LibraryController::class, 'viewBook'])->name('book.view');
 });
