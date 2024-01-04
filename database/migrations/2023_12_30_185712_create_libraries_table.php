@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('book_name');
             $table->string('author_name');
+            $table->string('cover')->nullable();
             $table->string('book_path');
-            $table->integer('posted_by')->default('librarian');
+            $table->integer('posted_by')->default('0');
             $table->timestamps();
         });
     }
