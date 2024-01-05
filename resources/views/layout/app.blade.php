@@ -154,15 +154,24 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <ul class="navbar-nav w-50 justify-content-evenly fs-4">
-                        <li class="nav-item dropdown">
+                        @if ($programs->isEmpty())
+                            <li class="nav-item">
+                                <a class="nav-link "> Programmes </a>
+                            </li>
+                        @else
+                            <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Programmes
                             </a>
-                           <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{route('course.list', 'language')}}">Languages</a></li>
-                                <li><a class="dropdown-item" href="//">IT</a></li>
+                            <ul class="dropdown-menu">
+                                @foreach ($programs as $program)
+                                    <li><a class="dropdown-item" href="//">{{$program->name}}</a></li>
+                                @endforeach
+                                {{-- <li><a class="dropdown-item" href="{{route('course.list', 'language')}}">Languages</a></li> --}}
                             </ul>
-                        </li>
+                            </li>
+                        @endif
+
                         <li class="nav-item">
                             <a class="nav-link" href="#">Opportunities</a>
                         </li>
