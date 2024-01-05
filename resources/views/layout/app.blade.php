@@ -156,7 +156,7 @@
                     <ul class="navbar-nav w-50 justify-content-evenly fs-4">
                         @if ($programs->isEmpty())
                             <li class="nav-item">
-                                <a class="nav-link "> Programmes </a>
+                                <a class="nav-link" href="#"> Programmes </a>
                             </li>
                         @else
                             <li class="nav-item dropdown">
@@ -176,7 +176,7 @@
                             <a class="nav-link" href="#">Opportunities</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('library')}}">Library</a>
+                            <a class="nav-link" href="{{route('library')}}">Library <i class="fa-solid fa-book-open-reader"></i></a>
                         </li>
                     </ul>
                     <div class="d-block ms-lg-auto align-items-center justify-content-end">

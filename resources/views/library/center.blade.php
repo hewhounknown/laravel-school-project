@@ -58,6 +58,11 @@
                     @csrf
                     <div class="modal-body">
                             <div class="mt-2">
+                                <label for="coverImg">Cover Image</label>
+                                <img id="coverImg" src="{{asset('img/default.png')}}" alt="profile picture" class="rounded d-block mb-2"  style="width:29rem; hieght: 38rem;">
+                                <input type="file" name="bookCover" id="bookCover" class="form-control d-none" onchange="readURL(this)">
+                            </div>
+                            <div class="mt-2">
                                 <label for="bookName">Book Name</label>
                                 <input type="text" name="bookName" id="bookName" class="form-control">
                             </div>
@@ -86,7 +91,11 @@
             <div class="col-6 col-md-3">
                 <a href="{{route('book.view')}}" class="btn">
                     <div class="card" style="max-width: 18rem;">
-                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
+                        @if ($book->cover == null)
+                        <img src="{{asset('img/default.png')}}" class="card-img-top" style="width:15rem; height: 10rem" alt="...">
+                        @else
+                        <img src="{{asset('storage/library/cover/'.$book->cover)}}" class="card-img-top" style="width:15rem; height: 10rem" alt="..." >
+                        @endif
                         <div class="card-body">
                          <h6>{{$book->book_name}}</h6>
                          <p>by {{$book->author_name}}</p>
@@ -190,5 +199,22 @@
     </div>
     {{-- book lists end --}}
 
+    <script>
+        document.getElementById('coverImg').addEventListener('click', e =>{
+            document.getElementById('bookCover').click();
+        })
+
+        function readURL(input){
+            if(input.files && input.files[0]){
+                let reader = new FileReader();
+                //let img = document.getElementById('img');
+
+                reader.onload = e => $('#coverImg').attr('src', e.target.result);
+
+                reader.readAsDataURL(input.files[0]);
+                //console.log(reader);
+            }
+        }
+    </script>
 
 @endsection

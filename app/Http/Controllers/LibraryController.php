@@ -15,20 +15,6 @@ class LibraryController extends Controller
     {
         $books = Library::all();
 
-
-        // foreach($books as $book){
-        //     $filePath =public_path('storage/library/books/'.$book->book_path);
-
-        //     $pdf = new Pdf($filePath);
-
-        //     $image = $pdf->setOutputFormat('png');
-
-        //     $imagePath = storage_path('app/public/library/cover/') . basename($book->book_path, '.pdf') . '.png';
-
-        //     dd($pdf->setPage(1));;
-
-        //     Storage::disk('public')->putFileAs('library/cover', $image, $imagePath);
-        // }
         return view('library.center', ['books' => $books]);
     }
 
@@ -45,14 +31,27 @@ class LibraryController extends Controller
             'book' => 'required|mimes:pdf',
         ]);
 
-        // dd($req->all());
+        $coverPath = null;
+        if($req->hasFile('bookCover')){
+            $req->validate([
+                'bookCover' => 'mimes:jpg,png,jpeg,svg'
+            ]);
+            $cover = $req->file('bookCover');
+            $coverPath = time() . "_" . $cover->getClientOriginalName();
+            Storage::disk('public')->putFileAs('library/cover', $cover, $coverPath);
+        }
+
+        //
+
         $book = $req->file('book');
         $bookPath = time() . "_" . $book->getClientOriginalName();
         Storage::disk('public')->putFileAs('library/books', $book, $bookPath);
 
+        // dd($coverPath);
         Library::create([
             'book_name' => $req->bookName,
             'author_name' => $req->authorName,
+            'cover' => $coverPath,
             'book_path' => $bookPath,
             'post_by' => Auth::user()->id
         ]);
