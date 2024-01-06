@@ -43,8 +43,17 @@
                                       <li><a class="dropdown-item" href="#">Dropdown link</a></li>
                                     </ul>
                                 </div>
-                                <a href="#" type="button" class="btn btn-outline-success">Active</a>
+
+                                @if ($user->account_status == 'active')
+                                    <a href="#" type="button" class="btn btn-outline-success">Active</a>
+                                @else
+                                    <a href="#" type="button" class="btn btn-outline-secondary">-----</a>
+                                @endif
+
+                                @if ($user->id !== Auth::user()->id)
                                 <a href="#" type="button" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                                @endif
+
                               </div>
                         </td>
                     </tr>

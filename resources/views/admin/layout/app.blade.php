@@ -15,7 +15,7 @@
 <body>
     <div class="container-fluid g-1">
         {{-- <div class="row"> --}}
-            <nav class="navbar text-center bg-light-subtle pe-2">
+            <nav class="navbar text-center bg-light-subtle pe-2 sticky-top">
                 <div class="nav-item  text-primary m-3">
                     <a href="http://" class="nav-link">
                         <h3>Admin</h3>
