@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\LibraryController;
 
@@ -56,4 +57,9 @@ Route::prefix('library')->group(function() {
     Route::get('center', [LibraryController::class, 'center'])->name('library');
     Route::get('view/book', [LibraryController::class, 'viewBook'])->name('book.view');
     Route::post('add/book', [LibraryController::class, 'addBook'])->name('book.add');
+});
+
+Route::prefix('admin')->group(function() {
+    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('manage/users', [AdminController::class, 'manageUsers'])->name('users.manage');
 });

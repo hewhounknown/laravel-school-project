@@ -18,11 +18,6 @@ class LibraryController extends Controller
         return view('library.center', ['books' => $books]);
     }
 
-    public function viewBook()
-    {
-        return view('library.book');
-    }
-
     public function addBook(Request $req)
     {
         $req->validate([
@@ -41,22 +36,24 @@ class LibraryController extends Controller
             Storage::disk('public')->putFileAs('library/cover', $cover, $coverPath);
         }
 
-        //
-
         $book = $req->file('book');
         $bookPath = time() . "_" . $book->getClientOriginalName();
         Storage::disk('public')->putFileAs('library/books', $book, $bookPath);
 
-        // dd($coverPath);
         Library::create([
             'book_name' => $req->bookName,
             'author_name' => $req->authorName,
             'cover' => $coverPath,
             'book_path' => $bookPath,
-            'post_by' => Auth::user()->id
+            'posted_by' => Auth::user()->id
         ]);
 
         return back()->with(['status' => 'you added book in library successfully!']);
+    }
+
+    public function viewBook()
+    {
+        return view('library.book');
     }
 }
 
