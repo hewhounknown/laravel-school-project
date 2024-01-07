@@ -62,4 +62,7 @@ Route::prefix('library')->group(function() {
 Route::prefix('admin')->group(function() {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('manage/users', [AdminController::class, 'manageUsers'])->name('users.manage');
+    Route::get('delete/user={id}', [AdminController::class, 'deleteUser'])->name('user.delete');
+    Route::get('change/user={id}/to/role={role}', [AdminController::class, 'changeRole'])->name('user.role');
+    Route::get('change/user={id}/to/status={status}', [AdminController::class, 'changeStatus'])->name('user.status');
 });

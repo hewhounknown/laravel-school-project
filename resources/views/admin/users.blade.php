@@ -8,6 +8,13 @@
         </h3>
     </div>
 
+    @if (session('status'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ session('status') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
     {{-- <div class="container"> --}}
         <div class=" text-center" style="overflow-x: auto;">
             <table class="table table-striped table-hover rounded">
@@ -34,33 +41,44 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="btn-group" role="group">
-
-                                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        @if ($user->role == 'student')
+                                @if ($user->role == 'student')
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fa-solid fa-user"></i>
-                                        @elseif($user->role == 'teacher')
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{{route('user.role',['id'=>$user->id, 'role'=>'teacher'])}}">Teacher</a></li>
+                                            <li><a class="dropdown-item" href="{{route('user.role',['id'=>$user->id, 'role'=>'admin'])}}">Admin</a></li>
+                                        </ul>
+                                    </div>
+                                @elseif ($user->role == 'teacher')
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fa-solid fa-chalkboard-user"></i>
-                                        @else
-                                            <i class="fa-solid fa-user-tie"></i>
-                                        @endif
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{{route('user.role',['id'=>$user->id, 'role'=>'student'])}}">Student</a></li>
+                                            <li><a class="dropdown-item" href="{{route('user.role',['id'=>$user->id, 'role'=>'admin'])}}">Admin</a></li>
+                                        </ul>
+                                    </div>
+                                @else
+                                    <button type="button" class="btn btn-outline-secondary">
+                                        <i class="fa-solid fa-user-tie"></i>
                                     </button>
-                                    <ul class="dropdown-menu">
-                                      <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                                      <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                                    </ul>
-                                </div>
+                                @endif
 
                                 @if ($user->account_status == 'active')
-                                    <a href="#" type="button" class="btn btn-outline-info">
+                                    <a href="{{route('user.status',['id'=>$user->id, 'status'=>'suspend'])}}" type="button" class="btn btn-outline-info" onclick="return confirm('Are you sure, ban this account?')">
                                         <i class="fa-solid fa-lightbulb"></i>
                                     </a>
                                 @else
-                                    <a href="#" type="button" class="btn btn-outline-warning">-----</a>
+                                    <a href="{{route('user.status',['id'=>$user->id, 'status'=>'active'])}}" type="button" class="btn btn-outline-warning">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </a>
                                 @endif
 
                                 @if ($user->id !== Auth::user()->id)
-                                    <a href="#" type="button" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">
+                                    <a href="{{route('user.delete',$user->id)}}" type="button" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </a>
                                 @endif
