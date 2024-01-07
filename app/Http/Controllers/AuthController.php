@@ -98,7 +98,7 @@ class AuthController extends Controller
         }
         return view('student.profile', ['list' => null]);
       }
-      elseif (Auth::user()->role == 'teacher') {
+      elseif (Auth::user()->role == 'teacher' || Auth::user()->role == 'admin') {
         # code...
         $courses = Course::where('teacher_id', Auth::user()->id)->get();
 
