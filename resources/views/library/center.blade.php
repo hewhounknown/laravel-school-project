@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-md mt-2">
                 <form class="input-group">
-                    <input class="form-control p-3 w-75" type="text" placeholder="What are you looking for..." aria-label="Add your item here...">
+                    <input id="search" class="form-control p-3 w-75" type="text" placeholder="What are you looking for..." aria-label="Add your item here...">
                     <button type="button" class="w-25 btn btn-secondary input-group-text"> <i class="fa-solid fa-magnifying-glass"></i> </button>
                 </form>
             </div>
@@ -89,7 +89,7 @@
         <div class="row">
             @foreach ($books as $book)
             <div class="col-6 col-md-3">
-                <a href="{{route('book.view')}}" class="btn">
+                <a href="{{route('book.view', $book->id)}}" class="btn">
                     <div class="card" style="max-width: 18rem;">
                         @if ($book->cover == null)
                         <img src="{{asset('img/default.png')}}" class="card-img-top" style="width:15rem; height: 10rem" alt="...">
@@ -215,6 +215,8 @@
                 //console.log(reader);
             }
         }
+
+
     </script>
 
 @endsection

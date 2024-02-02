@@ -55,7 +55,7 @@ Route::prefix('programmes')->group(function () {
 
 Route::prefix('library')->group(function() {
     Route::get('center', [LibraryController::class, 'center'])->name('library');
-    Route::get('view/book', [LibraryController::class, 'viewBook'])->name('book.view');
+    Route::get('view/book/{bookId}', [LibraryController::class, 'viewBook'])->name('book.view');
     Route::post('add/book', [LibraryController::class, 'addBook'])->name('book.add');
 });
 
@@ -65,4 +65,5 @@ Route::prefix('admin')->group(function() {
     Route::get('delete/user={id}', [AdminController::class, 'deleteUser'])->name('user.delete');
     Route::get('change/user={id}/to/role={role}', [AdminController::class, 'changeRole'])->name('user.role');
     Route::get('change/user={id}/to/status={status}', [AdminController::class, 'changeStatus'])->name('user.status');
+    Route::get('manage/library', [AdminController::class, 'manageLibrary'])->name('library.manage');
 });

@@ -51,9 +51,11 @@ class LibraryController extends Controller
         return back()->with(['status' => 'you added book in library successfully!']);
     }
 
-    public function viewBook()
+    public function viewBook($bookId)
     {
-        return view('library.book');
+        $book = Library::where('id', $bookId)->first();
+        //$book = $book->book_path;
+        return view('library.book', ['book' => $book]);
     }
 }
 

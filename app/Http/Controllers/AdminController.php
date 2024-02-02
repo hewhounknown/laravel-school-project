@@ -38,4 +38,9 @@ class AdminController extends Controller
         User::where('id', $id)->update(['account_status' => $status]);
         return back()->with(['status' => 'successfully, changed ' . $user->name . "'s account to " . $status]);
     }
+
+    public function manageLibrary()
+    {
+        return view('admin.library');
+    }
 }

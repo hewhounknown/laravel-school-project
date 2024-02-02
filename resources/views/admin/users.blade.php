@@ -15,6 +15,15 @@
     </div>
     @endif
 
+    @if (count($users) > 15)
+        <div class="mx-5 my-3 text-center">
+            <form class="input-group">
+                <input id="search" class="form-control w-75" type="text" placeholder="Search">
+                <button type="button" class=" btn btn-primary input-group-text"> <i class="fa-solid fa-magnifying-glass"></i> </button>
+            </form>
+        </div>
+    @endif
+
     {{-- <div class="container"> --}}
         <div class=" text-center" style="overflow-x: auto;">
             <table class="table table-striped table-hover rounded">
@@ -90,4 +99,25 @@
         </div>
     {{-- </div> --}}
 
+@endsection
+
+@section('J_Script')
+    <script>
+
+        $(document).ready(function(){
+            $('#search').on('keyup', function(){
+                let query = $(this).val();
+                //console.log(query);
+
+                $.ajax({
+                    url: 'search',
+                    type: 'GET',
+                    data: {'search': query},
+                    success: function(data){
+
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
