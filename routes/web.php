@@ -65,5 +65,6 @@ Route::prefix('admin')->group(function() {
     Route::get('delete/user={id}', [AdminController::class, 'deleteUser'])->name('user.delete');
     Route::get('change/user={id}/to/role={role}', [AdminController::class, 'changeRole'])->name('user.role');
     Route::get('change/user={id}/to/status={status}', [AdminController::class, 'changeStatus'])->name('user.status');
+    Route::get('search/user', [AdminController::class, 'searchUsers'])->name('user.search');
     Route::get('manage/library', [AdminController::class, 'manageLibrary'])->name('library.manage');
 });

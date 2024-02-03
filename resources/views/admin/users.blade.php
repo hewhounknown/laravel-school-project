@@ -25,7 +25,7 @@
     @endif
 
     {{-- <div class="container"> --}}
-        <div class=" text-center" style="overflow-x: auto;">
+        <div id="userList" class=" text-center" style="overflow-x: auto;">
             <table class="table table-striped table-hover rounded">
                 <thead>
                     <tr>
@@ -110,11 +110,11 @@
                 //console.log(query);
 
                 $.ajax({
-                    url: 'search',
+                    url: 'http://localhost:8000/admin/search/user',
                     type: 'GET',
                     data: {'search': query},
                     success: function(data){
-
+                        $('#userList').html(data);
                     }
                 });
             });
