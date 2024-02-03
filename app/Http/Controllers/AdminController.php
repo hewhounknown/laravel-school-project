@@ -43,8 +43,7 @@ class AdminController extends Controller
     {
         if($req->ajax()){
             $users = User::where('name', 'like', '%' . $req->search . '%')
-            ->orwhere('email', 'like', '%' . $req->search . '%')
-            ->orwhere('role', 'like', '%' . $req->search . '%')->get();
+            ->orwhere('email', 'like', '%' . $req->search . '%')->get();
         };
 
         $response = '';
@@ -67,8 +66,60 @@ class AdminController extends Controller
                     <tr>
                             <td>'.$user->name.'</td>
                             <td>'.$user->email.'</td>
-                            <td>'. $user->role.'</td>
-                    </tr>';
+                            <td>';
+                            if ($user->role == 'student') {
+                                $response .= '<span class="badge bg-secondary">'.$user->role.'</span>';
+                            }elseif($user->role == 'teacher'){
+                                $response .= '<span class="badge bg-info">'.$user->role.'</span>';
+                            }else{
+                                $response .= '<span class="badge bg-warning">'.$user->role.'</span>';
+                            };
+                            $response .= '</td>
+                            <td>';
+                            if ($user->role == 'student') {
+                                $response .= '<div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa-solid fa-user"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="' . route("user.role", ["id" => $user->id, "role" => "teacher"]) . '">Teacher</a></li>
+                                                <li><a class="dropdown-item" href="' . route("user.role", ["id" => $user->id, "role" => "admin"]) . '">Admin</a></li>
+                                                </ul>
+                                            </div>';
+                            }elseif($user->role == 'teacher'){
+                                $response .= '<div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa-solid fa-chalkboard-user"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="' . route("user.role", ["id" => $user->id, "role" => "student"]) . '">Student</a></li>
+                                                <li><a class="dropdown-item" href="' . route("user.role", ["id" => $user->id, "role" => "admin"]) . '">Admin</a></li>
+                                                </ul>
+                                            </div>';
+                            }else{
+                                $response .= '<button type="button" class="btn btn-outline-secondary">
+                                                    <i class="fa-solid fa-user-tie"></i>
+                                            </button>';
+                            };
+
+                            if ($user->account_status == 'active') {
+                                $response .= '<a href=" '. route('user.status',['id'=>$user->id, 'status'=>'suspend']) .' " type="button" class="btn btn-outline-info" onclick="return confirm(\'Are you sure, ban this account?\')">
+                                                <i class="fa-solid fa-lightbulb"></i>
+                                            </a>';
+                            } else{
+                                $response .= '<a href=" '. route('user.status',['id'=>$user->id, 'status'=>'active']) .' " type="button" class="btn btn-outline-warning">
+                                                    <i class="fa-solid fa-ban"></i>
+                                                </a>';
+                            }
+
+                            if($user->id != Auth::user()->id){
+                                $response .= '<a href=" '. route('user.delete',$user->id) .' " type="button" class="btn btn-outline-danger" onclick="return confirm(\'Are you sure?\')">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </a>';
+                            }
+
+                        $response .='</td>
+                                    </tr>';
                 }
 
                 $response .= '
