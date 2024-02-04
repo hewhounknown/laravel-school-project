@@ -113,8 +113,87 @@
                     url: 'http://localhost:8000/admin/search/user',
                     type: 'GET',
                     data: {'search': query},
-                    success: function(data){
-                        $('#userList').html(data);
+                    success: function(response){
+                        //console.log(response);
+                        $table = '';
+                        if (response.length > 0) {
+                            $table = `
+                                    <div id="userList" class=" text-center" style="overflow-x: auto;">
+                                    <table class="table table-striped table-hover rounded">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Control</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
+                            response.forEach(user => {
+                                $table += `<tr>
+                                            <td>${user.name}</td>
+                                            <td>${user.email}</td>
+                                            <td>`;
+                                            if (user.role == 'student') {
+                                                $table += `<span class="badge bg-secondary">${user.role}</span>`;
+                                            }else if(user.role == 'teacher'){
+                                                $table += `<span class="badge bg-info">${user.role}</span>`;
+                                            }else{
+                                                $table += `<span class="badge bg-warning">${user.role}</span>`;
+                                            };
+                                            $table +=  `</td>
+                                            <td>`;
+                                                    if (user.role == 'student') {
+                                                        $table += `<div class="btn-group" role="group">
+                                                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                            <i class="fa-solid fa-user"></i>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li><a class="dropdown-item" href="admin/change/user=${user.id}/to/role=teacher">Teacher</a></li>
+                                                                            <li><a class="dropdown-item" href="admin/change/user=${user.id}/to/role=admin">Admin</a></li>
+                                                                        </ul>
+                                                                    </div>`;
+                                                    }else if(user.role == 'teacher'){
+                                                        $table += `<div class="btn-group" role="group">
+                                                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                            <i class="fa-solid fa-chalkboard-user"></i>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li><a class="dropdown-item" href="admin/change/user=${user.id}/to/role=student">Student</a></li>
+                                                                            <li><a class="dropdown-item" href="admin/change/user=${user.id}/to/role=admin">Admin</a></li>
+                                                                        </ul>
+                                                                    </div>`;
+                                                    }else{
+                                                        $table += `<button type="button" class="btn btn-outline-secondary">
+                                                                            <i class="fa-solid fa-user-tie"></i>
+                                                                    </button>`;
+                                                    };
+
+                                                    if (user.account_status == 'active') {
+                                                            $table += `<a href="admin/change/user=${user.id}/to/status=suspend" type="button" class="btn btn-outline-info" onclick="return confirm('Are you sure, ban this account?')">
+                                                                            <i class="fa-solid fa-lightbulb"></i>
+                                                                        </a>`;
+                                                    } else{
+                                                            $table += `<a href="admin/change/user=${user.id}/to/status=active" type="button" class="btn btn-outline-warning">
+                                                                            <i class="fa-solid fa-ban"></i>
+                                                                        </a>`;
+                                                    }
+
+                                                    if(user.id != {{ Auth::id() }} ){
+                                                        $table += `<a href="admin/delete/user=${user.id}" type="button" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">
+                                                                            <i class="fa-solid fa-trash-can"></i>
+                                                                        </a>`;
+                                                    }
+                            $table += `</td>
+                                        </tr>`;
+                            });
+                            $table += ` </tbody>
+                                     </table>`;
+                        } else {
+                            $table = 'no user';
+                        }
+
+                        $('#userList').html($table);
                     }
                 });
             });
