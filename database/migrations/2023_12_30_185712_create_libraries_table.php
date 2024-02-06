@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('cover')->nullable();
             $table->string('book_path');
             $table->integer('posted_by')->default('0');
+            $table->boolean('public_status')->default(false);
             $table->timestamps();
         });
     }
