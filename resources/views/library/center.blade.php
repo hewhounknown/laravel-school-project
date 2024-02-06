@@ -59,7 +59,7 @@
                     <div class="modal-body">
                             <div class="mt-2">
                                 <label for="coverImg">Cover Image</label>
-                                <img id="coverImg" src="{{asset('img/default.png')}}" alt="profile picture" class="rounded d-block mb-2"  style="width:29rem; hieght: 38rem;">
+                                <img id="coverImg" src="{{asset('img/default.png')}}" alt="profile picture" class="rounded d-block mb-2"  style="width:27rem; hieght: 35rem;">
                                 <input type="file" name="bookCover" id="bookCover" class="form-control d-none" onchange="readURL(this)">
                             </div>
                             <div class="mt-2">
@@ -104,97 +104,6 @@
                 </a>
             </div>
             @endforeach
-
-            {{-- <div class="col-6 col-md-3">
-                <a href="http://" class="btn">
-                    <div class="card" style="max-width: 18rem;">
-                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="http://" class="btn">
-                    <div class="card" style="max-width: 18rem;">
-                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="http://" class="btn">
-                    <div class="card" style="max-width: 18rem;">
-                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="http://" class="btn">
-                    <div class="card" style="max-width: 18rem;">
-                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="http://" class="btn">
-                    <div class="card" style="max-width: 18rem;">
-                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="http://" class="btn">
-                    <div class="card" style="max-width: 18rem;">
-                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="http://" class="btn">
-                    <div class="card" style="max-width: 18rem;">
-                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="http://" class="btn">
-                    <div class="card" style="max-width: 18rem;">
-                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="http://" class="btn">
-                    <div class="card" style="max-width: 18rem;">
-                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </a>
-            </div> --}}
         </div>
     </div>
     {{-- book lists end --}}
@@ -215,8 +124,6 @@
                 //console.log(reader);
             }
         }
-
-
     </script>
 
 @endsection

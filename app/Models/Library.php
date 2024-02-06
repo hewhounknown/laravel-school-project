@@ -14,6 +14,7 @@ class Library extends Model
         'author_name',
         'cover',
         'book_path',
-        'posted_by'
+        'posted_by',
+        'public_status'
     ];
 }
