@@ -69,4 +69,5 @@ Route::prefix('admin')->group(function() {
     Route::get('manage/library', [AdminController::class, 'manageLibrary'])->name('library.manage');
     Route::post('add/book/libatary', [AdminController::class, 'addBook'])->name('admin.book.add');
     Route::get('public/book={id}', [AdminController::class, 'publicBook'])->name('book.public');
+    Route::get('view/bookslist', [AdminController::class, 'booksList'])->name('book.list');
 });

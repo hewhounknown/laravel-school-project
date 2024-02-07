@@ -99,4 +99,10 @@ class AdminController extends Controller
         ]);
         return back()->with(['status' => 'you confirmed a book to the public successfully!']);
     }
+
+    public function booksList()
+    {
+        $books = Library::where('public_status', true)->all();
+        return view('admin.bookslist', ['books'=>$books]);
+    }
 }
