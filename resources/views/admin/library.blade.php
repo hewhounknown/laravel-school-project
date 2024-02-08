@@ -105,7 +105,7 @@
     <h3 class="pb-2 text-info border-bottom border-info">Book</h3>
     <div id="BooksList" class=" rounded bg-info-subtle text-emphasis-info">
         @if (count($books)>0)
-        <div id="bookCarousel" class="carousel slide" data-ride="carousel">
+        <div id="bookCarousel" class="carousel slide position-relative" data-ride="carousel">
             <div class="carousel-inner">
                 @foreach($books->chunk(4) as $key => $chunk)
                 <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
@@ -128,6 +128,11 @@
                     </div>
                 </div>
                 @endforeach
+                <span class="position-absolute top-0 end-0" style="z-index: 100;">
+                    <a href="{{route('book.list')}}" class="btn fs-5" style="color: #63E6BE; background-color: transparent; border: none; padding: 0; font-size: 24px;">
+                      More...  <i class="fa-solid fa-angles-right"></i>
+                    </a>
+                </span>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev" style="left: 0; margin-left: 0px;">
                 <span class="" aria-hidden="true">

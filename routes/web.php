@@ -66,8 +66,10 @@ Route::prefix('admin')->group(function() {
     Route::get('change/user={id}/to/role={role}', [AdminController::class, 'changeRole'])->name('user.role');
     Route::get('change/user={id}/to/status={status}', [AdminController::class, 'changeStatus'])->name('user.status');
     Route::get('search/user', [AdminController::class, 'searchUsers'])->name('user.search');
+
     Route::get('manage/library', [AdminController::class, 'manageLibrary'])->name('library.manage');
     Route::post('add/book/libatary', [AdminController::class, 'addBook'])->name('admin.book.add');
     Route::get('public/book={id}', [AdminController::class, 'publicBook'])->name('book.public');
     Route::get('view/bookslist', [AdminController::class, 'booksList'])->name('book.list');
+    Route::get('search/book', [AdminController::class, 'searchBook'])->name('book.search');
 });

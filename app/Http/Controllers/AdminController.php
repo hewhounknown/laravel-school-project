@@ -102,7 +102,16 @@ class AdminController extends Controller
 
     public function booksList()
     {
-        $books = Library::where('public_status', true)->all();
+        $books = Library::where('public_status', true)->get();
         return view('admin.bookslist', ['books'=>$books]);
+    }
+
+    // ajax search bar for booklist
+    public function searchBook(Request $req)
+    {
+        $books = Library::where('book_name', 'like', '%'. $req->item .'%')
+            ->orwhere('author_name', 'like', '%'. $req->item .'%')
+            ->orwhere('posted_by', 'like', '%'. $req->item .'%')->with('user')->get();
+        return $books;
     }
 }
