@@ -61,6 +61,7 @@ Route::prefix('library')->group(function() {
 
 Route::prefix('admin')->group(function() {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
     Route::get('manage/users', [AdminController::class, 'manageUsers'])->name('users.manage');
     Route::get('delete/user={id}', [AdminController::class, 'deleteUser'])->name('user.delete');
     Route::get('change/user={id}/to/role={role}', [AdminController::class, 'changeRole'])->name('user.role');
@@ -72,4 +73,6 @@ Route::prefix('admin')->group(function() {
     Route::get('public/book={id}', [AdminController::class, 'publicBook'])->name('book.public');
     Route::get('view/bookslist', [AdminController::class, 'booksList'])->name('book.list');
     Route::get('search/book', [AdminController::class, 'searchBook'])->name('book.search');
+
+    Route::get('manage/programs', [AdminController::class, 'managePrograms'])->name('programs.manage');
 });

@@ -114,4 +114,9 @@ class AdminController extends Controller
             ->orwhere('posted_by', 'like', '%'. $req->item .'%')->with('user')->get();
         return $books;
     }
+
+    public function managePrograms()
+    {
+        return view('admin.program');
+    }
 }

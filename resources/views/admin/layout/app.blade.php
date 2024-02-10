@@ -39,7 +39,10 @@
                         <i class="fa-solid fa-book-open"></i>
                         <span class="d-none d-lg-inline">Library</span>
                     </a>
-                    <li class="list-group-item">A fourth item</li>
+                    <a href="{{route('programs.manage')}}" class="list-group-item">
+                        <i class="fa-solid fa-list"></i>
+                        <span class="d-none d-lg-inline">Programs</span>
+                    </a>
                     <li class="list-group-item">And a fifth one</li>
                 </ul>
             </nav>
