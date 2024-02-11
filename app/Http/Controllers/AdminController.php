@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Library;
+use App\Models\Program;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -118,5 +120,30 @@ class AdminController extends Controller
     public function managePrograms()
     {
         return view('admin.program');
+    }
+
+    public function createProgram(Request $req)
+    {
+        // dd($req);
+        $req->validate(['programName' => 'required|unique:programs,name']);
+
+        $program = Program::create(['name'=>$req->programName]);
+
+        if(in_array('cat1', array_keys($req->all()))){
+            //dd($req->all());
+            $cats = array_filter(array_keys($req->all()), function($key){
+                return strpos($key, 'cat') === 0;
+            });
+
+            foreach($cats as $cat){
+                Category::firstOrCreate([
+                    'category_name' => $cat,
+                    'category_description' => "description",
+                    'program_id' => $program->id
+                ]);
+            }
+        }
+
+        return back()->with(['status' => 'created new program successfully!']);
     }
 }

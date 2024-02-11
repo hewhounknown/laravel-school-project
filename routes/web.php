@@ -75,4 +75,5 @@ Route::prefix('admin')->group(function() {
     Route::get('search/book', [AdminController::class, 'searchBook'])->name('book.search');
 
     Route::get('manage/programs', [AdminController::class, 'managePrograms'])->name('programs.manage');
+    Route::post('create/program', [AdminController::class, 'createProgram'])->name('program.create');
 });
