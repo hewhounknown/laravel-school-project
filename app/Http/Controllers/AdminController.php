@@ -148,4 +148,9 @@ class AdminController extends Controller
 
         return back()->with(['status' => 'created new program successfully!']);
     }
+
+    public function editProgram($programId, Request $req)
+    {
+        //
+    }
 }
