@@ -12,6 +12,6 @@ class Program extends Model
     protected $fillable = ['name'];
 
     public function categories(){
-        $this->hasMany(Category::class);
+       return $this->hasMany(Category::class);
     }
 }

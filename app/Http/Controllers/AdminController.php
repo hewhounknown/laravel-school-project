@@ -119,7 +119,8 @@ class AdminController extends Controller
 
     public function managePrograms()
     {
-        return view('admin.program');
+        $programs = Program::all();
+        return view('admin.program', ['programs' => $programs]);
     }
 
     public function createProgram(Request $req)
@@ -131,13 +132,14 @@ class AdminController extends Controller
 
         if(in_array('cat1', array_keys($req->all()))){
             //dd($req->all());
-            $cats = array_filter(array_keys($req->all()), function($key){
+            $cats = array_filter($req->all(), function($key){
                 return strpos($key, 'cat') === 0;
-            });
+            }, ARRAY_FILTER_USE_KEY);
+            // dd($cats);
 
-            foreach($cats as $cat){
+            foreach($cats as $key => $value){
                 Category::firstOrCreate([
-                    'category_name' => $cat,
+                    'category_name' => $value,
                     'category_description' => "description",
                     'program_id' => $program->id
                 ]);

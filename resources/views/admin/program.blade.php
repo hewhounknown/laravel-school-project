@@ -45,6 +45,34 @@
             </div>
          </form>
     </div>
+
+    @if (count($programs)>0)
+        <div class="card p-2 m-2">
+            <h4 class="border-bottom border-success">Avaliable program</h4>
+            @foreach ($programs as $program)
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$program->name}}" aria-expanded="false" aria-controls="#flush-collapse{{$program->name}}">
+                          <h5>{{$program->name}}</h5>
+                        </button>
+                      </h2>
+                      <div id="flush-collapse{{$program->name}}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            @foreach ($program->categories as $cat)
+                            <div class="fs-6 mt-2">
+                                <a href="http://">{{$cat->category_name}}</a>
+                            </div>
+                            @endforeach
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            @endforeach
+        </div>
+    @else
+
+    @endif
 @endsection
 
 @section('J_Script')
