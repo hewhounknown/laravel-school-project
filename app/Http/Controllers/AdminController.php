@@ -151,6 +151,18 @@ class AdminController extends Controller
 
     public function editProgram($programId, Request $req)
     {
-        //
+        $req->validate(['programName' => 'required|unique:programs,name']);
+        dd($req->all());
+        //Program::where('id', $programId)->update(['name' => $req->programName]);
+
+        if(in_array('cat1', array_keys($req->all()))){
+            $cats = array_filter($req->all(), function($key){
+                return strpos($key, 'cat') === 0;
+            }, ARRAY_FILTER_USE_KEY);
+
+            foreach($cats as $key => $value){
+
+            }
+        }
     }
 }

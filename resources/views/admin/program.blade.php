@@ -49,7 +49,7 @@
     @if (count($programs)>0)
         <div class="card p-2 m-2">
             <h4 class="border-bottom border-success">Avaliable program</h4>
-            @foreach ($programs as $program)
+            @foreach ($programs as $index => $program)
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                     <div class="accordion-item">
                       <h2 class="accordion-header">
@@ -75,7 +75,7 @@
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <form method="post" action="">
+                                        <form method="post" action="{{route('program.edit',$program->id)}}">
                                                 @csrf
                                             <div class="modal-body">
                                                 <div class="row">
@@ -85,10 +85,10 @@
                                                     </div>
                                                     <div class="col-6 p-3">
                                                         <h6>create categories here</h6>
-                                                        <div id="editCat">
-                                                            @if (count($program->categories))
+                                                        <div id="editCat{{$index}}">
+                                                            @if (count($program->categories)>0)
                                                                 @foreach ($program->categories as $cat)
-                                                                    <input type="text" name="cat1" id="" class="form-control mb-2" value="{{$cat->category_name}}">
+                                                                    <input type="text" name="cat{{$cat->id}}" id="" class="form-control mb-2" value="{{$cat->category_name}}">
                                                                 @endforeach
                                                             @else
                                                             <input type="text" name="cat1" id="" class="form-control mb-2" placeholder="category">
@@ -96,8 +96,8 @@
                                                             <input type="text" name="cat3" id="" class="form-control mb-2" placeholder="category">
                                                             @endif
                                                         </div>
-                                                        <div id="newEditCat"></div>
-                                                        <a href="" id="btnEditCat" class="text-dark">more>></a>
+                                                        <div id="newEditCat{{$index}}"></div>
+                                                        <a href="" id="btnEditCat{{$index}}" class="text-dark">more>></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -125,23 +125,23 @@
     <script>
         $(document).ready(function(){
 
-            //console.log(cat);
+            let numOfCreateTag = $('#createCat').find('input[type="text"]').length + 1;
             $('#btnCreateCat').on('click', function(e){
                 e.preventDefault();
 
-                let numOfCreateTag = $('#createCat').find('input[type="text"]').length + 1;
                 let newCreateTag = $('<input type="text" name="cat'+numOfCreateTag+'" id="" class="form-control mb-2" placeholder="category">');
                 $('#newCreateCat').append(newCreateTag);
                 numOfCreateTag ++;
             });
 
-            $('#btnEditCat').on('click', function(e){
+            let numOfEditCat = $('#editCat{{$index}}').find('input[type="text"]').length + 1;
+            $('#btnEditCat{{$index}}').on('click', function(e){
                 e.preventDefault();
 
-                let numOfEditCat = $('#editCat').find('input[type="text"]').length + 1;
+                console.log(numOfEditCat);
                 let newEditTag = $('<input type="text" name="cat'+numOfEditCat+'" id="" class="form-control mb-2" placeholder="category">')
-                $('#newEditCat').append(newEditTag);
-                numOfEditCat++;
+                $('#newEditCat{{$index}}').append(newEditTag);
+                numOfEditCat ++;
             });
         });
     </script>

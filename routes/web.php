@@ -76,5 +76,5 @@ Route::prefix('admin')->group(function() {
 
     Route::get('manage/programs', [AdminController::class, 'managePrograms'])->name('programs.manage');
     Route::post('create/program', [AdminController::class, 'createProgram'])->name('program.create');
-    ROute::post('edit/program={id}', [AdminController::class, 'editProgram'])->name('program.edit');
+    Route::post('edit/program={id}', [AdminController::class, 'editProgram'])->name('program.edit');
 });
