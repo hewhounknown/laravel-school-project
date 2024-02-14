@@ -87,8 +87,8 @@
                                                         <h6>create categories here</h6>
                                                         <div id="editCat{{$index}}">
                                                             @if (count($program->categories)>0)
-                                                                @foreach ($program->categories as $cat)
-                                                                    <input type="text" name="cat{{$cat->id}}" id="" class="form-control mb-2" value="{{$cat->category_name}}">
+                                                                @foreach ($program->categories as $cIndex => $cat)
+                                                                    <input type="text" name="cat{{$cIndex}}" id="" class="form-control mb-2" value="{{$cat->category_name}}">
                                                                 @endforeach
                                                             @else
                                                             <input type="text" name="cat1" id="" class="form-control mb-2" placeholder="category">
@@ -134,15 +134,18 @@
                 numOfCreateTag ++;
             });
 
-            let numOfEditCat = $('#editCat{{$index}}').find('input[type="text"]').length + 1;
+            @foreach ($programs as $index => $program)
+            let numOfEditCat{{$index}} = $('#editCat{{$index}}').find('input[type="text"]').length;
             $('#btnEditCat{{$index}}').on('click', function(e){
                 e.preventDefault();
 
-                console.log(numOfEditCat);
-                let newEditTag = $('<input type="text" name="cat'+numOfEditCat+'" id="" class="form-control mb-2" placeholder="category">')
+                //console.log(numOfEditCat);
+                let newEditTag = $('<input type="text" name="cat'+numOfEditCat{{$index}}+'" id="" class="form-control mb-2" placeholder="category">')
                 $('#newEditCat{{$index}}').append(newEditTag);
-                numOfEditCat ++;
+                numOfEditCat{{$index}} ++;
             });
+            @endforeach
+
         });
     </script>
 @endsection
