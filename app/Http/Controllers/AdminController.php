@@ -151,18 +151,43 @@ class AdminController extends Controller
 
     public function editProgram($programId, Request $req)
     {
-        $req->validate(['programName' => 'required|unique:programs,name']);
-        dd($req->all());
-        //Program::where('id', $programId)->update(['name' => $req->programName]);
+        $req->validate(['programName' => 'required']);
+        //dd($req->all());
+        Program::where('id', $programId)->update(['name' => $req->programName]);
 
-        if(in_array('cat1', array_keys($req->all()))){
+        if($req->has('cat1')){
+            $inputData = $req->all();
+
+
             $cats = array_filter($req->all(), function($key){
-                return strpos($key, 'cat') === 0;
+                return strpos($key, 'cat') === 0 && strpos($key, 'catId') !== 0;
             }, ARRAY_FILTER_USE_KEY);
 
-            foreach($cats as $key => $value){
+            $updateCats = [];
+            $newCats = [];
+            for ($i=0; $i < count($cats); $i++) {
+                if ($req->has('catId'.$i)) {
+                    $updateCats[] = ['id' => $req->input('catId'.$i), 'name' => $req->input('cat'.$i)];
+                } else {
+                    $newCats[] = ['name' => $req->input('cat'.$i)];
+                }
+            }
+            //dd($updateCats);
+            foreach($updateCats as $updateCat){
+                Category::where('id', $updateCat['id'])->update(['category_name'=>$updateCat['name']]);
+            }
 
+            if(count($newCats)>0){
+                foreach($newCats as $new){
+                    Category::create([
+                        'category_name' => $new['name'],
+                        'category_description' => "description",
+                        'program_id' => $programId
+                    ]);
+                }
             }
         }
+
+        return back()->with(['status' => 'updated program successfully1']);
     }
 }

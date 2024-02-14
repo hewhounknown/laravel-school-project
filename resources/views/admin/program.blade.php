@@ -88,6 +88,7 @@
                                                         <div id="editCat{{$index}}">
                                                             @if (count($program->categories)>0)
                                                                 @foreach ($program->categories as $cIndex => $cat)
+                                                                    <input type="hidden" name="catId{{$cIndex}}" value="{{$cat->id}}">
                                                                     <input type="text" name="cat{{$cIndex}}" id="" class="form-control mb-2" value="{{$cat->category_name}}">
                                                                 @endforeach
                                                             @else
