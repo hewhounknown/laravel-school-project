@@ -158,7 +158,6 @@ class AdminController extends Controller
         if($req->has('cat1')){
             $inputData = $req->all();
 
-
             $cats = array_filter($req->all(), function($key){
                 return strpos($key, 'cat') === 0 && strpos($key, 'catId') !== 0;
             }, ARRAY_FILTER_USE_KEY);
@@ -189,5 +188,10 @@ class AdminController extends Controller
         }
 
         return back()->with(['status' => 'updated program successfully1']);
+    }
+
+    public function manageCourses()
+    {
+        return view('admin.courses');
     }
 }

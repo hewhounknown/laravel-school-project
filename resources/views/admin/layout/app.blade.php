@@ -43,7 +43,10 @@
                         <i class="fa-solid fa-list"></i>
                         <span class="d-none d-lg-inline">Programs</span>
                     </a>
-                    <li class="list-group-item">And a fifth one</li>
+                    <a href="{{route('admin.courses.manage')}}" class="list-group-item">
+                        <i class="fa-solid fa-folder"></i>
+                        <span class="d-none d-lg-inline">Courses</span>
+                    </a>
                 </ul>
             </nav>
 
