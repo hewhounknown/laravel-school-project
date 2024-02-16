@@ -72,11 +72,12 @@ Route::prefix('admin')->group(function() {
     Route::post('add/book/libatary', [AdminController::class, 'addBook'])->name('admin.book.add');
     Route::get('public/book={id}', [AdminController::class, 'publicBook'])->name('book.public');
     Route::get('view/bookslist', [AdminController::class, 'booksList'])->name('book.list');
-    Route::get('search/book', [AdminController::class, 'searchBook'])->name('book.search');
+    Route::get('search/book', [AdminController::class, 'searchBook']);
 
     Route::get('manage/programs', [AdminController::class, 'managePrograms'])->name('programs.manage');
     Route::post('create/program', [AdminController::class, 'createProgram'])->name('program.create');
     Route::post('edit/program={id}', [AdminController::class, 'editProgram'])->name('program.edit');
 
     Route::get('manage/cources', [AdminController::class, 'manageCourses'])->name('admin.courses.manage');
+    Route::get('take/categories', [AdminController::class, 'takeCategories']);
 });

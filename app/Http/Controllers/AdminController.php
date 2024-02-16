@@ -119,8 +119,7 @@ class AdminController extends Controller
 
     public function managePrograms()
     {
-        $programs = Program::all();
-        return view('admin.program', ['programs' => $programs]);
+        return view('admin.program');
     }
 
     public function createProgram(Request $req)
@@ -193,5 +192,11 @@ class AdminController extends Controller
     public function manageCourses()
     {
         return view('admin.courses');
+    }
+
+    public function takeCategories(Request $req)
+    {
+        $cats = Category::where('program_id', $req->selectProgramId)->get();
+        return $cats;
     }
 }
