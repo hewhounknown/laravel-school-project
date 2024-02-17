@@ -15,16 +15,23 @@ class Course extends Model
         'course_image',
         'enroll_count',
         'category_id',
-        'teacher_id'
+        'teacher_id',
+        'course_status'
     ];
+
+    public function category(){
+        return  $this->belongsTo(Category::class);
+    }
+
+    public function teacher(){
+        return $this->belongsTo(User::class);
+    }
 
     public function topics(){
       return  $this->hasMany(Topic::class);
     }
 
-    public function category(){
-      return  $this->belongsTo(Category::class);
-    }
+
 
     public function enrolls(){
         return $this->hasMany(Enrollment::class);

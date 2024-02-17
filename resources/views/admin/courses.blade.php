@@ -3,6 +3,23 @@
 @section('content')
     <h4>Courses Manage </h4>
 
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    @if (session('status'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ session('status') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
     <div class="row justify-content-end">
         <div class="col-3 text-center">
             <div class="btn btn-outline-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#courseModal">
@@ -19,7 +36,7 @@
               <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form enctype="multipart/form-data" action="">
+            <form enctype="multipart/form-data" method="POST" action="{{route('admin.course.create')}}">
                 @csrf
                 <div class="modal-body">
                     <div class="row">
@@ -40,7 +57,7 @@
                                 <label for="image">
                                     <img id="img" src="{{asset('img/add_image.png')}}" alt="profile picture" class="rounded"  style="width:230px; hieght: 180px;">
                                 </label>
-                                <input type="file" name="image" id="image" class="form-control" onchange="">
+                                <input type="file" name="courseImage" id="image" class="form-control" onchange="">
                             </div>
                         </div>
                         <div class="col-6">
@@ -73,28 +90,35 @@
         </form>
     </div>
 
+    @if (count($newCourses)>0)
     <div id="newCourses" class=" p-3 m-2">
+        @foreach ($newCourses as $new)
         <div class="card  my-1" style="height: 120px">
             <div class="row bg-info-subtle text-emphasis-info g-0">
                 <div class="col-3">
-                    <img src="{{asset('img/default.png')}}" class="img-fluid" style="width: auto; height: 120px" alt="">
+                    @if ($new->course_image == null)
+                    <img src="{{asset('img/default.png')}}" class="img-fluid" style="width: 170px; height: 120px" alt="">
+                    @else
+                    <img src="{{asset('storage/course/'.$new->course_image)}}" class="img-fluid" style="width: 170px; height: 120px" alt="">
+                    @endif
+
                 </div>
                 <div class="col-7 p-2">
                     <div class="row">
                         <div class="col-sm-3"><strong>Name</strong></div>
-                        <div class="col-sm-9">IELTS</div>
+                        <div class="col-sm-9">{{_($new->course_name)}}</div>
                     </div>
                     <div class="row">
                         <div class="col-sm-3"><strong>Category</strong></div>
-                        <div class="col-sm-9">English</div>
+                        <div class="col-sm-9">{{_($new->category->category_name)}}</div>
                     </div>
                     <div class="row">
                         <div class="col-sm-3"><strong>By</strong></div>
-                        <div class="col-sm-9">sayar sayar sayar</div>
+                        <div class="col-sm-9">{{_($new->teacher->name)}}</div>
                     </div>
                     <div class="row">
                         <div class="col-sm-3"><strong>Date</strong></div>
-                        <div class="col-sm-9">3/9/2023</div>
+                        <div class="col-sm-9">{{_($new->created_at->format('d/m/y'))}}</div>
                     </div>
                 </div>
                 <div class="col-2 align-self-center">
@@ -107,40 +131,10 @@
                 </div>
             </div>
         </div>
-        <div class="card my-1" style="height: 120px">
-            <div class="row bg-info-subtle text-emphasis-info g-0">
-                <div class="col">
-                    <img src="{{asset('img/default.png')}}" class="img-fluid" style="width: auto; height: 120px" alt="">
-                </div>
-                <div class="col-7 p-2">
-                    <div class="row">
-                        <div class="col-sm-3"><strong>Name</strong></div>
-                        <div class="col-sm-9">IELTS</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3"><strong>Category</strong></div>
-                        <div class="col-sm-9">English</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3"><strong>By</strong></div>
-                        <div class="col-sm-9">sayar sayar sayar</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3"><strong>Date</strong></div>
-                        <div class="col-sm-9">3/9/2023</div>
-                    </div>
-                </div>
-                <div class="col-2 align-self-center">
-                    <a href="" class="btn btn-outline-success btn-lg">
-                        <i class="fa-solid fa-info"></i>
-                    </a>
-                    <a href="" class="btn btn-outline-info btn-lg">
-                        <i class="fa-solid fa-check"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
+    @endif
+
 
     <div id="avaliableCources" class="m-2" style="overflow-x: auto;">
         <table class="table table-success table-striped">
@@ -194,7 +188,7 @@
                         cats.forEach(cat => {
                             $catsList += `
                                 <div class="form-check d-inline-block">
-                                    <input class="form-check-input" type="radio" name="cat" id="cat">
+                                    <input class="form-check-input" type="radio" name="catId" id="cat${cat.id}" value="${cat.id}">
                                     <label class="form-check-label" for="cat">
                                       ${cat.category_name}
                                     </label>

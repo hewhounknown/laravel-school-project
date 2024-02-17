@@ -80,4 +80,5 @@ Route::prefix('admin')->group(function() {
 
     Route::get('manage/cources', [AdminController::class, 'manageCourses'])->name('admin.courses.manage');
     Route::get('take/categories', [AdminController::class, 'takeCategories']);
+    Route::post('create/course', [AdminController::class, 'createCourse'])->name('admin.course.create');
 });

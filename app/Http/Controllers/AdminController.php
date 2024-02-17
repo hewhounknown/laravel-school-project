@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Course;
 use App\Models\Library;
 use App\Models\Program;
 use App\Models\Category;
@@ -139,7 +140,6 @@ class AdminController extends Controller
             foreach($cats as $key => $value){
                 Category::firstOrCreate([
                     'category_name' => $value,
-                    'category_description' => "description",
                     'program_id' => $program->id
                 ]);
             }
@@ -179,7 +179,6 @@ class AdminController extends Controller
                 foreach($newCats as $new){
                     Category::create([
                         'category_name' => $new['name'],
-                        'category_description' => "description",
                         'program_id' => $programId
                     ]);
                 }
@@ -191,12 +190,47 @@ class AdminController extends Controller
 
     public function manageCourses()
     {
-        return view('admin.courses');
+        $newCourses = Course::where('course_status', false)->get();
+        $courses = Course::where('course_status', true)->get();
+        return view('admin.courses', ['newCourses' => $newCourses,'courses' => $courses]);
     }
 
     public function takeCategories(Request $req)
     {
         $cats = Category::where('program_id', $req->selectProgramId)->get();
         return $cats;
+    }
+
+    public function createCourse(Request $req)
+    {
+        $req->validate([
+            'programSelected' => 'required',
+            'catId' => 'required',
+            'courseName' => 'required|unique:courses,course_name',
+            'description' => 'required'
+        ]);
+
+        if (Course::where(['course_name' => $req->courseName, 'teacher_id' => Auth::user()->id])->exists()) {
+            return back()->with(['status' => 'this course is already existed!']);
+        } else{
+
+            $image = null;
+            if($req->hasFile('courseImage')){
+                $image = $req->file('courseImage');
+                $imageName = time() . '_' . $image->getClientOriginalName();    // give a name combination with time
+                Storage::disk('public')->putFileAs('course', $image, $imageName); // store in storage / app / public / uploads
+            }
+
+            Course::create([
+                'course_name' => $req->courseName,
+                'course_description' => $req->description,
+                'course_image' => $imageName,
+                'category_id' => $req->catId,
+                'teacher_id' => Auth::user()->id
+            ]);
+
+            return back()->with(['status' => 'created course successfully!']);
+        }
+
     }
 }
