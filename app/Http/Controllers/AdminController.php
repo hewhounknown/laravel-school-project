@@ -97,9 +97,7 @@ class AdminController extends Controller
 
     public function publicBook($bookId)
     {
-        Library::where('id', $bookId)->update([
-            'public_status' => true,
-        ]);
+        Library::where('id', $bookId)->update(['public_status' => true,]);
         return back()->with(['status' => 'you confirmed a book to the public successfully!']);
     }
 
@@ -219,12 +217,12 @@ class AdminController extends Controller
                 $image = $req->file('courseImage');
                 $imageName = time() . '_' . $image->getClientOriginalName();    // give a name combination with time
                 Storage::disk('public')->putFileAs('course', $image, $imageName); // store in storage / app / public / uploads
+                Course::create(['course_image' => $imageName]);
             }
 
             Course::create([
                 'course_name' => $req->courseName,
                 'course_description' => $req->description,
-                'course_image' => $imageName,
                 'category_id' => $req->catId,
                 'teacher_id' => Auth::user()->id
             ]);
@@ -232,5 +230,11 @@ class AdminController extends Controller
             return back()->with(['status' => 'created course successfully!']);
         }
 
+    }
+
+    public function publicCourse($courseId)
+    {
+        Course::where('id', $courseId)->update(['course_status' => true]);
+        return back()->with(['status' => 'confirmed course to the public successfully']);
     }
 }

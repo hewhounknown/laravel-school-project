@@ -93,6 +93,46 @@
     @if (count($newCourses)>0)
     <div id="newCourses" class=" p-3 m-2">
         @foreach ($newCourses as $new)
+            @if (count($new->topics) < 3)
+            <div class="card  my-1" style="height: 120px">
+                <div class="row bg-success-subtle text-emphasis-success g-0">
+                    <div class="col-3">
+                        @if ($new->course_image == null)
+                        <img src="{{asset('img/default.png')}}" class="img-fluid" style="width: 170px; height: 120px" alt="">
+                        @else
+                        <img src="{{asset('storage/course/'.$new->course_image)}}" class="img-fluid" style="width: 170px; height: 120px" alt="">
+                        @endif
+                    </div>
+                    <div class="col-7 p-2">
+                        <div class="row">
+                            <div class="col-sm-3"><strong>Name</strong></div>
+                            <div class="col-sm-9">{{_($new->course_name)}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3"><strong>Category</strong></div>
+                            <div class="col-sm-9">{{_($new->category->category_name)}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3"><strong>By</strong></div>
+                            <div class="col-sm-9">{{_($new->teacher->name)}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3"><strong>Date</strong></div>
+                            <div class="col-sm-9">{{_($new->created_at->format('d/m/y'))}}</div>
+                        </div>
+                    </div>
+                    <div class="col-2 text-center align-self-center">
+                        <a href="" class="btn btn-outline-success btn-lg">
+                            <i class="fa-solid fa-info"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endif
+        @endforeach
+
+        @foreach ($newCourses as $new)
+        @if (count($new->topics) >= 3)
         <div class="card  my-1" style="height: 120px">
             <div class="row bg-info-subtle text-emphasis-info g-0">
                 <div class="col-3">
@@ -101,7 +141,6 @@
                     @else
                     <img src="{{asset('storage/course/'.$new->course_image)}}" class="img-fluid" style="width: 170px; height: 120px" alt="">
                     @endif
-
                 </div>
                 <div class="col-7 p-2">
                     <div class="row">
@@ -125,17 +164,18 @@
                     <a href="" class="btn btn-outline-success btn-lg">
                         <i class="fa-solid fa-info"></i>
                     </a>
-                    <a href="" class="btn btn-outline-info btn-lg">
+                    <a href="{{route('admin.course.public', $new->id)}}" class="btn btn-outline-info btn-lg">
                         <i class="fa-solid fa-check"></i>
                     </a>
                 </div>
             </div>
         </div>
-        @endforeach
+        @endif
+    @endforeach
     </div>
     @endif
 
-
+    @if (count($courses)>0)
     <div id="avaliableCources" class="m-2" style="overflow-x: auto;">
         <table class="table table-success table-striped">
             <thead>
@@ -143,32 +183,33 @@
                     <th></th>
                     <th>Name</th>
                     <th>Category</th>
+                    <th>Program</th>
                     <th>By Teacher</th>
                     <th>Date</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach ($courses as $course)
                 <tr>
                     <td>
-                        <img src="{{asset('img/default.png')}}" style="height: 80px; width: 100px;" alt="">
+                        @if ($course->course_image == null)
+                            <img src="{{asset('img/default.png')}}" class="img-fluid" style="width: 170px; height: 120px" alt="">
+                        @else
+                            <img src="{{asset('storage/course/'.$course->course_image)}}" class="img-fluid" style="width: 170px; height: 120px" alt="">
+                        @endif
                     </td>
-                    <td>N1</td>
-                    <td>Japanese</td>
-                    <td>Oishimaru</td>
-                    <td>3/8/2023</td>
+                    <td>{{$course->course_name}}</td>
+                    <td>{{$course->category->category_name}}</td>
+                    <td>{{$course->category->program->name}}</td>
+                    <td>{{$course->teacher->name}}</td>
+                    <td>{{$course->created_at->format('d/m/y')}}</td>
                 </tr>
-                <tr>
-                    <td>
-                        <img src="{{asset('img/default.png')}}" style="height: 80px; width: 100px;" alt="">
-                    </td>
-                    <td>N2</td>
-                    <td>Japanese</td>
-                    <td>Oishimaru</td>
-                    <td>3/8/2023</td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
+    @endif
+
 @endsection
 
 @section('J_Script')
