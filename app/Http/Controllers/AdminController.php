@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Topic;
 use App\Models\Course;
+use App\Models\Content;
 use App\Models\Library;
 use App\Models\Program;
 use App\Models\Category;
@@ -242,5 +244,44 @@ class AdminController extends Controller
     {
         $course = Course::where('id', $courseId)->first();
         return view('admin.coursedetail', ['course'=>$course]);
+    }
+
+    public function createTopic(Request $req)
+    {
+       // dd($req->all());
+        $req->validate([
+            'topicName' => 'required',
+            'topicDescription' => 'required',
+            'contentTitle' => 'required',
+            'contentType' => 'required',
+            'contentBody' => 'required'
+        ]);
+
+        $topic = Topic::create([
+            'topic_name' => $req->topicName,
+            'topic_description' => $req->topicDescription,
+            'course_id' => $req->courseId
+        ]);
+
+        if($req->hasFile('contentBody')){
+            $content = $req->file('contentBody');
+            $fileName = time() . '_' . $content->getClientOriginalName();
+            Storage::disk('public')->putFileAs('course/topic/content', $content, $fileName);
+
+            Content::create([
+                'title' => $req->contentTitle,
+                'content_type' => $req->contentType,
+                'content_path' => $fileName,
+                'topic_id' => $topic->id
+            ]);
+        }else{
+            Content::create([
+                'title' => $req->contentTitle,
+                'content_type' => $req->contentType,
+                'content_body' => $req->contentBody,
+                'topic_id' => $topic->id
+            ]);
+        }
+        return back()->with(['status' => 'created new topic successfully']);
     }
 }

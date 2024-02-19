@@ -3,6 +3,23 @@
 @section('content')
     course detail
 
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    @if (session('status'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ session('status') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
     @if ($course->teacher_id == Auth::user()->id)
     <div class="row justify-content-end">
         <div class="col-3 text-center">
@@ -20,16 +37,19 @@
               <h1 class="modal-title fs-5" id="exampleModalLabel">Topic Create</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form enctype="multipart/form-data" action="" method="post">
+            <form enctype="multipart/form-data" action="{{route('admin.topic.create')}}" method="post">
                 @csrf
+                <input type="hidden" name="courseId" value="{{$course->id}}">
                 <div class="modal-body">
-                    <div class="mb-2">
-                        <label for="topicName">Topic Name</label>
-                        <input type="text" name="topicName" id="" class="form-control">
-                    </div>
-                    <div class="mb-2">
-                        <label for="topicDescription">Topic Description</label>
-                        <textarea name="topicDescription" class="form-control" id="" cols="30" rows="5"></textarea>
+                    <div class="row">
+                        <div class="mb-2 col-sm-6">
+                            <label for="topicName">Topic Name</label>
+                            <input type="text" name="topicName" id="" class="form-control">
+                        </div>
+                        <div class="mb-2 col-sm-6">
+                            <label for="topicDescription">Topic Description</label>
+                            <textarea name="topicDescription" class="form-control" id="" cols="30" rows="5"></textarea>
+                        </div>
                     </div>
                     <hr>
 
@@ -57,7 +77,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </form>
           </div>
