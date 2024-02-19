@@ -82,4 +82,5 @@ Route::prefix('admin')->group(function() {
     Route::get('take/categories', [AdminController::class, 'takeCategories']);
     Route::post('create/course', [AdminController::class, 'createCourse'])->name('admin.course.create');
     Route::get('public/course={id}', [AdminController::class, 'publicCourse'])->name('admin.course.public');
+    Route::get('detail/course={id}', [AdminController::class, 'detailCourse'])->name('admin.course.detail');
 });

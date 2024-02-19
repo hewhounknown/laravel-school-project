@@ -237,4 +237,10 @@ class AdminController extends Controller
         Course::where('id', $courseId)->update(['course_status' => true]);
         return back()->with(['status' => 'confirmed course to the public successfully']);
     }
+
+    public function detailCourse($courseId)
+    {
+        $course = Course::where('id', $courseId)->first();
+        return view('admin.coursedetail', ['course'=>$course]);
+    }
 }

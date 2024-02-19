@@ -122,7 +122,7 @@
                         </div>
                     </div>
                     <div class="col-2 text-center align-self-center">
-                        <a href="" class="btn btn-outline-success btn-lg">
+                        <a href="{{route('admin.course.detail', $new->id)}}" class="btn btn-outline-success btn-lg">
                             <i class="fa-solid fa-info"></i>
                         </a>
                     </div>
