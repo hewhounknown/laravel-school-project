@@ -201,6 +201,13 @@ class AdminController extends Controller
         return $cats;
     }
 
+    public function searchCourse(Request $req)
+    {
+        $courses = Course::where('course_name', 'like', '%' . $req->searchData . '%')
+        ->with('category', 'category.program', 'teacher')->get();
+        return $courses;
+    }
+
     public function createCourse(Request $req)
     {
         $req->validate([

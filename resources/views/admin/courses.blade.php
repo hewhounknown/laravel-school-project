@@ -83,12 +83,6 @@
       </div>
     {{-- Courses Create modal end --}}
 
-    <div class="mx-5 my-3 text-center">
-        <form class="input-group">
-            <input id="search" class="form-control w-75" type="text" placeholder="Search">
-            <button type="button" class=" btn btn-secondary input-group-text"> <i class="fa-solid fa-magnifying-glass"></i> </button>
-        </form>
-    </div>
 
     @if (count($newCourses)>0)
     <div id="newCourses" class=" p-3 m-2">
@@ -176,7 +170,15 @@
     @endif
 
     @if (count($courses)>0)
-    <div id="avaliableCources" class="m-2" style="overflow-x: auto;">
+
+    <div class="mx-5 my-3 text-center">
+        <form class="input-group">
+            <input id="searchCourse" class="form-control w-75" type="text" placeholder="Search">
+            <button type="button" class=" btn btn-secondary input-group-text"> <i class="fa-solid fa-magnifying-glass"></i> </button>
+        </form>
+    </div>
+
+    <div id="avaliableCourses" class="m-2" style="overflow-x: auto;">
         <table class="table table-success table-striped">
             <thead>
                 <tr>
@@ -239,6 +241,59 @@
                     }
                 })
             });
+
+            $('#searchCourse').on('keyup', function(){
+                let searchItem = $(this).val();
+                //console.log(searchItem);
+
+                $.ajax({
+                    url : 'http://localhost:8000/admin/search/course',
+                    type: 'GET',
+                    data: {'searchData' : searchItem},
+                    success: function(courses){
+                        console.log(courses);
+                        $table = '';
+                        if(courses.length > 0){
+                            $table = `<table class="table table-success table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Name</th>
+                                                <th>Category</th>
+                                                <th>Program</th>
+                                                <th>By Teacher</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
+                        courses.forEach(course=> {
+                            if(course.course_status == true){
+                                $table += `<tr>
+                                                <td>`;
+                                                    if(course.course_image == null){
+                                                        $table += `<img src="{{asset('img/default.png')}}" class="img-fluid" style="width: 170px; height: 120px" alt="">`;
+                                                    } else{
+                                                        $table += `<img src="{{asset('storage/course/')}}/${course.course_image}" class="img-fluid" style="width: 170px; height: 120px" alt="">`;
+                                                    }
+                                    $table += `</td>
+                                                <td>${course.course_name}</td>
+                                                <td>${course.category.category_name}</td>
+                                                <td>${course.category.program.name}</td>
+                                                <td>${course.teacher.name}</td>
+                                                <td>${new Date(course.created_at).toLocaleDateString('en-GB')}</td>
+                                            </tr>`;
+                            }
+                        });
+                        $table += `</tbody>
+                            </table>`;
+                        } else{
+                            $table = `<h5 class="text-center text-muted m-3">not found...</h5>`;
+                        }
+                        $('#avaliableCourses').html($table);
+                    }
+                });
+            });
         });
     </script>
 @endsection
+{{--  --}}
