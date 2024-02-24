@@ -203,7 +203,7 @@ class AdminController extends Controller
 
     public function searchCourse(Request $req)
     {
-        $courses = Course::where('course_name', 'like', '%' . $req->searchData . '%')
+        $courses = Course::where('course_name', 'like', '%' . $req->searchData . '%')->where('course_status', true)
         ->with('category', 'category.program', 'teacher')->get();
         return $courses;
     }

@@ -280,29 +280,39 @@
                                                 <th>Program</th>
                                                 <th>By Teacher</th>
                                                 <th>Date</th>
+                                                <th>Control</th>
                                             </tr>
                                         </thead>
                                         <tbody>`;
-                        courses.forEach(course=> {
-                            if(course.course_status == true){
-                                $table += `<tr>
-                                                <td>`;
-                                                    if(course.course_image == null){
-                                                        $table += `<img src="{{asset('img/default.png')}}" class="img-fluid" style="width: 170px; height: 120px" alt="">`;
-                                                    } else{
-                                                        $table += `<img src="{{asset('storage/course/')}}/${course.course_image}" class="img-fluid" style="width: 170px; height: 120px" alt="">`;
-                                                    }
-                                    $table += `</td>
-                                                <td>${course.course_name}</td>
-                                                <td>${course.category.category_name}</td>
-                                                <td>${course.category.program.name}</td>
-                                                <td>${course.teacher.name}</td>
-                                                <td>${new Date(course.created_at).toLocaleDateString('en-GB')}</td>
-                                            </tr>`;
-                            }
-                        });
-                        $table += `</tbody>
-                            </table>`;
+                            courses.forEach(course=> {
+                                if(course.course_status == true){
+                                    $table += `<tr>
+                                                    <td>`;
+                                                        if(course.course_image == null){
+                                                            $table += `<img src="{{asset('img/default.png')}}" class="img-fluid" style="width: 170px; height: 120px" alt="">`;
+                                                        } else{
+                                                            $table += `<img src="{{asset('storage/course/')}}/${course.course_image}" class="img-fluid" style="width: 170px; height: 120px" alt="">`;
+                                                        }
+                                        $table += `</td>
+                                                    <td>${course.course_name}</td>
+                                                    <td>${course.category.category_name}</td>
+                                                    <td>${course.category.program.name}</td>
+                                                    <td>${course.teacher.name}</td>
+                                                    <td>${new Date(course.created_at).toLocaleDateString('en-GB')}</td>
+                                                    <td>
+                                                        <a href="{{route('admin.course.unpublic',$course->id)}}" type="button" class="btn btn-outline-warning" onclick="return confirm('Are you sure, block this course?')">
+                                                            <i class="fa-solid fa-shield-halved"></i>
+                                                        </a>
+
+                                                        <a href="{{route('admin.course.detail',$course->id)}}" type="button" class="btn btn-outline-info">
+                                                            <i class="fa-solid fa-info"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>`;
+                                }
+                            });
+                            $table += `</tbody>
+                                </table>`;
                         } else{
                             $table = `<h5 class="text-center text-muted m-3">not found...</h5>`;
                         }
