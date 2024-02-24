@@ -85,11 +85,12 @@
 
 
     @if (count($newCourses)>0)
-    <div id="newCourses" class=" p-3 m-2">
+    <div id="newCourses" class="m-2">
+        <h4 class="border-bottom border-warning">Disqualify Courses</h4>
         @foreach ($newCourses as $new)
             @if (count($new->topics) < 3)
             <div class="card  my-1" style="height: 120px">
-                <div class="row bg-success-subtle text-emphasis-success g-0">
+                <div class="row bg-warning-subtle text-emphasis-warning g-0">
                     <div class="col-3">
                         @if ($new->course_image == null)
                         <img src="{{asset('img/default.png')}}" class="img-fluid" style="width: 170px; height: 120px" alt="">
@@ -116,15 +117,18 @@
                         </div>
                     </div>
                     <div class="col-2 text-center align-self-center">
-                        <a href="{{route('admin.course.detail', $new->id)}}" class="btn btn-outline-success btn-lg">
+                        <a href="{{route('admin.course.detail', $new->id)}}" class="btn btn-outline-warning btn-lg">
                             <i class="fa-solid fa-info"></i>
                         </a>
                     </div>
                 </div>
             </div>
+            @else
+            <span class="placeholder col-12 bg-warning"></span>
             @endif
         @endforeach
 
+        <h4 class="border-bottom border-info">New Courses</h4>
         @foreach ($newCourses as $new)
         @if (count($new->topics) >= 3)
         <div class="card  my-1" style="height: 120px">
@@ -164,12 +168,15 @@
                 </div>
             </div>
         </div>
+        @else
+        <span class="placeholder col-12 bg-info"></span>
         @endif
     @endforeach
     </div>
     @endif
 
     @if (count($courses)>0)
+    <h4 class="border-bottom border-success">Avaliable Courses Table</h4>
 
     <div class="mx-5 my-3 text-center">
         <form class="input-group">
@@ -188,6 +195,7 @@
                     <th>Program</th>
                     <th>By Teacher</th>
                     <th>Date</th>
+                    <th>Control</th>
                 </tr>
             </thead>
             <tbody>
@@ -205,6 +213,15 @@
                     <td>{{$course->category->program->name}}</td>
                     <td>{{$course->teacher->name}}</td>
                     <td>{{$course->created_at->format('d/m/y')}}</td>
+                    <td>
+                        <a href="{{route('admin.course.unpublic',$course->id)}}" type="button" class="btn btn-outline-warning" onclick="return confirm('Are you sure, block this course?')">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </a>
+
+                        <a href="{{route('admin.course.detail',$course->id)}}" type="button" class="btn btn-outline-info">
+                            <i class="fa-solid fa-info"></i>
+                        </a>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

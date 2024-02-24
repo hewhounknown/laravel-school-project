@@ -83,6 +83,7 @@ Route::prefix('admin')->group(function() {
     Route::get('search/course', [AdminController::class, 'searchCourse']);
     Route::post('create/course', [AdminController::class, 'createCourse'])->name('admin.course.create');
     Route::get('public/course={id}', [AdminController::class, 'publicCourse'])->name('admin.course.public');
+    Route::get('unpublic/course={id}', [AdminController::class, 'unpublicCourse'])->name('admin.course.unpublic');
     Route::get('detail/course={id}', [AdminController::class, 'detailCourse'])->name('admin.course.detail');
 
     Route::post('create/topic/', [AdminController::class, 'createTopic'])->name('admin.topic.create');

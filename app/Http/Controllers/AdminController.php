@@ -247,6 +247,12 @@ class AdminController extends Controller
         return back()->with(['status' => 'confirmed course to the public successfully']);
     }
 
+    public function unpublicCourse($courseId)
+    {
+        Course::where('id', $courseId)->update(['course_status' => false]);
+        return back()->with(['status' => 'blocked course successfully']);
+    }
+
     public function detailCourse($courseId)
     {
         $course = Course::where('id', $courseId)->first();
