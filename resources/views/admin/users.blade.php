@@ -38,7 +38,9 @@
                 <tbody>
                     @foreach ($users as $user)
                         <tr>
-                            <td>{{$user->name}}</td>
+                            <td>
+                                <a href="{{route('admin.user.detail', $user->id)}}">{{$user->name}}</a>
+                            </td>
                             <td>{{$user->email}}</td>
                             <td>
                                 @if ($user->role == 'student')

@@ -56,6 +56,12 @@ class AdminController extends Controller
         return $users;
     }
 
+    public function detailUser($userId)
+    {
+        $user = User::where('id', $userId)->first();
+        return view('admin.userdetail', ['user'=> $user]);
+    }
+
     public function manageLibrary()
     {
         $newbooks = Library::where('public_status', false)->get();

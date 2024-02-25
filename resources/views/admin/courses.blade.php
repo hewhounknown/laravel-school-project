@@ -85,8 +85,8 @@
 
 
     @if (count($newCourses)>0)
-    <div id="newCourses" class="m-2">
-        <h4 class="border-bottom border-warning">Disqualify Courses</h4>
+    <div id="newCourses" class="mx-2 my-4">
+        <h5 class="border-bottom border-info">New Courses</h5>
         @foreach ($newCourses as $new)
             @if (count($new->topics) < 3)
             <div class="card  my-1" style="height: 120px">
@@ -123,12 +123,9 @@
                     </div>
                 </div>
             </div>
-            @else
-            <span class="placeholder col-12 bg-warning"></span>
             @endif
         @endforeach
 
-        <h4 class="border-bottom border-info">New Courses</h4>
         @foreach ($newCourses as $new)
         @if (count($new->topics) >= 3)
         <div class="card  my-1" style="height: 120px">
@@ -168,15 +165,13 @@
                 </div>
             </div>
         </div>
-        @else
-        <span class="placeholder col-12 bg-info"></span>
         @endif
     @endforeach
     </div>
     @endif
 
     @if (count($courses)>0)
-    <h4 class="border-bottom border-success">Avaliable Courses Table</h4>
+    <h5 class="border-bottom border-success">Avaliable Courses</h5>
 
     <div class="mx-5 my-3 text-center">
         <form class="input-group">
