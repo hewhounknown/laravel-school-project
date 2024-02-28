@@ -15,7 +15,7 @@ class Course extends Model
         'course_image',
         'enroll_count',
         'category_id',
-        'teacher_id',
+        'user_id',
         'course_status'
     ];
 
@@ -24,7 +24,7 @@ class Course extends Model
     }
 
     public function teacher(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function topics(){

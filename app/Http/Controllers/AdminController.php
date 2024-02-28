@@ -59,6 +59,7 @@ class AdminController extends Controller
     public function detailUser($userId)
     {
         $user = User::where('id', $userId)->first();
+        //dd($user->courses);
         return view('admin.userdetail', ['user'=> $user]);
     }
 
@@ -223,7 +224,7 @@ class AdminController extends Controller
             'description' => 'required'
         ]);
 
-        if (Course::where(['course_name' => $req->courseName, 'teacher_id' => Auth::user()->id])->exists()) {
+        if (Course::where(['course_name' => $req->courseName, 'user_id' => Auth::user()->id])->exists()) {
             return back()->with(['status' => 'this course is already existed!']);
         } else{
 
@@ -239,7 +240,7 @@ class AdminController extends Controller
                 'course_name' => $req->courseName,
                 'course_description' => $req->description,
                 'category_id' => $req->catId,
-                'teacher_id' => Auth::user()->id
+                'user_id' => Auth::user()->id
             ]);
 
             return back()->with(['status' => 'created course successfully!']);

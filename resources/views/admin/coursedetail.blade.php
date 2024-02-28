@@ -20,7 +20,7 @@
     </div>
     @endif
 
-    @if ($course->teacher_id == Auth::user()->id)
+    @if ($course->user_id == Auth::user()->id)
     <div class="row justify-content-end">
         <div class="col-3 text-center">
             <div class="btn btn-outline-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#topicModal">

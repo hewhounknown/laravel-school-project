@@ -295,11 +295,11 @@
                                                     <td>${course.teacher.name}</td>
                                                     <td>${new Date(course.created_at).toLocaleDateString('en-GB')}</td>
                                                     <td>
-                                                        <a href="{{route('admin.course.unpublic',$course->id)}}" type="button" class="btn btn-outline-warning" onclick="return confirm('Are you sure, block this course?')">
+                                                        <a href="admin/unpublic/course=${course.id}" type="button" class="btn btn-outline-warning" onclick="return confirm('Are you sure, block this course?')">
                                                             <i class="fa-solid fa-shield-halved"></i>
                                                         </a>
 
-                                                        <a href="{{route('admin.course.detail',$course->id)}}" type="button" class="btn btn-outline-info">
+                                                        <a href="admin/detail/course=${course.id}" type="button" class="btn btn-outline-info">
                                                             <i class="fa-solid fa-info"></i>
                                                         </a>
                                                     </td>
