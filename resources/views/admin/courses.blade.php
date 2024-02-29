@@ -184,7 +184,7 @@
         <table class="table table-success table-striped">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>    </th>
                     <th>Name</th>
                     <th>Category</th>
                     <th>Program</th>
