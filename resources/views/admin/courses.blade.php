@@ -258,6 +258,8 @@
                 let searchItem = $(this).val();
                 //console.log(searchItem);
 
+                let courseUnpublicRoute = "{{ Route('admin.course.unpublic', ['id' => ':id']) }}";
+                let courseDetailRoute = "{{ Route('admin.course.detail', ['id' => ':id']) }}"
                 $.ajax({
                     url : 'http://localhost:8000/admin/search/course',
                     type: 'GET',
@@ -295,11 +297,11 @@
                                                     <td>${course.teacher.name}</td>
                                                     <td>${new Date(course.created_at).toLocaleDateString('en-GB')}</td>
                                                     <td>
-                                                        <a href="admin/unpublic/course=${course.id}" type="button" class="btn btn-outline-warning" onclick="return confirm('Are you sure, block this course?')">
+                                                        <a href="${courseUnpublicRoute.replace(':id', course.id)}" type="button" class="btn btn-outline-warning" onclick="return confirm('Are you sure, block this course?')">
                                                             <i class="fa-solid fa-shield-halved"></i>
                                                         </a>
 
-                                                        <a href="admin/detail/course=${course.id}" type="button" class="btn btn-outline-info">
+                                                        <a href="${courseDetailRoute.replace(':id', course.id)}" type="button" class="btn btn-outline-info">
                                                             <i class="fa-solid fa-info"></i>
                                                         </a>
                                                     </td>

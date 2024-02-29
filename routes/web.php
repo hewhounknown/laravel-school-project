@@ -63,9 +63,9 @@ Route::prefix('admin')->group(function() {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::get('manage/users', [AdminController::class, 'manageUsers'])->name('users.manage');
-    Route::get('delete/user={id}', [AdminController::class, 'deleteUser'])->name('user.delete');
-    Route::get('change/user={id}/to/role={role}', [AdminController::class, 'changeRole'])->name('user.role');
-    Route::get('change/user={id}/to/status={status}', [AdminController::class, 'changeStatus'])->name('user.status');
+    Route::get('delete/user={id}', [AdminController::class, 'deleteUser'])->name('admin.user.delete');
+    Route::get('change/user={id}/to/role={role}', [AdminController::class, 'changeRole'])->name('admin.user.role');
+    Route::get('change/user={id}/to/status={status}', [AdminController::class, 'changeStatus'])->name('admin.user.status');
     Route::get('search/user', [AdminController::class, 'searchUsers']);
     Route::get('detail/user={id}', [AdminController::class, 'detailUser'])->name('admin.user.detail');
 

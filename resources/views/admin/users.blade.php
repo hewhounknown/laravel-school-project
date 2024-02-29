@@ -39,7 +39,9 @@
                     @foreach ($users as $user)
                         <tr>
                             <td>
-                                <a href="{{route('admin.user.detail', $user->id)}}">{{$user->name}}</a>
+                                <a href="{{route('admin.user.detail', $user->id)}}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                    {{$user->name}}
+                                </a>
                             </td>
                             <td>{{$user->email}}</td>
                             <td>
@@ -58,8 +60,8 @@
                                             <i class="fa-solid fa-user"></i>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{{route('user.role',['id'=>$user->id, 'role'=>'teacher'])}}">Teacher</a></li>
-                                            <li><a class="dropdown-item" href="{{route('user.role',['id'=>$user->id, 'role'=>'admin'])}}">Admin</a></li>
+                                            <li><a class="dropdown-item" href="{{route('admin.user.role',['id'=>$user->id, 'role'=>'teacher'])}}">Teacher</a></li>
+                                            <li><a class="dropdown-item" href="{{route('admin.user.role',['id'=>$user->id, 'role'=>'admin'])}}">Admin</a></li>
                                         </ul>
                                     </div>
                                 @elseif ($user->role == 'teacher')
@@ -68,8 +70,8 @@
                                             <i class="fa-solid fa-chalkboard-user"></i>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{{route('user.role',['id'=>$user->id, 'role'=>'student'])}}">Student</a></li>
-                                            <li><a class="dropdown-item" href="{{route('user.role',['id'=>$user->id, 'role'=>'admin'])}}">Admin</a></li>
+                                            <li><a class="dropdown-item" href="{{route('admin.user.role',['id'=>$user->id, 'role'=>'student'])}}">Student</a></li>
+                                            <li><a class="dropdown-item" href="{{route('admin.user.role',['id'=>$user->id, 'role'=>'admin'])}}">Admin</a></li>
                                         </ul>
                                     </div>
                                 @else
@@ -79,17 +81,17 @@
                                 @endif
 
                                 @if ($user->account_status == 'active')
-                                    <a href="{{route('user.status',['id'=>$user->id, 'status'=>'suspend'])}}" type="button" class="btn btn-outline-info" onclick="return confirm('Are you sure, ban this account?')">
+                                    <a href="{{route('admin.user.status',['id'=>$user->id, 'status'=>'suspend'])}}" type="button" class="btn btn-outline-info" onclick="return confirm('Are you sure, ban this account?')">
                                         <i class="fa-solid fa-lightbulb"></i>
                                     </a>
                                 @else
-                                    <a href="{{route('user.status',['id'=>$user->id, 'status'=>'active'])}}" type="button" class="btn btn-outline-warning">
+                                    <a href="{{route('admin.user.status',['id'=>$user->id, 'status'=>'active'])}}" type="button" class="btn btn-outline-warning">
                                         <i class="fa-solid fa-ban"></i>
                                     </a>
                                 @endif
 
                                 @if ($user->id !== Auth::user()->id)
-                                    <a href="{{route('user.delete',$user->id)}}" type="button" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">
+                                    <a href="{{route('admin.user.delete',$user->id)}}" type="button" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </a>
                                 @endif
@@ -111,12 +113,17 @@
                 let query = $(this).val();
                 //console.log(query);
 
+                let userRoleRoute = "{{ route('admin.user.role', ['id' => ':id', 'role' => ':role']) }}";
+                let userDetailRoute = "{{ route('admin.user.detail', ['id' => ':id']) }}";
+                let userStatusRoute = "{{ route('admin.user.status', ['id' => ':id', 'status' => ':status']) }}";
+                let userDeleteRoute = "{{route('admin.user.delete', ['id' => ':id']) }}";
+
                 $.ajax({
                     url: 'http://localhost:8000/admin/search/user',
                     type: 'GET',
                     data: {'search': query},
                     success: function(response){
-                        //console.log(response);
+                        // console.log(response);
                         $table = '';
                         if (response.length > 0) {
                             $table = `
@@ -133,7 +140,11 @@
                                         <tbody>`;
                             response.forEach(user => {
                                 $table += `<tr>
-                                            <td>${user.name}</td>
+                                            <td>
+                                                <a href="${userDetailRoute.replace(':id', user.id)}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                                    ${user.name}
+                                                </a>
+                                            </td>
                                             <td>${user.email}</td>
                                             <td>`;
                                             if (user.role == 'student') {
@@ -151,8 +162,8 @@
                                                                             <i class="fa-solid fa-user"></i>
                                                                         </button>
                                                                         <ul class="dropdown-menu">
-                                                                            <li><a class="dropdown-item" href="admin/change/user=${user.id}/to/role=teacher">Teacher</a></li>
-                                                                            <li><a class="dropdown-item" href="admin/change/user=${user.id}/to/role=admin">Admin</a></li>
+                                                                            <li><a class="dropdown-item" href="${userRoleRoute.replace(':id', user.id).replace(':role', 'teacher')}">Teacher</a></li>
+                                                                            <li><a class="dropdown-item" href="${userRoleRoute.replace(':id', user.id).replace(':role', 'admin')}">Admin</a></li>
                                                                         </ul>
                                                                     </div>`;
                                                     }else if(user.role == 'teacher'){
@@ -161,8 +172,8 @@
                                                                             <i class="fa-solid fa-chalkboard-user"></i>
                                                                         </button>
                                                                         <ul class="dropdown-menu">
-                                                                            <li><a class="dropdown-item" href="admin/change/user=${user.id}/to/role=student">Student</a></li>
-                                                                            <li><a class="dropdown-item" href="admin/change/user=${user.id}/to/role=admin">Admin</a></li>
+                                                                            <li><a class="dropdown-item" href="${userRoleRoute.replace(':id', user.id).replace(':role', 'student')}">Student</a></li>
+                                                                            <li><a class="dropdown-item" href="${userRoleRoute.replace(':id', user.id).replace(':role', 'admin')}">Admin</a></li>
                                                                         </ul>
                                                                     </div>`;
                                                     }else{
@@ -172,17 +183,17 @@
                                                     };
 
                                                     if (user.account_status == 'active') {
-                                                            $table += `<a href="admin/change/user=${user.id}/to/status=suspend" type="button" class="btn btn-outline-info" onclick="return confirm('Are you sure, ban this account?')">
+                                                            $table += `<a href="${userStatusRoute.replace(':id', user.id).replace(':status', 'suspend')}" type="button" class="btn btn-outline-info" onclick="return confirm('Are you sure, ban this account?')">
                                                                             <i class="fa-solid fa-lightbulb"></i>
                                                                         </a>`;
                                                     } else{
-                                                            $table += `<a href="admin/change/user=${user.id}/to/status=active" type="button" class="btn btn-outline-warning">
+                                                            $table += `<a href="${userStatusRoute.replace(':id', user.id).replace(':status', 'suspend')}" type="button" class="btn btn-outline-warning">
                                                                             <i class="fa-solid fa-ban"></i>
                                                                         </a>`;
                                                     }
 
                                                     if(user.id != {{ Auth::id() }} ){
-                                                        $table += `<a href="admin/delete/user=${user.id}" type="button" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">
+                                                        $table += `<a href="${userDeleteRoute.replace(':id', user.id)}" type="button" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">
                                                                             <i class="fa-solid fa-trash-can"></i>
                                                                         </a>`;
                                                     }

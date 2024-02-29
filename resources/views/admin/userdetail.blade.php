@@ -41,9 +41,9 @@
 
     @if ($user->courses != null)
         @foreach ($user->courses as $course)
-        <div class="card m-2">
+        <a href="//" class="card m-2">
             <h3>{{$course->course_name}}</h3>
-        </div>
+        </a>
         @endforeach
     @endif
 @endsection
