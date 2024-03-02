@@ -23,20 +23,18 @@ class SchoolController extends Controller
         return view('index');
     }
 
-    public function courseList($programName)
+    public function courseList($programId)
     {
-        //dd($programName);
-        $program = Program::where('name', $programName)->first();
-        //dd($program->id);
-        $category = Category::where('program_id', $program->id)->get();
-        //dd($category);
-        foreach($category as $cat){
-           // dd($cat->id);
-            $courses = Course::where('category_id', $cat->id)->get();
-            // dd($courses->enrolls);
-        }
+        $program = Program::where('id', $programId)->first();
+        $categories = Category::where('program_id', $program->id)->get();
+        return view('programmes.courses',['program'=>$program, 'categories'=>$categories]);
+    }
 
-        return view('programmes.courses',['category'=>$category, 'courses'=>$courses]);
+    public function filterCourses(Request $req)
+    {
+        $courses = Course::where('category_id', $req->categoryId)
+                    ->with('enrolls')->get();
+        return $courses;
     }
 
     public function courseForm($id)

@@ -165,7 +165,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 @foreach ($programs as $program)
-                                    <li><a class="dropdown-item" href="//">{{$program->name}}</a></li>
+                                    <li><a class="dropdown-item" href="{{route('course.list',$program->id)}}">{{$program->name}}</a></li>
                                 @endforeach
                                 {{-- <li><a class="dropdown-item" href="{{route('course.list', 'language')}}">Languages</a></li> --}}
                             </ul>
@@ -244,5 +244,6 @@
     {{-- JQuery link --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    @yield('J_Script')
 </body>
 </html>

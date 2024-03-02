@@ -1,6 +1,8 @@
-@extends('programmes.categories')
+@extends('layout.app')
 
-@section('courses')
+@section('title', $program->name)
+
+@section('content')
 
     @if (session('status'))
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -10,92 +12,111 @@
     @endif
     <div class="row my-5 fs-4">
         <div class="col">
-            @foreach ($category as $cat)
-                <a data-value="{{$cat->category_name}}" onclick="getValue(this)" class="badge text-black-50 border btn inline languages">{{$cat->category_name}}</a>
+            @foreach ($categories as $cat)
+                <a id="{{$cat->id}}" class="category badge text-black-50 border btn inline">{{$cat->category_name}}</a>
             @endforeach
         </div>
     </div>
 
-    <div class="container mb-5">
-        <div id="listOfCourses" class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
-            @foreach ($courses as $c)
-            {{-- {{$c->enrolls}} --}}
-            <div class="col-md-3 mx-5 my-3">
-                <div class="card " style="width: 20rem;">
-                    @if ($c->course_image == null)
-                        <img src="{{asset('img/default.png')}}" class="card-img-top"  style="height: 10rem"  alt="...">
-                    @else
-                        <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
-                    @endif
-                    <div class="card-body" style="height: 9rem">
-                        <h5 class="card-title">{{$c->course_name}}</h5>
-                        <p class="card-text">{{$c->course_description}}</p>
-                    </div>
-                    <div class="card-footer">
-                        @if ($c->enrolls->isEmpty())
-                        <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
-                        @else
-                            @foreach ($c->enrolls as $e)
-                                @if ($e->status == false)
-                                <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
+    @foreach ($categories as $cat)
+        <div id="listOfCourses">
+            @if ($cat->courses->isNotEmpty())
+                <div class="container mb-5">
+                    <div id="avaliableCourses" class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
+                        @foreach ($cat->courses as $c)
+                        <div class="col-md-3 mx-5 my-3">
+                            <div class="card " style="width: 20rem;">
+                                @if ($c->course_image == null)
+                                    <img src="{{asset('img/default.png')}}" class="card-img-top"  style="height: 10rem"  alt="...">
                                 @else
-                                <a href="{{route('courseDetail', $c->id)}}" class="btn btn-primary">View</a>
+                                    <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
                                 @endif
-                            @endforeach
-                        @endif
-
+                                <div class="card-body" style="height: 9rem">
+                                    <h5 class="card-title">{{$c->course_name}}</h5>
+                                    <p class="card-text">{{$c->course_description}}</p>
+                                </div>
+                                <div class="card-footer">
+                                    @if ($c->enrolls->isEmpty())
+                                    <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
+                                    @else
+                                        @foreach ($c->enrolls as $e)
+                                            @if ($e->status == false)
+                                            <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
+                                            @else
+                                            <a href="{{route('course.detail', $c->id)}}" class="btn btn-primary">View</a>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
-            </div>
-            @endforeach
+            @endif
         </div>
-    </div>
+    @endforeach
 
+@endsection
 
+@section('J_Script')
     <script>
-        getValue = (category) => {
-            const Choice = category.innerText;
-            const coursesList = document.getElementById('listOfCourses');
+        $(document).ready(function(){
+            $('.category').on('click', function(){
+                let catId = $(this).attr('id');
+                console.log(catId);
 
-           const courses = @json($courses);
-            let avaliableCourses = courses.filter(c => c.category_name === Choice);
-            //console.log(avaliableCourses);
-
-            let coursesToShow = "";
-            let image = "";
-            if(avaliableCourses.length > 0) {
-                //console.log(avaliableCourses);
-                for (let i = 0; i < avaliableCourses.length; i++) {
-                    //console.log(avaliableCourses[i].course_image);
-
-                    if(avaliableCourses[i].course_image == null){
-                        console.log('lee pl');
-                        image = `<img src="{{asset('img/default.png')}}" class="card-img-top" style="height: 10rem" alt="...">`;
-                    } else{
-                        image = `<img src="{{asset('storage/course/${avaliableCourses[i].course_image}')}}" class="card-img-top" style="height: 10rem" alt="...">`
+                let courseEnrollRoute = "{{ route('course.enroll', ['id'=>':id']) }}";
+                let courseDetailRoute = "{{ route('course.detail', ['id'=>':id']) }}"
+                $.ajax({
+                    url : 'http://localhost:8000/programmes/courses/filter',
+                    type : 'GET',
+                    data : {'categoryId' : catId},
+                    success: function(response){
+                        //console.log(response);
+                        $list = '';
+                        if (response && response.length > 0) {
+                            console.log(response);
+                            $list = `<div class="container mb-5">
+                                        <div id="avaliableCourses" class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">`;
+                            response.forEach(course => {
+                                $list += `<div class="col-md-3 mx-5 my-3">
+                                            <div class="card " style="width: 20rem;">`;
+                                                if (course.image == null) {
+                                                    $list += `<img src="{{asset('img/default.png')}}" class="card-img-top"  style="height: 10rem"  alt="...">`;
+                                                } else{
+                                                    $list += `<img src="{{asset('storage/course/')}}./${course.course.image}" class="card-img-top" style="height: 10rem" alt="..." >`;
+                                                }
+                                                $list += `<div class="card-body" style="height: 9rem">
+                                                            <h5 class="card-title">{{$c->course_name}}</h5>
+                                                            <p class="card-text">{{$c->course_description}}</p>
+                                                        </div>
+                                                        <div class="card-footer">`;
+                                                            if (course.enrolls.length === 0) {
+                                                                $list += `<a href="${courseEnrollRoute.replace(':id',course.id)}" class="btn btn-primary">Enroll</a>`;
+                                                            } else {
+                                                                course.enrolls.forEach(enroll => {
+                                                                    if (enroll.status == false) {
+                                                                        $list += `<a href="${courseEnrollRoute.replace(':id', course.id)}" class="btn btn-primary">Enroll</a>`;
+                                                                    } else {
+                                                                       $list += `<a href="${courseDetailRoute.replace(':id', course.id)}" class="btn btn-primary">View</a>`;
+                                                                    }
+                                                                });
+                                                            }
+                                        $list += `</div>
+                                                </div>
+                                            </div>`;
+                            });
+                            $list += `</div>
+                                </div>`;
+                        } else {
+                            $list = 'There are no avaliable courses';
+                        }
+                        $('#listOfCourses').html($list);
                     }
-                    //console.log(image);
-                    coursesToShow += `<div class="col-3 mb-3">
-                                        <div class="card courses" style="width: 18rem;">
-                                            ${image}
-                                            <div class="card-body" style="height: 9rem">
-                                                <h5 class="card-title">${avaliableCourses[i].course_name}</h5>
-                                                <p class="card-text">${avaliableCourses[i].course_description}</p>
-                                            </div>
-                                            <div class="card-footer">
-                                                <a href="course/detail/name=${avaliableCourses[i].id}" class="btn btn-primary">View</a>
-                                            </div>
-                                        </div>
-                                      </div>`;
-                }
-            }
-            else {
-                coursesToShow = `<h1 class="text-black-50"> There is no avaliable courses... </h1>`;
-            }
-            coursesList.innerHTML = coursesToShow;
-        }
-        </script>
-
-    {{-- <script src="{{asset('school/js/courses.js')}}"></script> --}}
+                });
+            });
+        });
+    </script>
 @endsection
 

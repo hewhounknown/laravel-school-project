@@ -33,7 +33,7 @@ Route::post('profile', [AuthController::class, 'editProfile']);
 
 Route::get('course/create/{id}', [SchoolController::class, 'courseForm'])->name('courseForm');
 Route::post('course/create', [SchoolController::class, 'createCourse'])->name('courseCreate');
-Route::get('course/detail/{id}', [SchoolController::class, 'detailCourse'])->name('courseDetail');
+Route::get('course/detail/{id}', [SchoolController::class, 'detailCourse'])->name('course.detail');
 Route::post('course/name={name}/add/topic', [SchoolController::class, 'addTopic'])->name('topicAdd');
 Route::post('course/topic={name}/add/content', [SchoolController::class, 'addContent'])->name('contentAdd');
 Route::get('course/topic={topicId}/view/content={contentId}', [SchoolController::class, 'content'])->name('contentView');
@@ -50,7 +50,7 @@ Route::get('kick/student={studentId}/from/course={courseId}', [SchoolController:
 
 Route::prefix('programmes')->group(function () {
     Route::get('{program}', [SchoolController::class, 'courseList'])->name('course.list');
-    Route::get('languages/class={title}', [SchoolController::class, 'coursesDetail'])->name('coursesDetail');
+    Route::get('courses/filter', [SchoolController::class, 'filterCourses']);
 });
 
 Route::prefix('library')->group(function() {
