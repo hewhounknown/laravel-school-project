@@ -100,7 +100,7 @@ class AuthController extends Controller
       }
       elseif (Auth::user()->role == 'teacher' || Auth::user()->role == 'admin') {
         # code...
-        $courses = Course::where('teacher_id', Auth::user()->id)->get();
+        $courses = Course::where('user_id', Auth::user()->id)->get();
 
         $program = Program::get(); // for course create
 

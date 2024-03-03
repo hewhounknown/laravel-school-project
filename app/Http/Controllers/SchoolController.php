@@ -54,7 +54,7 @@ class SchoolController extends Controller
         ]);
         //dd($req->teacher);
          if (Course::where(['course_name' => $req->title, 'teacher_id' => Auth::user()->id])->exists()) {
-            return redirect()->back()->with(['fails' => 'this course is already existed!']);
+            return redirect()->back()->with(['status' => 'this course is already existed!']);
         } else{
         //dd($req->category);
             $categoryId = Category::where('category_name', $req->category)->first();
@@ -69,21 +69,25 @@ class SchoolController extends Controller
                 'course_description' => $req->description,
                 'course_image' => $imageName,
                 'category_id' => $categoryId,
-                'teacher_id' => Auth::user()->id
+                'user_id' => Auth::user()->id
             ]);
 
-            return redirect()->route('profile')->with(['success' => 'you created new course']);
+            return redirect()->route('profile')->with(['status' => 'you created new course']);
         }
     }
 
     public function detailCourse($id)
     {
         $course = Course::where('id', $id)->first();
-        $topic = Topic::where('course_id', $course->id)->get();
-        //print_r($topic);
-        // $breadcrumbs = Breadcrumbs::generate(); // for using breadcrumbs
-        //dd($course->topics);
-        return view('programmes.coursedetail', ['course' => $course, 'topic' => $topic]);
+
+        $enrollStatus = false;
+        if(Enrollment::where(['user_id' => Auth::user()->id, 'course_id' => $id ])->exists()){
+            $enroll = Enrollment::where(['user_id' => Auth::user()->id, 'course_id' => $id ])->first();
+            //dd($enroll->status);
+            $enrollStatus = $enroll->status;
+        }
+        //dd($enrollStatus);
+        return view('programmes.coursedetail', ['course' => $course, 'enrollStatus' => $enrollStatus]);
     }
 
     public function addTopic($courseName, Request $req)
@@ -96,7 +100,7 @@ class SchoolController extends Controller
             'course_id' => $req->courseId,
         ]);
 
-        return redirect()->back()->with(['success' => 'you created ' . $req->topicTitle . ' successfully.']);
+        return redirect()->back()->with(['status' => 'you created ' . $req->topicTitle . ' successfully.']);
     }
 
     public function addContent($topicName, Request $req)

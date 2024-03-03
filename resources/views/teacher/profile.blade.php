@@ -209,7 +209,7 @@
                         <p class="card-text">{{$c->course_description}}</p>
                     </div>
                     <div class="card-footer">
-                        <a href="{{route('courseDetail', $c->course_name)}}" class="btn btn-primary">View</a>
+                        <a href="{{route('course.detail', $c->id)}}" class="btn btn-primary">View</a>
                     </div>
                 </div>
             </div>

@@ -4,22 +4,6 @@
 
 @section('content')
 
-    {{-- <nav style="--bs-breadcrumb-divider: '>';" class="fs-3"  aria-label="breadcrumb">
-        <ol class="breadcrumb bg-white">
-            <!-- Loop through each breadcrumb item -->
-            @foreach ($breadcrumbs as $breadcrumb)
-                <!-- Check if it's the last item in the breadcrumbs array -->
-                @if ($loop->last)
-                    <li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb->title }}</li>
-                @else
-                    <!-- Output the breadcrumb link -->
-                    <li class="breadcrumb-item"><a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a></li>
-                @endif
-            @endforeach
-        </ol>
-    </nav> --}}
-    {{-- {{$course->topics}} --}}
-
     @if ($errors->any())
             @foreach ($errors->all() as $error)
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -29,7 +13,7 @@
             @endforeach
     @endif
 
-    @if (session('success'))
+    @if (session('status'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -39,20 +23,50 @@
 
     <div class="container mt-5 ">
         <div class="row align-items-center justify-content-center shadow-lg p-3 rounded position-relative ">
-            <div class="col-md-7 mb-2">
-                <h4>{{__($course->course_description)}}</h4> <hr> <br>
-                <h2 class="fs-1 text-dark">{{__($course->course_name)}}</h2>
+            <div class="col-5">
+                @if ($course->course_image == null)
+                <img src="{{asset('img/default.png')}}" class="img-fluid" style="width: 230px; height: 170px" alt="">
+                @else
+                <img src="{{asset('storage/course/'.$course->course_image)}}" class="img-fluid" style="width: 230px; height: 170px" alt="">
+                @endif
             </div>
-            <div class="col-md-5">
-                <div class="text-center">
-                    <img src="{{asset('storage/course/'.$course->course_image)}}"  alt="course image" style="width: 23rem; hieght: 15rem;">
+            <div class="col-7">
+                <div class="row">
+                    <div class="col-sm-3"><strong>Name</strong></div>
+                    <div class="col-sm-9">{{_($course->course_name)}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3"><strong>Category</strong></div>
+                    <div class="col-sm-9">{{_($course->category->category_name)}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3"><strong>By</strong></div>
+                    <div class="col-sm-9">{{_($course->teacher->name)}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3"><strong>Date</strong></div>
+                    <div class="col-sm-9">{{_($course->created_at->format('d/m/y'))}}</div>
                 </div>
             </div>
+            <div class="row my-2">
+                <div class="col-sm-3"><strong>Description</strong></div>
+                <div class="col-sm-9">{{_($course->course_description)}}</div>
+            </div>
+
+            @if ($course->enrolls->isEmpty())
+            <div class="">
+                <a href="{{route('course.enroll', $course->id)}}" class="btn btn-outline-primary float-end">Enroll Now</a>
+            </div>
+            @else
+            <div>
+                <a href="{{route('course.unenroll', $course->id)}}" class="btn btn-outline-danger float-end">Unenroll</a>
+            </div>
+            @endif
         </div>
     </div>
 
 
-    @if (Auth::user()->role == 'teacher')
+    @if (Auth::user()->id == $course->user_id)
         <div class="container mt-5">
             <div class="row">
                 <div class="col">
@@ -98,14 +112,15 @@
     @endif
 
 
+    @if (Auth::user()->id == $course->user_id && $enrollStatus == true)
     {{-- Topic session start --}}
     <div class="container mt-5">
         <div class="row shadow-lg p-3 rounded">
             <div class="accordion accordion-flush" id="accordionFlushExample">
-                @if ($topic == null)
+                @if ($course->topics->isEmpty())
                     <h2 class="default">There are no topic to learn</h2>
                 @else
-                @foreach($topic as $t)
+                @foreach($course->topics as $t)
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="heading{{ $t->id }}">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $t->id }}" aria-expanded="true" aria-controls="collapse{{ $t->id }}">
@@ -129,7 +144,7 @@
                                 </table>
                             </div>
 
-                            @if (Auth::user()->role == 'teacher')
+                            @if (Auth::user()->id == $t->course->user_id)
                                 <div class="my-2" style="height: 3rem">
                                     <button class="btn btn-outline-dark float-end mb-2" data-bs-toggle="modal" data-bs-target="#addContentModal{{$t->id}}">+ content {{$t->id}}</button>
                                 </div>
@@ -201,8 +216,15 @@
         </div>
     </div>
     {{-- topic session end --}}
+    @else
+        <h5 class="text-center text-muted bg-white shadow-sm p-3">
+            Wait a while for you're accepted by the teacher!
+        </h5>
+    @endif
 
+@endsection
 
+@section('J_Script')
     <script>
         // add ckeditor to each content textarea
         document.querySelectorAll('.contentBody').forEach(element => {
@@ -216,50 +238,39 @@
                 });
         });
 
-        // when user select text or file input
-        const textBox = Array.from(document.getElementsByClassName('textBox'));
-        textBox.forEach(t => t.style.display = 'none');
+        $(document).ready(function(){
 
-        const inputFile = Array.from(document.getElementsByClassName('inputFile'));
-        inputFile.forEach(i => i.style.display = 'none');
+            //when user select text or file input
+            $('.textBox').hide();
+            $('.inputFile').hide();
+            $('.choiceContentType').on('click', function(){
+                let val = $(this).val();
 
-        const contentChoice = Array.from(document.getElementsByClassName('choiceContentType'));
-        contentChoice.forEach(choice => {
-
-            choice.addEventListener('click', e => {
-               let  val = e.target.value;
-               console.log(val);
-
-                if (val == 'text') {
-                    inputFile.forEach(i => i.style.display = 'none');
-                    textBox.forEach(t => t.style.display = 'block');
-                }else if (val == 'image' || val == 'video' || val == 'file'){
-                    textBox.forEach(t => t.style.display = 'none');
-                    inputFile.forEach(i => i.style.display = 'block');
-                } else{
-                    textBox.forEach(t => t.style.display = 'none');
-                    inputFile.forEach(i => i.style.display = 'none');
+                if (val === 'text') {
+                    $('.inputFile').hide();
+                    $('.textBox').show();
+                } else if (val === 'image' || val === 'video' || val === 'file') {
+                    $('.textBox').hide();
+                    $('.inputFile').show();
+                } else {
+                    $('.textBox').hide();
+                    $('.inputFile').hide();
                 }
             });
-        })
 
-        // when input data is too long, show spinner to wait
-        const spinner = Array.from(document.getElementsByClassName('spin'));
-        spinner.forEach(s => s.style.display = 'none');
-
-        const contentForm = Array.from(document.getElementsByClassName('contentInput'));
-        contentForm.forEach(form => {
-            //console.log(form);
-            form.addEventListener('submit', e=>{
+            //when input data is too long, show spinner to wait
+            $('.spin').hide();
+            $('.contentInput').on('submit', function(e) {
                 e.preventDefault();
 
-                form.style.display = 'none';
-                spinner.forEach(s => s.style.display = 'block');
+                $(this).hide();
+                $('.spin').show();
 
-                setTimeout(() => {
-                    form.submit();
+                var form = this; // Save reference to the form
+                setTimeout(function() {
+                    form.submit(); // Submit the form after 1000 milliseconds
                 }, 1000);
-            })
-        })
+            });
+        });
     </script>
 @endsection
