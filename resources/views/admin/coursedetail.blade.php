@@ -37,7 +37,7 @@
               <h1 class="modal-title fs-5" id="exampleModalLabel">Topic Create</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form enctype="multipart/form-data" action="{{route('admin.topic.create')}}" method="post">
+            <form enctype="multipart/form-data" action="{{route('admin.topic.create')}}" method="post" class="Input">
                 @csrf
                 <input type="hidden" name="courseId" value="{{$course->id}}">
                 <div class="modal-body">
@@ -68,18 +68,25 @@
                     </div>
                     <div class="mb-2" id="textArea">
                         <label for="contentBody">Content</label>
-                        <textarea name="contentBody" class="form-control" id="textContent" cols="30" rows="5"></textarea>
+                        <textarea name="contentBody" class="form-control textContent" id="textContent" cols="30" rows="5"></textarea>
                     </div>
                     <div class="mb-2" id="fileArea">
                         <label for="contentBody">Content</label>
                         <input type="file" name="contentBody" id="" class="form-control">
                     </div>
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary Input">Create</button>
                 </div>
             </form>
+            <div id="spinner" class="text-center m-5 spin">
+                <div class="spinner-border text-info" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
           </div>
         </div>
     </div>
@@ -130,9 +137,77 @@
             <div id="flush-collapse{{$topic->id}}" class="accordion-collapse collapse"  style="width: auto" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 {{__($topic->topic_description)}}
-                    <a href="" class="d-block mb-2 float-end">
-                        >>
-                    </a>
+
+                {{--content list start--}}
+                <div>
+                    <table class="table table-hover">
+                        <tbody>
+                            @foreach ($topic->contents as $content)
+                                <hr> <a href="//" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                    <tr>{{$content->title}}</tr>
+                                </a>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                @if ($course->user_id == Auth::user()->id)
+                <div class="my-2 " style="height: 40px;">
+                    <button class="btn btn-outline-dark float-end mb-2" data-bs-toggle="modal" data-bs-target="#addContentModal{{$topic->id}}">+ content</button>
+                </div>
+
+                <div class="modal fade" id="addContentModal{{$topic->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form enctype="multipart/form-data" action="{{route('admin.content.add')}}" method="post" class="Input">
+                            @csrf
+                            <input type="hidden" name="topicId" value="{{$topic->id}}">
+                        <div class="modal-body">
+                            <div class="mb-2">
+                                <label for="contentTitle">Content Title</label>
+                                <input type="text" name="contentTitle" id="" class="form-control">
+                            </div>
+                            <div class="mb-2">
+                                <label for="contentType">Content Type</label>
+                                <select id="" name="contentType" class="form-select selectContentType2">
+                                    <option value="text">Text</option>
+                                    <option value="file">File</option>
+                                    <option value="image">Image</option>
+                                    <option value="video">Video</option>
+                                </select>
+                            </div>
+                            <div class="mb-2 textArea2" id="">
+                                <label for="contentBody">Content</label>
+                                <textarea name="contentBody" class="form-control textContent" id="textContent" cols="30" rows="5"></textarea>
+                            </div>
+                            <div class="mb-2 fileArea2" id="">
+                                <label for="contentBody">Content</label>
+                                <input type="file" name="contentBody" id="" class="form-control">
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                        </form>
+
+                        <div id="spinner" class="text-center m-5 spin">
+                            <div class="spinner-border text-info" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                @endif
+                {{--content list end--}}
               </div>
             </div>
         </div>
@@ -147,15 +222,18 @@
 
 @section('J_Script')
     <script>
-        ClassicEditor
-            .create(document.querySelector('#textContent'))
-            .then(editor => {
-            console.log('Editor initialized:', editor);
-            // You can use the 'editor' instance for further operations
-            })
-            .catch(error => {
-            console.error('Error initializing the editor:', error);
-            });
+        document.querySelectorAll('.textContent').forEach(element => {
+            ClassicEditor
+                .create(element)
+                .then(editor => {
+                    console.log('Editor initialized:', editor);
+                    // You can use the 'editor' instance for further operations
+                })
+                .catch(error => {
+                    console.error('Error initializing the editor:', error);
+                });
+        });
+
 
         $(document).ready(function(){
             $('#fileArea').hide();
@@ -169,6 +247,34 @@
                     $('#fileArea').show();
                     $('#textArea').hide();
                 }
+            });
+
+            //for only content add
+            $('.fileArea2').hide();
+            $('.selectContentType2').on('change', function(){
+                let typeSelected2 = $(this).val();
+                console.log(typeSelected2);
+                if (typeSelected2 == 'text') {
+                    $('.textArea2').show();
+                    $('.fileArea2').hide();
+                } else {
+                    $('.fileArea2').show();
+                    $('.textArea2').hide();
+                }
+            });
+
+            //when input data is too long, show spinner to wait
+            $('.spin').hide();
+            $('.Input').on('submit', function(e) {
+                e.preventDefault();
+
+                $(this).hide();
+                $('.spin').show();
+
+                var form = this; // Save reference to the form
+                setTimeout(function() {
+                    form.submit(); // Submit the form after 1000 milliseconds
+                }, 1000);
             });
         });
     </script>

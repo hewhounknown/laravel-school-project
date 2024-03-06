@@ -88,4 +88,5 @@ Route::prefix('admin')->group(function() {
     Route::get('detail/course={id}', [AdminController::class, 'detailCourse'])->name('admin.course.detail');
 
     Route::post('create/topic/', [AdminController::class, 'createTopic'])->name('admin.topic.create');
+    Route::post('add/content/topic', [AdminController::class, 'addContent'])->name('admin.content.add');
 });

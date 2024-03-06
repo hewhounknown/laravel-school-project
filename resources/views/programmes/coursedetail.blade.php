@@ -53,15 +53,18 @@
                 <div class="col-sm-9">{{_($course->course_description)}}</div>
             </div>
 
-            @if ($course->enrolls->isEmpty())
-            <div class="">
-                <a href="{{route('course.enroll', $course->id)}}" class="btn btn-outline-primary float-end">Enroll Now</a>
-            </div>
-            @else
-            <div>
-                <a href="{{route('course.unenroll', $course->id)}}" class="btn btn-outline-danger float-end">Unenroll</a>
-            </div>
+            @if (Auth::user()->id != $course->user_id)
+                @if ($course->enrolls->isEmpty())
+                    <div class="">
+                        <a href="{{route('course.enroll', $course->id)}}" class="btn btn-outline-primary float-end">Enroll Now</a>
+                    </div>
+                @else
+                    <div>
+                        <a href="{{route('course.unenroll', $course->id)}}" class="btn btn-outline-danger float-end">Unenroll</a>
+                    </div>
+                @endif
             @endif
+
         </div>
     </div>
 
@@ -112,7 +115,7 @@
     @endif
 
 
-    @if (Auth::user()->id == $course->user_id && $enrollStatus == true)
+    @if (Auth::user()->id == $course->user_id || $enrollStatus == true)
     {{-- Topic session start --}}
     <div class="container mt-5">
         <div class="row shadow-lg p-3 rounded">

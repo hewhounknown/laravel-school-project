@@ -236,7 +236,7 @@ class SchoolController extends Controller
 
         Course::where('id', $courseId)->increment('enroll_count');
 
-        return redirect()->route('profile')->with(['success' => 'you enrolled successfully!']);
+        return redirect()->route('profile')->with(['status' => 'you enrolled successfully!']);
     }
 
     public function unenrollCourse($courseId)
@@ -245,7 +245,7 @@ class SchoolController extends Controller
 
         Course::where('id', $courseId)->decrement('enroll_count');
 
-        return back()->with(['status' => 'you kicked student successfully!']);
+        return back()->with(['status' => 'you unenroll this course successfully!']);
     }
 
     public function studentTable()

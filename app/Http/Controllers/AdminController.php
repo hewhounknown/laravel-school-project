@@ -304,4 +304,34 @@ class AdminController extends Controller
         }
         return back()->with(['status' => 'created new topic successfully']);
     }
+
+    public function addContent(Request $req)
+    {
+        $req->validate([
+            'contentTitle' => 'required',
+            'contentType' => 'required',
+            'contentBody' => 'required'
+        ]);
+
+        if($req->hasFile('contentBody')){
+            $content = $req->file('contentBody');
+            $fileName = time() . '_' . $content->getClientOriginalName();
+            Storage::disk('public')->putFileAs('course/topic/content', $content, $fileName);
+
+            Content::create([
+                'title' => $req->contentTitle,
+                'content_type' => $req->contentType,
+                'content_path' => $fileName,
+                'topic_id' => $req->topicId
+            ]);
+        }else{
+            Content::create([
+                'title' => $req->contentTitle,
+                'content_type' => $req->contentType,
+                'content_body' => $req->contentBody,
+                'topic_id' => $req->topicId
+            ]);
+        }
+        return back()->with(['status' => 'added new content successfully']);
+    }
 }
