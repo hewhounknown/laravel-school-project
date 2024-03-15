@@ -334,4 +334,60 @@ class AdminController extends Controller
         }
         return back()->with(['status' => 'added new content successfully']);
     }
+
+    public function viewContent($contentId)
+    {
+        $content = Content::where('id', $contentId)->first();
+        return view('admin.content', ['content'=>$content]);
+    }
+
+    public function editContent($contentId, Request $req)
+    {
+        //dd($req->all());
+        $text = null;
+        $fileName = null;
+        if($req->fileContent == null){
+            $req->validate([
+                'contentTitle' => 'required',
+                'textContent' => 'required',
+            ]);
+
+            $text = $req->textContent;
+        } else{
+            $req->validate([
+                'contentTitle' => 'required',
+                'fileContent' => 'required'
+            ]);
+
+            $file = $req->file('fileContent');
+
+            $fileInDB = Content::where('id',$contentId)->first();
+            $fileInDB = $fileInDB->content_path;
+
+            if($fileInDB != null){
+                Storage::disk('public')->delete('course/topic/content'. $fileInDB);  // Storage == storage/app
+            }
+
+            $fileName = time() . '_' . $file->getClientOriginalName();  // give a name combination with time
+
+            Storage::disk('public')->putFileAs('course/topic/content', $file, $fileName); // store in storage / app / public / course/topic/content
+        }
+        //dd($text);
+        Content::where('id', $contentId)->update([
+            'title' => $req->contentTitle,
+                'content_type' => $req->contentType,
+                'content_body' => $text,
+                'content_path' => $fileName,
+                'topic_id' => $req->topicId
+        ]);
+
+        return back()->with(['status' => 'you updated '. $req->contentTitle . ' successfully.']);
+    }
+
+    public function deleteContent($contentId, $topicId)
+    {
+        Content::where('id', $contentId)->delete();
+        $topic = Topic::where('id', $topicId)->first();
+        return redirect()->route('admin.course.detail', $topic->course->id)->with(['status' => 'you delete content successfully!']);
+    }
 }

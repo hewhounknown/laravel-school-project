@@ -89,6 +89,9 @@ Route::prefix('admin')->group(function() {
 
     Route::post('create/topic/', [AdminController::class, 'createTopic'])->name('admin.topic.create');
     Route::post('add/content/topic', [AdminController::class, 'addContent'])->name('admin.content.add');
+    Route::get('view/content={id}', [AdminController::class, 'viewContent'])->name('admin.content.view');
+    Route::post('edit/content={id}', [AdminController::class, 'editContent'])->name('admin.content.edit');
+    Route::get('delete/content={id}/in/{topicId}', [AdminController::class, 'deleteContent'])->name('admin.content.delete');
 
     Route::get('view/profile', [AuthController::class, 'profileForm'])->name('admin.profile.view');
 });

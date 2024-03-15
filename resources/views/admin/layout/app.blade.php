@@ -44,7 +44,7 @@
         {{-- </div> --}}
 
         <div class="row">
-            <nav class="col-3 pe-2 bg-light-subtle">
+            <nav class="col-3 pe-2 bg-light-subtle sticky">
                 <ul class="list-group">
                     <a href="{{route('admin.dashboard')}}" class="list-group-item">
                         <i class="fa-solid fa-house-flag"></i>

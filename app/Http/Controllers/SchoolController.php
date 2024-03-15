@@ -182,7 +182,7 @@ class SchoolController extends Controller
                 'title' => $req->contentTitle,
                 'content_type' => $req->contentType,
                 'content_body' => $req->textContent,
-                'topic_id' => $contentId
+                'topic_id' => $topicId
             ]);
         } else {
             //dd($req->all());
@@ -212,7 +212,7 @@ class SchoolController extends Controller
             ]);
         }
 
-        return back()->with(['success' => 'you updated '. $req->contentTitle . ' successfully.']);
+        return back()->with(['status' => 'you updated '. $req->contentTitle . ' successfully.']);
     }
 
     public function deleteContent($topicId, $contentId)

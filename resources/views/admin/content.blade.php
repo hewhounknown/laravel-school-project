@@ -1,43 +1,30 @@
-@extends('layout.app')
-
-@section('title', 'content')
+@extends('admin.layout.app')
 
 @section('content')
-
-    {{-- {{Breadcrumbs::render('contentView', $topic, $content)}} --}}
-    {{-- <nav style="--bs-breadcrumb-divider: '>';" class="fs-3 bg-white"  aria-label="breadcrumb">
-        <ol class="breadcrumb bg-white">
-            <!-- Loop through each breadcrumb item -->
-            {!! Breadcrumbs::render('contentView', $topic, $content) !!}
-        </ol>
-    </nav> --}}
-
-        {{-- {{$topic->course->teacher}} --}}
-
     @if ($errors->any())
-        @foreach ($errors->all() as $error)
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ $error }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-        @endforeach
+    @foreach ($errors->all() as $error)
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ $error }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+    @endforeach
     @endif
 
     @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
 
 
     <div class="border-info border-start border-5 m-3 text-muted p-2 ">
-      <h3>{{__($content->title)}}</h3>
+        <h3>{{__($content->title)}}</h3>
     </div>
 
-    <div class="container bg-body-tertiary p-2 position-relative">
+    <div class="shadow-lg p-2 position-relative m-3">
 
-        @if (Auth::user()->role == 'teacher')
+        @if (Auth::user()->role == 'admin')
         <span class="position-absolute top-0 start-100 translate-middle p-2 border border-light rounded-circle" style="width: auto;">
             <button type="button" class="btn" data-bs-toggle="dropdown">
                 <i class="fa-solid fa-bars fa-xl"></i>
@@ -47,7 +34,7 @@
                 <li>
                     <a class="dropdown-item" href="http://" data-bs-toggle="modal" data-bs-target="#editForm">Edit</a>
                 </li>
-                <li><a class="dropdown-item" href="http://" data-bs-toggle="modal" data-bs-target="#deleteForm">Delete</a></li>
+                <li><a class="dropdown-item" href="{{route('admin.content.delete', ['id'=>$content->id, 'topicId'=>$content->topic_id])}}"  onclick="return confirm('Are you sure, delete this content?')">Delete</a></li>
             </ul>
         </span>
 
@@ -59,7 +46,7 @@
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form enctype="multipart/form-data" action="{{route('contentEdit',['topicId'=>$content->topic->id, 'contentId'=>$content->id])}}" method="post">
+                    <form enctype="multipart/form-data" action="{{route('admin.content.edit',$content->id)}}" method="post">
 
                     @csrf
                         <div class="modal-body">
@@ -102,85 +89,68 @@
             </div>
         </div>
         {{-- edit modal end --}}
-
-        {{-- delete modal start --}}
-        <div class="modal" id="deleteForm"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Modal title</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <h5><b>{{__("Are u sure, you wanna delete ". $content->title)}}</b></h5>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <a href="{{route('content.delete', ['topicId'=> $content->topic->id, 'contentId' => $content->id])}}"><button type="button" class="btn btn-primary">Confirm</button></a>
-                </div>
-              </div>
-            </div>
-        </div>
-        {{-- delete modal end --}}
         @endif
 
         <div class="row m-auto">
             @if ($content->content_type == 'text')
-            <div>
+            <div class="col">
                 {!! $content->content_body !!}
             </div>
             @elseif ($content->content_type == 'video')
-            <div class="text-center">
-                <video width="800" height="420" controls src="{{asset('storage/course/topic/content/'.$content->content_path)}}" type="video/mp4"></video>
+            <div class="col text-center">
+                <video class="img-fluid" controls style="max-width: 100%;">
+                    <source src="{{asset('storage/course/topic/content/'.$content->content_path)}}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
             </div>
             @elseif ($content->content_type == 'image')
-            <div>
-            <div class="text-center">
-                <img src="{{asset('storage/course/topic/content/'.$content->content_path)}}" alt="" style="height: 420px; width: 640px;">
-            </div>
+            <div class="col text-center">
+                <img src="{{asset('storage/course/topic/content/'.$content->content_path)}}" alt="" class="img-fluid" style="max-height: 420px; max-width: 100%;">
             </div>
             @else
-            <div class="text-center">
+            <div class="col text-center">
                 <a href="{{route('file.download',$content->content_path)}}"><h3>{{__('download file here!')}}</h3></a>
             </div>
             @endif
         </div>
+
     </div>
 
+@endsection
 
+@section('J_Script')
+<script>
+    ClassicEditor
+        .create(document.querySelector('#contentBody'))
+        .then(editor => {
+        console.log('Editor initialized:', editor);
+        // You can use the 'editor' instance for further operations
+        })
+        .catch(error => {
+        console.error('Error initializing the editor:', error);
+        });
 
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#contentBody'))
-            .then(editor => {
-            console.log('Editor initialized:', editor);
-            // You can use the 'editor' instance for further operations
-            })
-            .catch(error => {
-            console.error('Error initializing the editor:', error);
-            });
+    const select = document.getElementById('selectBox');
+    const text = document.getElementById('textBox');
+    const file = document.getElementById('inputFile');
+    //const currentType = document.getElementById('currentType').value;
+    // console.log(select);
+    if (select.value == 'text') {
+        file.style.display = 'none';
+    } else {
+        text.style.display = 'none';
+    }
 
-        const select = document.getElementById('selectBox');
-        const text = document.getElementById('textBox');
-        const file = document.getElementById('inputFile');
-        //const currentType = document.getElementById('currentType').value;
-        // console.log(select);
-        if (select.value == 'text') {
+    select.addEventListener('change', e => {
+        let val = e.target.value;
+        if (val == 'text') {
             file.style.display = 'none';
+            text.style.display = 'block';
         } else {
             text.style.display = 'none';
+            file.style.display = 'block';
+            text.innerHTML = '';    // clear info in textarea for $req
         }
-
-        select.addEventListener('change', e => {
-            let val = e.target.value;
-            if (val == 'text') {
-                file.style.display = 'none';
-                text.style.display = 'block';
-            } else {
-                text.style.display = 'none';
-                file.style.display = 'block';
-                text.innerHTML = '';    // clear info in textarea for $req
-            }
-        })
-    </script>
+    })
+</script>
 @endsection

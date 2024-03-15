@@ -143,7 +143,7 @@
                     <table class="table table-hover">
                         <tbody>
                             @foreach ($topic->contents as $content)
-                                <hr> <a href="//" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                <hr> <a href="{{route('admin.content.view',$content->id)}}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
                                     <tr>{{$content->title}}</tr>
                                 </a>
                             @endforeach
