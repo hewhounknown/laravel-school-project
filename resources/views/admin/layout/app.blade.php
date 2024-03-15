@@ -21,6 +21,25 @@
                         <h3>Admin</h3>
                     </a>
                 </div>
+
+                <div class="navbar nav">
+                    <li class="nav-item dropdown">
+                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa-solid fa-circle-user"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{route('admin.profile.view')}}" class="dropdown-item">User Profile</a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"><i class="fas fa-cog"></i></a>
+                    </li>
+                </div>
             </nav>
         {{-- </div> --}}
 
@@ -51,6 +70,8 @@
             </nav>
 
             <main class="col-9 bg-body-tertiary rounded shadow">
+
+
                 @yield('content')
             </main>
         </div>

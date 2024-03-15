@@ -98,13 +98,16 @@ class AuthController extends Controller
         }
         return view('student.profile', ['list' => null]);
       }
-      elseif (Auth::user()->role == 'teacher' || Auth::user()->role == 'admin') {
+      elseif (Auth::user()->role == 'teacher') {
         # code...
         $courses = Course::where('user_id', Auth::user()->id)->get();
 
         $program = Program::get(); // for course create
 
         return view('teacher.profile', ['courses' => $courses, 'program' => $program]);
+      }
+      elseif(Auth::user()->role == 'admin'){
+        return view('admin.acc.profile');
       }
       //
     }
@@ -138,6 +141,6 @@ class AuthController extends Controller
 
        User::where('id', $userInfo['id'])->update($userInfo);
 
-       return redirect('')->route('profile')->with('success', 'your profile is updated.');
+       return back()->with('status', 'your profile is updated.');
     }
 }

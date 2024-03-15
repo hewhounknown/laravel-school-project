@@ -89,4 +89,6 @@ Route::prefix('admin')->group(function() {
 
     Route::post('create/topic/', [AdminController::class, 'createTopic'])->name('admin.topic.create');
     Route::post('add/content/topic', [AdminController::class, 'addContent'])->name('admin.content.add');
+
+    Route::get('view/profile', [AuthController::class, 'profileForm'])->name('admin.profile.view');
 });

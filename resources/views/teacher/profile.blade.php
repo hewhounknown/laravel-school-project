@@ -96,7 +96,7 @@
                                 @endif
                                 <div>
                                     {{-- <input type="file" name="image" id="" class="form-control"> --}}
-                                    <input type="file" name="image" id="" class="form-control" onchange="readURL(this )">
+                                    <input type="file" name="image" id="" class="form-control" onchange="readURL(this)">
                                 </div>
                                 <div class="mt-3">
                                     <input type="submit" value="Update" class="btn btn-outline-dark form-control">
@@ -172,9 +172,9 @@
 
     <div class="row">
         <div class="col-3 offset-7">
-            @if (session('success'))
+            @if (session('status'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
+                {{ session('status') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             @endif
