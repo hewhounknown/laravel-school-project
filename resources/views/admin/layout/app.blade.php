@@ -32,7 +32,15 @@
                                 <a href="{{route('admin.profile.view')}}" class="dropdown-item">User Profile</a>
                             </li>
                             <li>
-                                <a href="#" class="dropdown-item">Logout</a>
+                                <div class="">
+                                    <a href="" class="dropdown-item" onclick="event.preventDefault();
+                                                                document.getElementById('logout-form').submit();">
+                                        {{__('Logout')}}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
                             </li>
                         </ul>
                     </li>

@@ -66,13 +66,14 @@ class AuthController extends Controller
 
     public function logout(Request $req)
     {
+        //dd($req->all());
         Auth::logout();
 
         $req->session()->invalidate();
 
         $req->session()->regenerateToken(); //Regenerates the CSRF token
 
-        return redirect('/')->with('success', 'Logged out successfully.');
+        return redirect()->route('home')->with('success', 'Logged out successfully.');
     }
 
     public function profileForm()

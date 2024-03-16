@@ -24,7 +24,7 @@ class AdminController extends Controller
     public function manageUsers()
     {
         $users = User::all();
-        return view('admin.users', ['users' => $users]);
+        return view('admin.user.index', ['users' => $users]);
     }
 
     public function deleteUser($id)
@@ -60,7 +60,7 @@ class AdminController extends Controller
     {
         $user = User::where('id', $userId)->first();
         //dd($user->courses);
-        return view('admin.userdetail', ['user'=> $user]);
+        return view('admin.user.userdetail', ['user'=> $user]);
     }
 
     public function manageLibrary()
@@ -68,7 +68,7 @@ class AdminController extends Controller
         $newbooks = Library::where('public_status', false)->get();
         $books = Library::where('public_status', true)
             ->inRandomOrder()->take(8)->get();
-        return view('admin.library', ['newbooks' => $newbooks, 'books' => $books]);
+        return view('admin.library.index', ['newbooks' => $newbooks, 'books' => $books]);
     }
 
     public function addBook(Request $req)
@@ -113,7 +113,7 @@ class AdminController extends Controller
     public function booksList()
     {
         $books = Library::where('public_status', true)->get();
-        return view('admin.bookslist', ['books'=>$books]);
+        return view('admin.library.bookslist', ['books'=>$books]);
     }
 
     // ajax search bar for booklist
@@ -127,7 +127,7 @@ class AdminController extends Controller
 
     public function managePrograms()
     {
-        return view('admin.program');
+        return view('admin.program.index');
     }
 
     public function createProgram(Request $req)
@@ -199,7 +199,7 @@ class AdminController extends Controller
     {
         $newCourses = Course::where('course_status', false)->get();
         $courses = Course::where('course_status', true)->get();
-        return view('admin.courses', ['newCourses' => $newCourses,'courses' => $courses]);
+        return view('admin.program.courses', ['newCourses' => $newCourses,'courses' => $courses]);
     }
 
     public function takeCategories(Request $req)
@@ -263,7 +263,7 @@ class AdminController extends Controller
     public function detailCourse($courseId)
     {
         $course = Course::where('id', $courseId)->first();
-        return view('admin.coursedetail', ['course'=>$course]);
+        return view('admin.program.coursedetail', ['course'=>$course]);
     }
 
     public function createTopic(Request $req)
@@ -338,7 +338,7 @@ class AdminController extends Controller
     public function viewContent($contentId)
     {
         $content = Content::where('id', $contentId)->first();
-        return view('admin.content', ['content'=>$content]);
+        return view('admin.program.content', ['content'=>$content]);
     }
 
     public function editContent($contentId, Request $req)
