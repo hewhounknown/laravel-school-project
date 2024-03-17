@@ -144,4 +144,9 @@ class AuthController extends Controller
 
        return back()->with('status', 'your profile is updated.');
     }
+
+    public function changePassword(Request $req)
+    {
+        //
+    }
 }

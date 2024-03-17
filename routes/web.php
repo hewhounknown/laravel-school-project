@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,16 +21,30 @@ use App\Http\Controllers\LibraryController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
+
+require __DIR__.'/auth.php';
+
 Route::get('/', [SchoolController::class, 'home']);
 Route::get('home', [SchoolController::class, 'home'])->name('home');
-Route::get('register', [AuthController::class, 'registerForm'])->name('register');
-Route::post('register', [AuthController::class, 'register']);
-Route::get('login', [AuthController::class, 'loginForm'])->name('login');
-Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+// Route::get('register', [AuthController::class, 'registerForm'])->name('register');
+// Route::post('register', [AuthController::class, 'register']);
+// Route::get('login', [AuthController::class, 'loginForm'])->name('login');
+// Route::post('login', [AuthController::class, 'login']);
+// Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('profile', [AuthController::class, 'profileForm'])->name('profile');
 Route::post('profile', [AuthController::class, 'editProfile']);
+Route::post('change/password', [AuthController::class, 'changePassword'])->name('password.change');
 
 Route::get('course/create/{id}', [SchoolController::class, 'courseForm'])->name('courseForm');
 Route::post('course/create', [SchoolController::class, 'createCourse'])->name('courseCreate');

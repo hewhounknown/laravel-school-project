@@ -69,16 +69,41 @@
                 </div>
             </div>
             <span class="position-absolute top-0 end-0" style="width: auto;">
-                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editModal">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#formModal">
                     <i class="fa-solid fa-pen-fancy fa-xl"></i>
                 </button>
             </span>
+
+            <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Form</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row text-center justify-content-evently">
+                        <div class="col">
+                            <button class="btn  btn-outline-dark w-100" data-bs-toggle="modal" data-bs-target="#editModal">
+                                <i class="fa-regular fa-address-card"></i>
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-outline-dark w-100" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                <i class="fa-solid fa-key"></i>
+                            </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
 
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" style="max-width: 730px;">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Edit form</h1>
+                      <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa-regular fa-address-card"></i></h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form enctype="multipart/form-data" action="{{route('profile')}}" method="post">
@@ -135,6 +160,62 @@
                   </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa-solid fa-key"></i></h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row mb-2">
+                        <div class="col-sm-4">
+                            Current Password
+                        </div>
+                        <div class="col-sm-8">
+                             <input type="password" name="currentPassword" id="" class="form-control">
+                        </div>
+                        @error('currentPassword')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                      </div>
+                      <div class="row mb-2">
+                        <div class="col-sm-4">
+                            New Password
+                        </div>
+                        <div class="col-sm-8">
+                             <input type="password" name="newPassword" id="" class="form-control">
+                        </div>
+                        @error('newPassword')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                      </div>
+                      <div class="row mb-2">
+                        <div class="col-sm-4">
+                            Confirm Password
+                        </div>
+                        <div class="col-sm-8">
+                             <input type="password" name="confirmPassword" id="" class="form-control">
+                        </div>
+                        @error('confirmPassword')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                      </div>
+                      <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-warning w-50">save change</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
         </div>
 
         <div class="container mb-5">

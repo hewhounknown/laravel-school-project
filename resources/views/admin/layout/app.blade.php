@@ -23,6 +23,9 @@
                 </div>
 
                 <div class="navbar nav">
+                    <li class="nav-item">
+                        <a href="{{route('home')}}" class="nav-link"><i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+                    </li>
                     <li class="nav-item dropdown">
                          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa-solid fa-circle-user"></i>
@@ -43,9 +46,6 @@
                                 </div>
                             </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link"><i class="fas fa-cog"></i></a>
                     </li>
                 </div>
             </nav>
