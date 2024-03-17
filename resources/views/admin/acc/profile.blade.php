@@ -168,50 +168,53 @@
                       <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa-solid fa-key"></i></h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                      <div class="row mb-2">
-                        <div class="col-sm-4">
-                            Current Password
+                    <form action="{{route('password.change')}}" method="post">
+                      @csrf
+                      <div class="modal-body">
+                        <div class="row mb-2">
+                          <div class="col-sm-4">
+                              Current Password
+                          </div>
+                          <div class="col-sm-8">
+                               <input type="password" name="currentPassword" id="" class="form-control">
+                          </div>
+                          @error('currentPassword')
+                              <span class="invalid-feedback" role="alert">
+                                  <strong>{{ $message }}</strong>
+                              </span>
+                          @enderror
                         </div>
-                        <div class="col-sm-8">
-                             <input type="password" name="currentPassword" id="" class="form-control">
+                        <div class="row mb-2">
+                          <div class="col-sm-4">
+                              New Password
+                          </div>
+                          <div class="col-sm-8">
+                               <input type="password" name="newPassword" id="" class="form-control">
+                          </div>
+                          @error('newPassword')
+                              <span class="invalid-feedback" role="alert">
+                                  <strong>{{ $message }}</strong>
+                              </span>
+                          @enderror
                         </div>
-                        @error('currentPassword')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                        <div class="row mb-2">
+                          <div class="col-sm-4">
+                              Confirm Password
+                          </div>
+                          <div class="col-sm-8">
+                               <input type="password" name="confirmPassword" id="" class="form-control">
+                          </div>
+                          @error('confirmPassword')
+                              <span class="invalid-feedback" role="alert">
+                                  <strong>{{ $message }}</strong>
+                              </span>
+                          @enderror
+                        </div>
+                        <div class="row justify-content-center">
+                          <button type="submit" class="btn btn-warning w-50">save change</button>
+                        </div>
                       </div>
-                      <div class="row mb-2">
-                        <div class="col-sm-4">
-                            New Password
-                        </div>
-                        <div class="col-sm-8">
-                             <input type="password" name="newPassword" id="" class="form-control">
-                        </div>
-                        @error('newPassword')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                      </div>
-                      <div class="row mb-2">
-                        <div class="col-sm-4">
-                            Confirm Password
-                        </div>
-                        <div class="col-sm-8">
-                             <input type="password" name="confirmPassword" id="" class="form-control">
-                        </div>
-                        @error('confirmPassword')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                      </div>
-                      <div class="row justify-content-center">
-                        <button type="submit" class="btn btn-warning w-50">save change</button>
-                      </div>
-                    </div>
+                    </form>
                   </div>
                 </div>
             </div>

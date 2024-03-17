@@ -147,6 +147,17 @@ class AuthController extends Controller
 
     public function changePassword(Request $req)
     {
-        //
+        $req->validate([
+            'currentPassword' => 'required|min:6',
+            'newPassword' => 'required|min:6',
+            'confirmPassword' => 'required|min:6|same:newPassword',
+        ]);
+
+        if(Hash::check($req->currentPassword, Auth::user()->password)){
+            User::where('id', Auth::user()->id)->update(['password' => Hash::make($req->newPassword)]);
+            Auth::logout();
+            return redirect()->route('login');
+        }
+        return back()->with(['status' => "The Old Password not Match. Try Again!"]);
     }
 }
