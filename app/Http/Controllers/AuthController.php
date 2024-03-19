@@ -95,9 +95,9 @@ class AuthController extends Controller
             //dd($course);
 
             // dd($list);
-            return view('student.profile', ['list' => $list]);
+            return view('school.student.profile', ['list' => $list]);
         }
-        return view('student.profile', ['list' => null]);
+        return view('school.student.profile', ['list' => null]);
       }
       elseif (Auth::user()->role == 'teacher') {
         # code...

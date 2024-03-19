@@ -66,7 +66,7 @@
                                     <div class="col-7">
                                         Book name : <strong>{{$new->book_name}}</strong> <br>
                                         Author name : <strong>{{$new->author_name}}</strong> <br>
-                                        <a href="http://" class="text-primary">read book here>>></a>
+                                        <a href="{{route('admin.book.read',$new->id)}}" class="text-primary">read book here>>></a>
                                     </div>
                                 </div>
                                 <div class="modal-footer">

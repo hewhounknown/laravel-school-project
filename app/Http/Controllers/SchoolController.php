@@ -20,14 +20,14 @@ class SchoolController extends Controller
     //
     public function home()
     {
-        return view('index');
+        return view('school.index');
     }
 
     public function courseList($programId)
     {
         $program = Program::where('id', $programId)->first();
         $categories = Category::where('program_id', $program->id)->get();
-        return view('programmes.courses',['program'=>$program, 'categories'=>$categories]);
+        return view('school.programmes.courses',['program'=>$program, 'categories'=>$categories]);
     }
 
     public function filterCourses(Request $req)
@@ -42,7 +42,7 @@ class SchoolController extends Controller
        $category = Category::where('program_id', $id)->get();
        //echo $category;
 
-       return view('teacher.coursecreate', ['category' => $category]);
+       return view('school.teacher.coursecreate', ['category' => $category]);
     }
 
     public function createCourse(Request $req)
@@ -87,7 +87,7 @@ class SchoolController extends Controller
             $enrollStatus = $enroll->status;
         }
         //dd($enrollStatus);
-        return view('programmes.coursedetail', ['course' => $course, 'enrollStatus' => $enrollStatus]);
+        return view('school.programmes.coursedetail', ['course' => $course, 'enrollStatus' => $enrollStatus]);
     }
 
     public function addTopic($courseName, Request $req)
@@ -153,7 +153,7 @@ class SchoolController extends Controller
         //dd($content);
         // $breadcrumbs = Breadcrumbs::render('contentView', $topic, $content); // for using breadcrumbs
         // dd($breadcrumbs);
-        return view('programmes.content', ['content' => $content, 'topic' => $topic]);
+        return view('school.programmes.content', ['content' => $content, 'topic' => $topic]);
     }
 
     public function downloadFile($fileName)
@@ -273,7 +273,7 @@ class SchoolController extends Controller
             $stu[] = User::where('id', $enro[$i][0]->user_id)->get();
             //dd($stu);
         }
-        return view('teacher.studentcontrol', ['lists'=>$lists]);
+        return view('school.teacher.studentcontrol', ['lists'=>$lists]);
     }
 
     public function acceptEnroll($studentId, $courseId)

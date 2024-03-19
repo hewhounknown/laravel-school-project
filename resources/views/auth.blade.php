@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('school.layout.app')
 
 @section('title', Auth::user()->name . "'s profile")
 
