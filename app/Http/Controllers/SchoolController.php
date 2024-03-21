@@ -250,7 +250,7 @@ class SchoolController extends Controller
 
     public function studentTable()
     {
-        $course = Course::where('teacher_id', Auth::user()->id)->get();
+        $course = Course::where('user_id', Auth::user()->id)->get();
 
         foreach ($course as $c) {
             $enroll = Enrollment::where('course_id', $c->id)->get();

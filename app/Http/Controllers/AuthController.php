@@ -105,7 +105,7 @@ class AuthController extends Controller
 
         $program = Program::get(); // for course create
 
-        return view('teacher.profile', ['courses' => $courses, 'program' => $program]);
+        return view('school.teacher.profile', ['courses' => $courses, 'program' => $program]);
       }
       elseif(Auth::user()->role == 'admin'){
         return view('admin.acc.profile');

@@ -15,7 +15,7 @@ class LibraryController extends Controller
     {
         $books = Library::all();
 
-        return view('user.library.center', ['books' => $books]);
+        return view('school.library.center', ['books' => $books]);
     }
 
     public function addBook(Request $req)
@@ -55,7 +55,7 @@ class LibraryController extends Controller
     {
         $book = Library::where('id', $bookId)->first();
         //$book = $book->book_path;
-        return view('user.library.book', ['book' => $book]);
+        return view('school.library.book', ['book' => $book]);
     }
 
     public function readBook($bookId)
@@ -65,8 +65,7 @@ class LibraryController extends Controller
         if(Auth::user()->role == 'admin'){
             return view('admin.library.book', compact('book'));
         } else{
-            return response()->view('user.library.book', ['book' => $book], 200)
-            ->header('Content-Type', 'application/pdf');
+            return Pdf::view('school.library.book', ['book'=>$book])->format('a4')->name($book->book_name);
         }
     }
 }
