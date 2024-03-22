@@ -46,8 +46,9 @@ Route::get('profile', [AuthController::class, 'profileForm'])->name('profile');
 Route::post('profile', [AuthController::class, 'editProfile']);
 Route::post('change/password', [AuthController::class, 'changePassword'])->name('password.change');
 
-Route::get('course/create/{id}', [SchoolController::class, 'courseForm'])->name('courseForm');
-Route::post('course/create', [SchoolController::class, 'createCourse'])->name('courseCreate');
+Route::get('take/categories', [SchoolController::class, 'takeCats']);
+Route::get('select/choices', [SchoolController::class, 'selectChoices']);
+Route::post('course/create', [SchoolController::class, 'createCourse'])->name('teacher.course.create');
 Route::get('course/detail/{id}', [SchoolController::class, 'detailCourse'])->name('course.detail');
 Route::post('course/name={name}/add/topic', [SchoolController::class, 'addTopic'])->name('topicAdd');
 Route::post('course/topic={name}/add/content', [SchoolController::class, 'addContent'])->name('contentAdd');

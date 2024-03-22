@@ -37,43 +37,53 @@ class SchoolController extends Controller
         return $courses;
     }
 
-    public function courseForm($id)
+    public function takeCats(Request $req)
     {
-       $category = Category::where('program_id', $id)->get();
-       //echo $category;
+        $cats = Category::where('program_id', $req->selectProgramId)->get();
+        return $cats;
+    }
 
-       return view('school.teacher.coursecreate', ['category' => $category]);
+    public function selectChoices(Request $req)
+    {
+        if ($req->userChoice == 'Courses') {
+             $programs = Program::all();
+             return ['programs' => $programs];
+        } elseif($req->userChoice == 'Students') {
+
+        }
     }
 
     public function createCourse(Request $req)
     {
         $req->validate([
-                'title' => 'required',
-                'description' => 'required',
-                'image' => 'required'
+            'programSelected' => 'required',
+            'catId' => 'required',
+            'courseName' => 'required|unique:courses,course_name',
+            'description' => 'required'
         ]);
-        //dd($req->teacher);
-         if (Course::where(['course_name' => $req->title, 'teacher_id' => Auth::user()->id])->exists()) {
-            return redirect()->back()->with(['status' => 'this course is already existed!']);
-        } else{
-        //dd($req->category);
-            $categoryId = Category::where('category_name', $req->category)->first();
-            $categoryId = $categoryId->id;
 
-            $image = $req->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();    // give a name combination with time
-            Storage::disk('public')->putFileAs('course', $image, $imageName); // store in storage / app / public / uploads
+        if (Course::where(['course_name' => $req->courseName, 'user_id' => Auth::user()->id])->exists()) {
+            return back()->with(['status' => 'this course is already existed!']);
+        } else{
+
+            $image = null;
+            if($req->hasFile('courseImage')){
+                $image = $req->file('courseImage');
+                $imageName = time() . '_' . $image->getClientOriginalName();    // give a name combination with time
+                Storage::disk('public')->putFileAs('course', $image, $imageName); // store in storage / app / public / uploads
+                Course::create(['course_image' => $imageName]);
+            }
 
             Course::create([
-                'course_name' => $req->title,
+                'course_name' => $req->courseName,
                 'course_description' => $req->description,
-                'course_image' => $imageName,
-                'category_id' => $categoryId,
+                'category_id' => $req->catId,
                 'user_id' => Auth::user()->id
             ]);
 
-            return redirect()->route('profile')->with(['status' => 'you created new course']);
+            return back()->with(['status' => 'created course successfully!']);
         }
+
     }
 
     public function detailCourse($id)

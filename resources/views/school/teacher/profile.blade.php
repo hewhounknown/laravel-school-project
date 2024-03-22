@@ -1,78 +1,36 @@
-@extends('school.layout.app')
+@extends('school.acc.index')
 
 @section('title', Auth::user()->name . "'s profile")
 
-@section('content')
+@section('section')
 
-    <div class="container-fluid mt-5">
-        <div class="row g-3">
-            <div class="col-9">
-                {{-- profile start --}}
-                <div class="container">
-                    <div class="row shadow-sm p-3 mb-5 bg-body-tertiary rounded position-relative">
-                        <div class="col-3">
-                            <div>
-                                @if (Auth::user()->image == null)
-                                <img src="{{asset('img/defaultprofile.jpg')}}" alt="profile picture" class="border rounded-circle" style="width: 13rem; hieght: 38rem;">
-                                @else
-                                <img src="{{asset('storage/uploads/'.Auth::user()->image)}}" alt="profile picture" class="border rounded-circle" style="width: 13rem; hieght: 38rem;">
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col border-start border-dark text-bg-light">
-                            <div>
-                                <h3>{{Auth::user()->name}} | {{Auth::user()->role}}</h3>
-                            </div>
-                            <div>
-                                <i class="fa-solid fa-envelope"></i>  <small>{{Auth::user()->email}}</small>
-                            </div>
-                            <div>
-                                @if (Auth::user()->address != null)
-                                <i class="fa-solid fa-location-dot"></i> <small>{{Auth::user()->address}}</small>
-                                @endif
-                            </div>
-                            <div>
-                                @if (Auth::user()->phone != null)
-                                <i class="fa-solid fa-mobile"></i> <small>{{Auth::user()->phone}}</small>
-                                @endif
-                            </div>
-                        </div>
-                        <span class="position-absolute top-0 start-100 translate-middle p-2 border border-light rounded-circle" style="width: auto;">
-                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editForm">
-                                <i class="fa-regular fa-pen-to-square fa-xl"></i>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-                {{-- profile end --}}
-            </div>
-
-            <div class="col">
-                <div class="list-group mb-2 text-lg-start">
-                    <span class="disabled list-group-item d-none d-lg-block">
-                        <h5>CONTROLS</h5>
-                    </span>
-                    <a href="" class="list-group-item active">
-                        <i class="fa-solid fa-house"></i>
-                        <span class="d-none d-lg-inline">Dashboard</span>
-                    </a>
-                    <a href="" class="list-group-item" data-bs-toggle="modal" data-bs-target="#choiceModal">
-                        <i class="fa-solid fa-folder-plus"></i>
-                        <span class="d-none d-lg-inline">Courses</span>
-                    </a>
-                    <a href="{{route('student.control')}}" class="list-group-item">
-                        <i class="fas fa-users"></i>
-                        <span class="d-none d-lg-inline">Students</span> <span class="bandge bg-danger rounded-pill float-end text-white d-none d-lg-inline"> 20 </span>
-                    </a>
-
-                    <a href="" class="list-group-item">
-                        <i class="fas fa-flag"></i>
-                        <span class="d-none d-lg-inline">Reports</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">
+            <i class="fa-solid fa-house"></i>
+            <span class="d-none d-lg-inline">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fa-solid fa-folder-plus"></i>
+            <span class="d-none d-lg-inline">Courses</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{route('student.control')}}" class="nav-link">
+                <i class="fas fa-users"></i>
+                <span class="d-none d-lg-inline">Students</span>
+            </a>
+            {{-- <span class="badge bg-danger rounded-pill float-end text-white d-none d-lg-inline">20</span> --}}
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-disabled="true">
+            <i class="fas fa-flag"></i>
+            <span class="d-none d-lg-inline">Reports</span>
+          </a>
+        </li>
+    </ul>
 
     <!-- Modal for edit profile -->
     <div class="modal" id="editForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -148,7 +106,7 @@
     </div>
 
         <!-- Modal to add course -->
-        <div class="modal fade" id="choiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        {{-- <div class="modal fade" id="choiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -158,7 +116,7 @@
                 <div class="modal-body">
                     <div class="row justify-content-between p-3">
                         @foreach ($program as $p)
-                            <div class="col-4 bg-text-light rounded mb-2">
+                            <div class="col bg-text-light rounded mb-2">
                                     <a href="{{route('courseForm', $p->id)}}">
                                         <button type="submit" class="btn btn-outline-dark w-100" style="height: 5rem;">{{$p->name}}</button>
                                     </a>
@@ -168,7 +126,7 @@
                 </div>
             </div>
             </div>
-        </div>
+        </div> --}}
 
     <div class="row">
         <div class="col-3 offset-7">
@@ -193,30 +151,81 @@
 
 
 
-    <div class="container mb-5">
-        <div class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
-            <h3 class="default">Your courses</h3>
-            @foreach ($courses as $c)
-            <div class="col-md-3 mx-5 my-3">
-                <div class="card " style="width: 20rem;">
-                    @if ($c->course_image == null)
-                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                    @else
-                        <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
-                    @endif
-                    <div class="card-body" style="height: 9rem">
-                        <h5 class="card-title">{{$c->course_name}}</h5>
-                        <p class="card-text">{{$c->course_description}}</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="{{route('course.detail', $c->id)}}" class="btn btn-primary">View</a>
+    <div id="content">
+        <div id="dashboard" class="container">
+            <div class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
+                <h3 class="default">Your courses</h3>
+                @foreach ($courses as $c)
+                <div class="col-md-3 mx-5 my-3">
+                    <div class="card " style="width: 20rem;">
+                        @if ($c->course_image == null)
+                            <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
+                        @else
+                            <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
+                        @endif
+                        <div class="card-body" style="height: 9rem">
+                            <h5 class="card-title">{{$c->course_name}}</h5>
+                            <p class="card-text">{{$c->course_description}}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{route('course.detail', $c->id)}}" class="btn btn-primary">View</a>
+                        </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
     </div>
 
+    {{-- <div id="createForm" class="container">
+            <form enctype="multipart/form-data" method="POST" action="{{route('teacher.course.create')}}">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <select name="programSelected" id="programSelected" class="form-select mb-2">
+                                <option value="">select program</option>
+                                @foreach ($programs as $program)
+                                <option value="{{$program->id}}">{{$program->name}}</option>
+                                @endforeach
+                            </select>
+
+                            <div id="cats" class="my-2">
+
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mt-2">
+                                <label for="image">
+                                    <img id="img" src="{{asset('img/add_image.png')}}" alt="profile picture" class="rounded"  style="width:230px; hieght: 180px;">
+                                </label>
+                                <input type="file" name="courseImage" id="image" class="form-control" onchange="">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-2">
+                                <label for="" class="form-label">Course Name</label>
+                                <input type="text" name="courseName" id="" class="form-control mb-2">
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea id="description" name="description" class="form-control" cols="30" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+    </div> --}}
+
+
+@endsection
+
+@section('J_Script')
 <script>
     function readURL(input){
             if(input.files && input.files[0]){
@@ -229,5 +238,135 @@
                 //console.log(reader);
             }
         }
+
+        $(document).ready(function(){
+            $('.nav-link').on('click', function(e){
+                e.preventDefault();
+
+                $('.nav-link').removeClass('active');
+                $(this).addClass('active');
+
+                let choice = $(this).text();
+
+                let courseCreateRoute = "{{ route('teacher.course.create') }}";
+                $.ajax({
+                    url : 'http://localhost:8000/select/choices',
+                    type : 'GET',
+                    data : {'userChoice' : choice},
+                    success : function(response){
+                        console.log(response);
+
+                        $content = '';
+                        if (response.programs){
+                            $content = `
+                                    <div id="createForm" class="container">
+                                            <form id="createCourseForm" enctype="multipart/form-data" method="POST">
+                                                @csrf
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <select name="programSelected" id="programSelected" class="form-select mb-2">
+                                                                <option value="">select program</option>`;
+                                                                response.programs.forEach(program=>{
+                                                                    $content +=   `<option value="${program.id}">${program.name}</option>`;
+                                                                })
+                                                   $content += `</select>
+
+                                                            <div id="cats" class="my-2">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="mt-2">
+                                                                <label for="image">
+                                                                    <img id="img" src="{{asset('img/add_image.png')}}" alt="profile picture" class="rounded"  style="width:230px; hieght: 180px;">
+                                                                </label>
+                                                                <input type="file" name="courseImage" id="image" class="form-control" onchange="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="mb-2">
+                                                                <label for="" class="form-label">Course Name</label>
+                                                                <input type="text" name="courseName" id="" class="form-control mb-2">
+                                                            </div>
+
+                                                            <div class="mb-2">
+                                                                <label for="description" class="form-label">Description</label>
+                                                                <textarea id="description" name="description" class="form-control" cols="30" rows="10"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Create</button>
+                                                </div>
+                                            </form>
+                                    </div>`;
+
+                            $('#content').html($content);
+                        } else if(response.students) {
+                            //
+                        }
+
+
+                    }
+                });
+            });
+
+            $(document).on('change', '#programSelected', function(){
+                let programId = $(this).val();
+                console.log(programId);
+
+                $.ajax({
+                    url : 'http://localhost:8000/take/categories',
+                    type : 'GET',
+                    data : {'selectProgramId' : programId},
+                    success: function(cats){
+                        $catsList = '<label class="d-block">choose Category :</label>';
+                        //console.log(cats);
+                        cats.forEach(cat => {
+                            $catsList += `
+                                <div class="form-check d-inline-block">
+                                    <input class="form-check-input" type="radio" name="catId" id="cat${cat.id}" value="${cat.id}">
+                                    <label class="form-check-label" for="cat">
+                                      ${cat.category_name}
+                                    </label>
+                                </div>`;
+                        });
+                        $('#cats').html($catsList);
+                    }
+                })
+            });
+
+            // Event delegation for submit event on #createCourseForm
+            $(document).on('submit', '#createCourseForm', function(event) {
+                event.preventDefault();
+                console.log("Form submitted");
+
+                // Create FormData object
+                let formData = new FormData($(this)[0]);
+
+                // Append CSRF token
+                formData.append('_token', '{{ csrf_token() }}');
+                // Make AJAX request to submit form data
+                $.ajax({
+                    url: "{{ route('teacher.course.create') }}",
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        // Handle success response
+                        console.log("Form submitted successfully:", response);
+                        window.location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error("Form submission error:", error);
+                    }
+                });
+            });
+        });
 </script>
 @endsection

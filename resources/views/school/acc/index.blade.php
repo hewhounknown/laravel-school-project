@@ -8,7 +8,7 @@
         </div>
         @endif
         <div class="row p-2">
-            <div class="col-sm-4 text-center">
+            <div class="col-sm-4 text-center border-sm-end border-dark">
                 @if (Auth::user()->image != null)
                 <img src="{{asset('storage/uploads/'.Auth::user()->image)}}" class="rounded-circle img-fluid" style="width: 180px; height: 180px;" alt="">
                 @else
