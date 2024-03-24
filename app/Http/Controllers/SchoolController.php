@@ -46,10 +46,42 @@ class SchoolController extends Controller
     public function selectChoices(Request $req)
     {
         if ($req->userChoice == 'Courses') {
-             $programs = Program::all();
-             return ['programs' => $programs];
+
+            $programs = Program::all();
+
+            return ['programs' => $programs];
+
         } elseif($req->userChoice == 'Students') {
 
+            $courses = Course::where('user_id', Auth::user()->id)->get();
+
+            $students = [];
+            if($courses->isNotEmpty()) {
+
+                foreach($courses as $c){
+
+                    if($c->enrollments->isNotEmpty()){
+
+                        foreach($c->enrollments as $e){
+
+                            $students[$c->course_name][] = [
+                                'enrollStatus' => $e->status,
+                                'stuInfo' => $e->user
+                            ];
+
+                        }
+
+                    }
+
+                }
+
+            }
+            //dd($students);
+            return ['students' => $students];
+
+        } elseif($req->userChoice == 'Reports') {
+            $reports = 'cc';
+            return ['reports' => $reports];
         }
     }
 
@@ -286,20 +318,24 @@ class SchoolController extends Controller
         return view('school.teacher.studentcontrol', ['lists'=>$lists]);
     }
 
-    public function acceptEnroll($studentId, $courseId)
+    public function acceptEnroll($studentId, $courseName)
     {
-        Enrollment::where(['user_id' => $studentId, 'course_id' => $courseId])
+        $course = Course::where('course_name', $courseName)->first();
+
+        Enrollment::where(['user_id' => $studentId, 'course_id' => $course->id])
                         ->update(['status' => true]);
 
         return back()->with(['status' => 'you accepted!']);
     }
 
-    public function kickStudent($studentId, $courseId)
+    public function kickStudent($studentId, $courseName)
     {
-        Enrollment::where(['user_id' => $studentId, 'course_id' => $courseId])
+        $course = Course::where('course_name', $courseName)->first();
+
+        Enrollment::where(['user_id' => $studentId, 'course_id' => $course->id])
         ->update(['status' => false]);
 
-        Course::where('id', $courseId)->decrement('enroll_count');
+        Course::where('id', $course->id)->decrement('enroll_count');
 
         return back()->with(['status' => 'you kicked student successfully!']);
     }

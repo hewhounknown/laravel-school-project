@@ -4,21 +4,33 @@
 
 @section('section')
 
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    @if (session('status'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('status') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">
+          <a id="forDash" class="nav-link active" aria-current="page" href="#">
             <i class="fa-solid fa-house"></i>
             <span class="d-none d-lg-inline">Dashboard</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fa-solid fa-folder-plus"></i>
-            <span class="d-none d-lg-inline">Courses</span>
-          </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{route('student.control')}}" class="nav-link">
+            <a href="#" class="nav-link">
                 <i class="fas fa-users"></i>
                 <span class="d-none d-lg-inline">Students</span>
             </a>
@@ -128,16 +140,7 @@
             </div>
         </div> --}}
 
-    <div class="row">
-        <div class="col-3 offset-7">
-            @if (session('status'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('status') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
-        </div>
-    </div>
+
 
     {{-- <div class="container mb-5">
         <div class="row shadow-sm p-3 mb-5 bg-body-tertiary rounded">
@@ -152,28 +155,94 @@
 
 
     <div id="content">
-        <div id="dashboard" class="container">
-            <div class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
-                <h3 class="default">Your courses</h3>
-                @foreach ($courses as $c)
-                <div class="col-md-3 mx-5 my-3">
-                    <div class="card " style="width: 20rem;">
-                        @if ($c->course_image == null)
-                            <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
-                        @else
-                            <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
-                        @endif
-                        <div class="card-body" style="height: 9rem">
-                            <h5 class="card-title">{{$c->course_name}}</h5>
-                            <p class="card-text">{{$c->course_description}}</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="{{route('course.detail', $c->id)}}" class="btn btn-primary">View</a>
+
+    </div>
+
+    <div id="dashboard" class="container">
+
+        <div class="row justify-content-end mb-4">
+            <div class="col-3 text-center">
+                <div class="btn btn-outline-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#courseModal">
+                    <i class="fa-solid fa-folder-plus"></i>
+                </div>
+            </div>
+        </div>
+
+            {{-- Courses Create modal start --}}
+        <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 730px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form enctype="multipart/form-data" method="POST" action="{{route('admin.course.create')}}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <select name="programSelected" id="programSelected" class="form-select mb-2">
+                                    <option value="">select program</option>
+                                    @foreach ($programs as $program)
+                                    <option value="{{$program->id}}">{{$program->name}}</option>
+                                    @endforeach
+                                </select>
+
+                                <div id="cats" class="my-2">
+
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mt-2">
+                                    <label for="image">
+                                        <img id="img" src="{{asset('img/add_image.png')}}" alt="profile picture" class="rounded"  style="width:230px; hieght: 180px;">
+                                    </label>
+                                    <input type="file" name="courseImage" id="image" class="form-control" onchange="">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-2">
+                                    <label for="" class="form-label">Course Name</label>
+                                    <input type="text" name="courseName" id="" class="form-control mb-2">
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea id="description" name="description" class="form-control" cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @endforeach
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
             </div>
+            </div>
+        </div>
+        {{-- Courses Create modal end --}}
+
+        <div class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
+            <h3 class="default">Your courses</h3>
+            @foreach ($courses as $c)
+            <div class="col-md-3 mx-5 my-3">
+                <div class="card " style="width: 20rem;">
+                    @if ($c->course_image == null)
+                        <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
+                    @else
+                        <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
+                    @endif
+                    <div class="card-body" style="height: 9rem">
+                        <h5 class="card-title">{{$c->course_name}}</h5>
+                        <p class="card-text">{{$c->course_description}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{route('course.detail', $c->id)}}" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            @endforeach
         </div>
     </div>
 
@@ -221,8 +290,6 @@
                 </div>
             </form>
     </div> --}}
-
-
 @endsection
 
 @section('J_Script')
@@ -248,8 +315,20 @@
 
                 let choice = $(this).text();
 
-                let courseCreateRoute = "{{ route('teacher.course.create') }}";
-                $.ajax({
+                console.log($(this).attr('id'));
+
+                if($(this).attr('id') == 'forDash'){
+                    console.log('lll');
+                    $('#content').hide();
+                    $('#dashboard').show();
+                } else{
+                    $('#content').show();
+                    $('#dashboard').hide();
+
+                    let studentKickRoute = "{{ route('student.kick', ['studentId' => ':studentId', 'courseName' => ':courseName' ]) }}";
+                    let studentAcceptRoute = "{{ route('student.accept', ['studentId' => ':studentId', 'courseName' => ':courseName' ]) }}";
+
+                    $.ajax({
                     url : 'http://localhost:8000/select/choices',
                     type : 'GET',
                     data : {'userChoice' : choice},
@@ -257,64 +336,73 @@
                         console.log(response);
 
                         $content = '';
-                        if (response.programs){
-                            $content = `
-                                    <div id="createForm" class="container">
-                                            <form id="createCourseForm" enctype="multipart/form-data" method="POST">
-                                                @csrf
-                                                <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="col-12 mb-3">
-                                                            <select name="programSelected" id="programSelected" class="form-select mb-2">
-                                                                <option value="">select program</option>`;
-                                                                response.programs.forEach(program=>{
-                                                                    $content +=   `<option value="${program.id}">${program.name}</option>`;
-                                                                })
-                                                   $content += `</select>
+                        if (response.students){
+                            console.log(response.student);
 
-                                                            <div id="cats" class="my-2">
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="mt-2">
-                                                                <label for="image">
-                                                                    <img id="img" src="{{asset('img/add_image.png')}}" alt="profile picture" class="rounded"  style="width:230px; hieght: 180px;">
-                                                                </label>
-                                                                <input type="file" name="courseImage" id="image" class="form-control" onchange="">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="mb-2">
-                                                                <label for="" class="form-label">Course Name</label>
-                                                                <input type="text" name="courseName" id="" class="form-control mb-2">
-                                                            </div>
-
-                                                            <div class="mb-2">
-                                                                <label for="description" class="form-label">Description</label>
-                                                                <textarea id="description" name="description" class="form-control" cols="30" rows="10"></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                            Object.entries(response.students).forEach(([course, enrolls]) => {  //change obj to arr and loop
+                                //console.log(jQuery.type(students));
+                                $content += `<div class="card m-3">
+                                                <div class="card-header">
+                                                   <h4 class="text-primary-emphasis">${course}</h4>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Create</button>
+                                                <div class="card-body">
+                                                    <table class="table table-striped text-center">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th></th>
+                                                                <th>Control</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>`;
+                                                    enrolls.forEach(enroll => {
+                                                        console.log(enroll.enrollStatus);
+                                                        $content += `
+                                                                        <tr>
+                                                                            <td>${enroll.stuInfo.name}</td>
+                                                                            <td></td>`;
+                                                                             if(enroll.enrollStatus){
+                                                                                $content += `<td>
+                                                                                                <a href="${studentKickRoute.replace(':studentId', enroll.stuInfo.id).replace(':courseName', course)}" class="btn btn-outline-danger">
+                                                                                                    Kick
+                                                                                                </a>
+                                                                                                <a href="" class="btn btn-outline-warning">
+                                                                                                    Ban
+                                                                                                </a>
+                                                                                            </td>`;
+                                                                             }   else {
+                                                                                $content += `<td>
+                                                                                                <a class="btn btn-outline-primary" href="${studentAcceptRoute.replace(':studentId', enroll.stuInfo.id).replace(':courseName', course)}">
+                                                                                                    Accept
+                                                                                                </a>
+                                                                                                <a class="btn btn-outline-danger" href="http://">
+                                                                                                    Cancle
+                                                                                                </a>
+                                                                                            </td>`;
+                                                                             }
+                                                            $content += ` </tr>`;
+                                                    })
+                                            $content += `</tbody>
+                                                    </table>
                                                 </div>
-                                            </form>
-                                    </div>`;
+                                            </div>`;
+                            })
 
-                            $('#content').html($content);
-                        } else if(response.students) {
-                            //
+                        } else if(response.reports) {
+                            console.log(response);
+                            $content = `<h4>Re,w,v</h4>`;
+                        } else {
+                            console.log($('#dashboard'));
                         }
 
-
+                        $('#content').html($content);
                     }
                 });
+                }
+
             });
 
-            $(document).on('change', '#programSelected', function(){
+            $('#programSelected').on('change', function(){
                 let programId = $(this).val();
                 console.log(programId);
 
@@ -339,34 +427,6 @@
                 })
             });
 
-            // Event delegation for submit event on #createCourseForm
-            $(document).on('submit', '#createCourseForm', function(event) {
-                event.preventDefault();
-                console.log("Form submitted");
-
-                // Create FormData object
-                let formData = new FormData($(this)[0]);
-
-                // Append CSRF token
-                formData.append('_token', '{{ csrf_token() }}');
-                // Make AJAX request to submit form data
-                $.ajax({
-                    url: "{{ route('teacher.course.create') }}",
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        // Handle success response
-                        console.log("Form submitted successfully:", response);
-                        window.location.reload();
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error response
-                        console.error("Form submission error:", error);
-                    }
-                });
-            });
         });
 </script>
 @endsection

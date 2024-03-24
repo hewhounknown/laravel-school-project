@@ -61,8 +61,8 @@ Route::get('enroll/course={id}', [SchoolController::class, 'enrollCourse'])->nam
 Route::get('unenroll/course={id}', [SchoolController::class, 'unenrollCourse'])->name('course.unenroll');
 
 Route::get('control/students', [SchoolController::class, 'studentTable'])->name('student.control');
-Route::get('accept/student={studentId}/for/course={courseId}', [SchoolController::class, 'acceptEnroll'])->name('student.accept');
-Route::get('kick/student={studentId}/from/course={courseId}', [SchoolController::class, 'kickStudent'])->name('student.kick');
+Route::get('accept/student={studentId}/for/course={courseName}', [SchoolController::class, 'acceptEnroll'])->name('student.accept');
+Route::get('kick/student={studentId}/from/course={courseName}', [SchoolController::class, 'kickStudent'])->name('student.kick');
 
 Route::prefix('programmes')->group(function () {
     Route::get('{program}', [SchoolController::class, 'courseList'])->name('course.list');

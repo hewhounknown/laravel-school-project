@@ -23,6 +23,32 @@
 
     <div class="container mt-5 ">
         <div class="row align-items-center justify-content-center shadow-lg p-3 rounded position-relative ">
+
+            @if (Auth::user()->id == $course->user_id)
+            <span class="position-absolute top-0 end-0" style="width: auto;">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editCourseModal">
+                    <i class="fa-solid fa-bars fa-xl"></i>
+                </button>
+            </span>
+
+            <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Course Edit</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      ...
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            @endif
             <div class="col-5">
                 @if ($course->course_image == null)
                 <img src="{{asset('img/default.png')}}" class="img-fluid" style="width: 230px; height: 170px" alt="">
