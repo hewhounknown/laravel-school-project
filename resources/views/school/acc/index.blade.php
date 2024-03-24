@@ -42,27 +42,69 @@
         </div>
         <span class="position-absolute top-0 end-0" style="width: auto;">
             <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#controlModal">
-                <i class="fa-solid fa-bars fa-xl"></i>
+                <i class="fa-solid fa-pen-fancy fa-xl"></i>
             </button>
         </span>
 
         {{-- control modal start --}}
         <div class="modal fade" id="controlModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog" style="max-width: 730px;">
             <div class="modal-content">
                 <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Control</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa-regular fa-address-card"></i></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                <div class="row justify-content-between p-2">
-
-                </div>
-                </div>
-                {{-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-                </div> --}}
+                <form enctype="multipart/form-data" action="{{route('profile')}}" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row justify-content-evenly">
+                            <input type="hidden" name="id" value="{{Auth::user()->id}}">
+                            <div class="col-sm-4">
+                                @if (Auth::user()->image == null)
+                                    <img id="img" src="{{asset('img/defaultprofile.jpg')}}" alt="profile picture" class="rounded img-fluid mx-auto d-block mb-2"  style="max-width:230px; max-hieght: 140px;">
+                                @else
+                                    <img id="img" src="{{asset('storage/uploads/'.Auth::user()->image)}}" alt="profile picture" class="rounded img-fluid mx-auto d-block mb-2"  style="max-width:230px; max-hieght: 140px;">
+                                @endif
+                                <div>
+                                    {{-- <input type="file" name="image" id="" class="form-control"> --}}
+                                    <input type="file" name="image" id="" class="form-control" onchange="readURL(this)">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-2">
+                                    <label for="name" class="form-label">{{ __('Name') }}</label>
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', Auth::user()->name) }}" required autocomplete="name" autofocus>
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="mb-2">
+                                    <label for="email" class="form-label">{{ __('Email') }}</label>
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', Auth::user()->email) }}" required autocomplete="email">
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="mb-2">
+                                    <label for="phone" class="form-label">{{ __('phone') }}</label>
+                                    <input id="phone" type="text" class="form-control" name="phone" value="{{ old('phone', Auth::user()->phone) }}" autocomplete="phone">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="address" class="form-label">{{ __('address') }}</label>
+                                    <textarea name="address" id="" class="form-control" cols="30" rows="10">{{ old('address',Auth::user()->address) }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
             </div>
             </div>
         </div>

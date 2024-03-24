@@ -80,7 +80,7 @@
             </form>
           </div>
         </div>
-      </div>
+    </div>
     {{-- Courses Create modal end --}}
 
 

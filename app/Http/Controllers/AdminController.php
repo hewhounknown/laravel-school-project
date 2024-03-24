@@ -266,6 +266,44 @@ class AdminController extends Controller
         return view('admin.program.coursedetail', ['course'=>$course]);
     }
 
+    public function editCourse(Request $req)
+    {
+        $req->validate([
+            'programSelected' => 'required',
+            'catId' => 'required',
+            'courseName' => 'required',
+            'description' => 'required'
+        ]);
+
+        if (Course::where(['course_name' => $req->courseName, 'user_id' => Auth::user()->id])->exists()) {
+            return back()->with(['status' => 'this course is already existed!']);
+        } else {
+            $image = null;
+            if($req->hasFile('courseImage')){
+                $image = $req->file('courseImage');
+
+                $dbImage = Course::where('id', $req->courseId)->first();
+                $dbImage = $dbImage->course_image;
+                if($dbImage != null){
+                    Storage::disk('public')->delete('course/'. $dbImage);
+                }
+
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                Storage::disk('public')->putFileAs('course', $image, $imageName);
+                Course::where('id', $req->courseId)->update(['course_image' => $imageName]);
+            }
+
+            Course::where('id', $req->courseId)->update([
+                'course_name' => $req->courseName,
+                'course_description' => $req->description,
+                'category_id' => $req->catId,
+                'user_id' => Auth::user()->id
+            ]);
+
+            return back()->with(['status' => 'updated course successfully!']);
+        }
+    }
+
     public function createTopic(Request $req)
     {
        // dd($req->all());
