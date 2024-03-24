@@ -146,29 +146,29 @@
 
 <body>
     <header class="sticky-top">
-        <nav class="navbar navbar-expand-md bg-body-tertiary  mx-1">
+        <nav class="navbar navbar-expand-md bg-body-tertiary mx-1">
             <div class="container-fluid">
-                <a class="navbar-brand fs-3" href="{{route('home')}}">School</a>
+                <a class="navbar-brand fs-3" href="{{ route('home') }}">School</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <ul class="navbar-nav w-50 justify-content-evenly fs-4">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         @if ($programs->isEmpty())
                             <li class="nav-item">
                                 <a class="nav-link" href="#"> Programmes </a>
                             </li>
                         @else
                             <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Programmes
-                            </a>
-                            <ul class="dropdown-menu">
-                                @foreach ($programs as $program)
-                                    <li><a class="dropdown-item" href="{{route('course.list',$program->id)}}">{{$program->name}}</a></li>
-                                @endforeach
-                                {{-- <li><a class="dropdown-item" href="{{route('course.list', 'language')}}">Languages</a></li> --}}
-                            </ul>
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Programmes
+                                </a>
+                                <ul class="dropdown-menu">
+                                    @foreach ($programs as $program)
+                                        <li><a class="dropdown-item" href="{{ route('course.list', $program->id) }}">{{ $program->name }}</a></li>
+                                    @endforeach
+                                    {{-- <li><a class="dropdown-item" href="{{ route('course.list', 'language') }}">Languages</a></li> --}}
+                                </ul>
                             </li>
                         @endif
 
@@ -176,52 +176,52 @@
                             <a class="nav-link" href="#">Opportunities</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('library')}}">Library <i class="fa-solid fa-book-open-reader"></i></a>
+                            <a class="nav-link" href="{{ route('library') }}">Library <i class="fa-solid fa-book-open-reader"></i></a>
                         </li>
                     </ul>
-                    <div class="d-block ms-lg-auto align-items-center justify-content-end">
-                        <a href="#" class="nav-link d-md-inline">About us |</a>
-                        <form class="d-inline-flex  mx-2" role="search">
-                        <input class="form-control me-2 " type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
-                    </div>
-                    <div class="mx-2">
-                        <li class="nav-item dropdown d-inline-flex btn">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                <i class="fa-solid fa-user"></i>
-                            </a>
+                    <div class="ms-md-auto">
+                        <div class="d-flex align-items-center">
+                            <a href="#" class="nav-link d-md-inline">About us |</a>
+                            <form class="d-inline-flex mx-2" role="search">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                            <div class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <i class="fa-solid fa-user"></i>
+                                </a>
 
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                @guest
-                                <div class="">
-                                    <a href="{{route('register')}}" class="dropdown-item">{{__('Register')}}</a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    @guest
+                                        <div class="">
+                                            <a href="{{ route('register') }}" class="dropdown-item">{{ __('Register') }}</a>
+                                        </div>
+                                        <div class="">
+                                            <a href="{{ route('login') }}" class="dropdown-item">{{ __('Login') }}</a>
+                                        </div>
+                                    @else
+                                        <div class="">
+                                            <a href="{{ route('profile') }}" class="dropdown-item">{{ Auth::user()->name }}</a>
+                                        </div>
+                                        <div class="">
+                                            <a href="" class="dropdown-item" onclick="event.preventDefault();
+                                                                        document.getElementById('logout-form').submit();">
+                                                {{ __('Logout') }}
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
+                                        </div>
+                                    @endguest
                                 </div>
-                                <div class="">
-                                    <a href="{{route('login')}}" class="dropdown-item">{{__('Login')}}</a>
-                                </div>
-                                @else
-                                <div class="">
-                                    <a href="{{route('profile')}}" class="dropdown-item">{{Auth::user()->name}}</a>
-                                </div>
-                                <div class="">
-                                    <a href="" class="dropdown-item" onclick="event.preventDefault();
-                                                                document.getElementById('logout-form').submit();">
-                                        {{__('Logout')}}
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-
-                                @endguest
                             </div>
-                        </li>
+                        </div>
                     </div>
                 </div>
-           </div>
+            </div>
         </nav>
     </header>
+
 
     <main>
         @yield('content')

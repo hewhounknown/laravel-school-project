@@ -18,45 +18,36 @@
         </div>
     </div>
 
-    @foreach ($categories as $cat)
+
         <div id="listOfCourses">
-            @if ($cat->courses->isNotEmpty())
-                <div class="container mb-5">
-                    <div id="avaliableCourses" class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
-                        @foreach ($cat->courses as $c)
-                        <div class="col-md-3 mx-5 my-3">
-                            <div class="card " style="width: 20rem;">
-                                @if ($c->course_image == null)
-                                    <img src="{{asset('img/default.png')}}" class="card-img-top"  style="height: 10rem"  alt="...">
-                                @else
-                                    <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
-                                @endif
-                                <div class="card-body" style="height: 9rem">
-                                    <h5 class="card-title">{{$c->course_name}}</h5>
-                                    <p class="card-text">{{$c->course_description}}</p>
-                                </div>
-                                <div class="card-footer">
-                                    <a href="{{route('course.detail', $c->id)}}" class="btn btn-primary">View</a>
-                                    {{-- @if ($c->enrolls->isEmpty())
-                                    <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
-                                    @else
-                                        @foreach ($c->enrolls as $e)
-                                            @if ($e->status == false)
-                                            <a href="{{route('course.enroll', $c->id)}}" class="btn btn-primary">Enroll</a>
-                                            @else
+            <div class="container mb-5">
+                <div id="availableCourses" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    @foreach ($categories as $cat)
+                        @if($cat->courses->isNotEmpty())
+                            @foreach ($cat->courses as $c)
+                            <div class="col mx-auto">
+                                <div class="card h-100">
+                                        @if ($c->course_image == null)
+                                            <img src="{{asset('img/default.png')}}" class="card-img-top img-fluid"  style=""  alt="...">
+                                        @else
+                                            <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top img-fluid" style="" alt="..." >
+                                        @endif
+                                        <div class="card-body" style="">
+                                            <h5 class="card-title">{{$c->course_name}}</h5>
+                                            <p class="card-text">{{$c->course_description}}</p>
+                                        </div>
+                                        <div class="card-footer">
                                             <a href="{{route('course.detail', $c->id)}}" class="btn btn-primary">View</a>
-                                            @endif
-                                        @endforeach
-                                    @endif --}}
+
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                                @endforeach
+                            @endif
                         @endforeach
                     </div>
                 </div>
-            @endif
         </div>
-    @endforeach
 
 @endsection
 
@@ -74,39 +65,30 @@
                     type : 'GET',
                     data : {'categoryId' : catId},
                     success: function(response){
-                        //console.log(response);
+                        console.log(response.length);
                         $list = '';
-                        if (response && response.length > 0) {
+                        if (response.length != 0) {
                             console.log(response);
                             $list = `<div class="container mb-5">
-                                        <div id="avaliableCourses" class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">`;
+                                        <div id="avaliableCourses" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">`;
                             response.forEach(course => {
-                                $list += `<div class="col-md-3 mx-5 my-3">
-                                            <div class="card " style="width: 20rem;">`;
+                                console.log(course);
+                                $list += `<div class="col mx-auto">
+                                            <div class="card h-100">`;
                                                 if (course.image == null) {
-                                                    $list += `<img src="{{asset('img/default.png')}}" class="card-img-top"  style="height: 10rem"  alt="...">`;
+                                                    $list += `<img src="{{asset('img/default.png')}}" class="card-img-top img-fluid"  style=""  alt="...">`;
                                                 } else{
-                                                    $list += `<img src="{{asset('storage/course/')}}./${course.course.image}" class="card-img-top" style="height: 10rem" alt="..." >`;
+                                                    $list += `<img src="{{asset('storage/course/')}}./${course.course.image}" class="card-img-top img-fluid" style="" alt="..." >`;
                                                 }
-                                                $list += `<div class="card-body" style="height: 9rem">
-                                                            <h5 class="card-title">{{$c->course_name}}</h5>
-                                                            <p class="card-text">{{$c->course_description}}</p>
+                                                $list += `<div class="card-body" style="">
+                                                            <h5 class="card-title">${course.course_name}</h5>
+                                                            <p class="card-text">${course.course_description}</p>
                                                         </div>
-                                                        <div class="card-footer">`;
-                                                            if (course.enrolls.length === 0) {
-                                                                $list += `<a href="${courseEnrollRoute.replace(':id',course.id)}" class="btn btn-primary">Enroll</a>`;
-                                                            } else {
-                                                                course.enrolls.forEach(enroll => {
-                                                                    if (enroll.status == false) {
-                                                                        $list += `<a href="${courseEnrollRoute.replace(':id', course.id)}" class="btn btn-primary">Enroll</a>`;
-                                                                    } else {
-                                                                       $list += `<a href="${courseDetailRoute.replace(':id', course.id)}" class="btn btn-primary">View</a>`;
-                                                                    }
-                                                                });
-                                                            }
-                                        $list += `</div>
-                                                </div>
-                                            </div>`;
+                                                        <div class="card-footer">
+                                                            <a href="${courseDetailRoute.replace(':id', course.id)}" class="btn btn-primary">View</a>
+                                                        </div>
+                                                    </div>
+                                                </div>`;
                             });
                             $list += `</div>
                                 </div>`;

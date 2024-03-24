@@ -33,7 +33,7 @@ class SchoolController extends Controller
     public function filterCourses(Request $req)
     {
         $courses = Course::where('category_id', $req->categoryId)
-                    ->with('enrolls')->get();
+                    ->with('enrollments')->get();
         return $courses;
     }
 
@@ -45,13 +45,7 @@ class SchoolController extends Controller
 
     public function selectChoices(Request $req)
     {
-        if ($req->userChoice == 'Courses') {
-
-            $programs = Program::all();
-
-            return ['programs' => $programs];
-
-        } elseif($req->userChoice == 'Students') {
+        if($req->userChoice == 'Students') {
 
             $courses = Course::where('user_id', Auth::user()->id)->get();
 
