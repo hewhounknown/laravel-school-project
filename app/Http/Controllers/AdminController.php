@@ -215,39 +215,6 @@ class AdminController extends Controller
         return $courses;
     }
 
-    public function createCourse(Request $req)
-    {
-        $req->validate([
-            'programSelected' => 'required',
-            'catId' => 'required',
-            'courseName' => 'required|unique:courses,course_name',
-            'description' => 'required'
-        ]);
-
-        if (Course::where(['course_name' => $req->courseName, 'user_id' => Auth::user()->id])->exists()) {
-            return back()->with(['status' => 'this course is already existed!']);
-        } else{
-
-            $image = null;
-            if($req->hasFile('courseImage')){
-                $image = $req->file('courseImage');
-                $imageName = time() . '_' . $image->getClientOriginalName();    // give a name combination with time
-                Storage::disk('public')->putFileAs('course', $image, $imageName); // store in storage / app / public / uploads
-                Course::create(['course_image' => $imageName]);
-            }
-
-            Course::create([
-                'course_name' => $req->courseName,
-                'course_description' => $req->description,
-                'category_id' => $req->catId,
-                'user_id' => Auth::user()->id
-            ]);
-
-            return back()->with(['status' => 'created course successfully!']);
-        }
-
-    }
-
     public function publicCourse($courseId)
     {
         Course::where('id', $courseId)->update(['course_status' => true]);

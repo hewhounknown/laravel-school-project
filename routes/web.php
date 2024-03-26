@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\ProfileController;
@@ -48,7 +49,7 @@ Route::post('change/password', [AuthController::class, 'changePassword'])->name(
 
 Route::get('take/categories', [SchoolController::class, 'takeCats']);
 Route::get('select/choices', [SchoolController::class, 'selectChoices']);
-Route::post('course/create', [SchoolController::class, 'createCourse'])->name('teacher.course.create');
+Route::post('course/create', [CourseController::class, 'createCourse'])->name('teacher.course.create');
 Route::get('course/detail/{id}', [SchoolController::class, 'detailCourse'])->name('course.detail');
 Route::post('course/name={name}/add/topic', [SchoolController::class, 'addTopic'])->name('topicAdd');
 Route::post('course/topic={name}/add/content', [SchoolController::class, 'addContent'])->name('contentAdd');
@@ -99,11 +100,11 @@ Route::prefix('admin')->group(function() {
     Route::get('manage/cources', [AdminController::class, 'manageCourses'])->name('admin.courses.manage');
     Route::get('take/categories', [AdminController::class, 'takeCategories']);
     Route::get('search/course', [AdminController::class, 'searchCourse']);
-    Route::post('create/course', [AdminController::class, 'createCourse'])->name('admin.course.create');
+    Route::post('create/course', [CourseController::class, 'createCourse'])->name('admin.course.create');
     Route::get('public/course={id}', [AdminController::class, 'publicCourse'])->name('admin.course.public');
     Route::get('unpublic/course={id}', [AdminController::class, 'unpublicCourse'])->name('admin.course.unpublic');
     Route::get('detail/course={id}', [AdminController::class, 'detailCourse'])->name('admin.course.detail');
-    Route::post('edit/course', [AdminController::class, 'editCourse'])->name('admin.course.edit');
+    Route::post('edit/course', [CourseController::class, 'editCourse'])->name('admin.course.edit');
 
     Route::post('create/topic/', [AdminController::class, 'createTopic'])->name('admin.topic.create');
     Route::post('add/content/topic', [AdminController::class, 'addContent'])->name('admin.content.add');
