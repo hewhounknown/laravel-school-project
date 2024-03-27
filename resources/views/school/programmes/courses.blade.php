@@ -25,26 +25,27 @@
                     @foreach ($categories as $cat)
                         @if($cat->courses->isNotEmpty())
                             @foreach ($cat->courses as $c)
-                            <div class="col mx-auto">
-                                <div class="card h-100">
-                                        @if ($c->course_image == null)
-                                            <img src="{{asset('img/default.png')}}" class="card-img-top img-fluid"  style=""  alt="...">
-                                        @else
-                                            <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top img-fluid" style="" alt="..." >
-                                        @endif
-                                        <div class="card-body" style="">
-                                            <h5 class="card-title">{{$c->course_name}}</h5>
-                                            <p class="card-text">{{$c->course_description}}</p>
-                                        </div>
-                                        <div class="card-footer">
-                                            <a href="{{route('course.detail', $c->id)}}" class="btn btn-primary">View</a>
-
+                                @if ($c->course_status == true)
+                                    <div class="col mx-auto">
+                                        <div class="card h-100">
+                                            @if ($c->course_image == null)
+                                                <img src="{{asset('img/default.png')}}" class="card-img-top img-fluid"  style=""  alt="...">
+                                            @else
+                                                <img src="{{asset('storage/course/'.$c->course_image)}}" class="card-img-top img-fluid" style="" alt="..." >
+                                            @endif
+                                            <div class="card-body" style="">
+                                                <h5 class="card-title">{{$c->course_name}}</h5>
+                                                <p class="card-text">{{$c->course_description}}</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <a href="{{route('course.detail', $c->id)}}" class="btn btn-primary">View</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                @endforeach
-                            @endif
-                        @endforeach
+                                @endif
+                            @endforeach
+                        @endif
+                    @endforeach
                     </div>
                 </div>
         </div>
@@ -75,10 +76,10 @@
                                 console.log(course);
                                 $list += `<div class="col mx-auto">
                                             <div class="card h-100">`;
-                                                if (course.image == null) {
+                                                if (course.course_image == null) {
                                                     $list += `<img src="{{asset('img/default.png')}}" class="card-img-top img-fluid"  style=""  alt="...">`;
                                                 } else{
-                                                    $list += `<img src="{{asset('storage/course/')}}./${course.course.image}" class="card-img-top img-fluid" style="" alt="..." >`;
+                                                    $list += `<img src="{{asset('storage/course/')}}./${course.course_image}" class="card-img-top img-fluid" style="" alt="..." >`;
                                                 }
                                                 $list += `<div class="card-body" style="">
                                                             <h5 class="card-title">${course.course_name}</h5>

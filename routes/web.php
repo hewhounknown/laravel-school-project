@@ -47,14 +47,14 @@ Route::get('profile', [AuthController::class, 'profileForm'])->name('profile');
 Route::post('profile', [AuthController::class, 'editProfile']);
 Route::post('change/password', [AuthController::class, 'changePassword'])->name('password.change');
 
-Route::get('take/categories', [SchoolController::class, 'takeCats']);
+Route::get('teacher/categories/take', [CourseController::class, 'takeCategories']);
 Route::get('select/choices', [SchoolController::class, 'selectChoices']);
 Route::post('course/create', [CourseController::class, 'createCourse'])->name('teacher.course.create');
 Route::get('course/detail/{id}', [SchoolController::class, 'detailCourse'])->name('course.detail');
-Route::post('course/name={name}/add/topic', [SchoolController::class, 'addTopic'])->name('topicAdd');
-Route::post('course/topic={name}/add/content', [SchoolController::class, 'addContent'])->name('contentAdd');
+Route::post('course/topic/create', [CourseController::class, 'createTopic'])->name('teacher.topic.create');
+Route::post('course/topic/content/add', [CourseController::class, 'addContent'])->name('teacher.content.add');
 Route::get('course/topic={topicId}/view/content={contentId}', [SchoolController::class, 'content'])->name('contentView');
-Route::post('course/topic={topicId}/edit/content={contentId}', [SchoolController::class, 'editContent'])->name('contentEdit');
+Route::post('course/topic/content={contentId}/edit', [CourseController::class, 'editContent'])->name('teacher.content.edit');
 Route::get('course/topic={topicId}/delete/content={contentId}', [SchoolController::class, 'deleteContent'])->name('content.delete');
 Route::get('download/{filename}', [SchoolController::class, 'downloadFile'])->name('file.download');
 
@@ -106,10 +106,10 @@ Route::prefix('admin')->group(function() {
     Route::get('detail/course={id}', [AdminController::class, 'detailCourse'])->name('admin.course.detail');
     Route::post('edit/course', [CourseController::class, 'editCourse'])->name('admin.course.edit');
 
-    Route::post('create/topic/', [AdminController::class, 'createTopic'])->name('admin.topic.create');
-    Route::post('add/content/topic', [AdminController::class, 'addContent'])->name('admin.content.add');
+    Route::post('create/topic/', [CourseController::class, 'createTopic'])->name('admin.topic.create');
+    Route::post('add/content/topic', [CourseController::class, 'addContent'])->name('admin.content.add');
     Route::get('view/content={id}', [AdminController::class, 'viewContent'])->name('admin.content.view');
-    Route::post('edit/content={id}', [AdminController::class, 'editContent'])->name('admin.content.edit');
+    Route::post('edit/content={id}', [CourseController::class, 'editContent'])->name('admin.content.edit');
     Route::get('delete/content={id}/in/{topicId}', [AdminController::class, 'deleteContent'])->name('admin.content.delete');
 
     Route::get('view/profile', [AuthController::class, 'profileForm'])->name('admin.profile.view');

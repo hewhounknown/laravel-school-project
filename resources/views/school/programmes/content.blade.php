@@ -4,16 +4,6 @@
 
 @section('content')
 
-    {{-- {{Breadcrumbs::render('contentView', $topic, $content)}} --}}
-    {{-- <nav style="--bs-breadcrumb-divider: '>';" class="fs-3 bg-white"  aria-label="breadcrumb">
-        <ol class="breadcrumb bg-white">
-            <!-- Loop through each breadcrumb item -->
-            {!! Breadcrumbs::render('contentView', $topic, $content) !!}
-        </ol>
-    </nav> --}}
-
-        {{-- {{$topic->course->teacher}} --}}
-
     @if ($errors->any())
         @foreach ($errors->all() as $error)
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -23,9 +13,9 @@
         @endforeach
     @endif
 
-    @if (session('success'))
+    @if (session('status'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
+        {{ session('status') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
@@ -40,7 +30,7 @@
         @if (Auth::user()->role == 'teacher')
         <span class="position-absolute top-0 start-100 translate-middle p-2 border border-light rounded-circle" style="width: auto;">
             <button type="button" class="btn" data-bs-toggle="dropdown">
-                <i class="fa-solid fa-bars fa-xl"></i>
+                <i class="fa-solid fa-ellipsis-vertical fa-xl"></i>
             </button>
 
             <ul class="dropdown-menu">
@@ -59,7 +49,7 @@
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form enctype="multipart/form-data" action="{{route('contentEdit',['topicId'=>$content->topic->id, 'contentId'=>$content->id])}}" method="post">
+                    <form enctype="multipart/form-data" action="{{route('teacher.content.edit',$content->id)}}" method="post">
 
                     @csrf
                         <div class="modal-body">

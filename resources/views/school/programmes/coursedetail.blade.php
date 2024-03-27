@@ -15,7 +15,7 @@
 
     @if (session('status'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
+        {{ session('status') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
@@ -23,32 +23,6 @@
 
     <div class="container mt-5 ">
         <div class="row align-items-center justify-content-center shadow-lg p-3 rounded position-relative ">
-
-            @if (Auth::user()->id == $course->user_id)
-            <span class="position-absolute top-0 end-0" style="width: auto;">
-                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editCourseModal">
-                    <i class="fa-solid fa-bars fa-xl"></i>
-                </button>
-            </span>
-
-            <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Course Edit</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      ...
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            @endif
             <div class="col-5">
                 @if ($course->course_image == null)
                 <img src="{{asset('img/default.png')}}" class="img-fluid" style="width: 230px; height: 170px" alt="">
@@ -79,8 +53,76 @@
                 <div class="col-sm-9">{{_($course->course_description)}}</div>
             </div>
 
+            @if ($course->user_id == Auth::user()->id)
+            <span class="position-absolute top-0 end-0" style="width: auto;">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editCourseModal">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </button>
+            </span>
+
+
+            <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="max-width: 730px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form enctype="multipart/form-data" action="{{route('admin.course.edit')}}" method="post">
+                        @csrf
+                        <input type="hidden" name="courseId" value="{{$course->id}}">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <select name="programSelected" id="programSelected" class="form-select mb-2">
+                                        {{-- <option value="">select program</option> --}}
+                                        @foreach ($programs as $program)
+                                        <option value="{{$program->id}}" {{ $course->category->program->id == $program->id ? 'selected' : '' }}>{{$program->name}}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <h2 id="chosenCat" class="visually-hidden">{{$course->category_id}}</h2>
+                                    <div id="cats" class="my-2">
+
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mt-2">
+                                        <label for="image">
+                                            @if ($course->course_image == null)
+                                            <img src="{{asset('img/default.png')}}" class="img-fluid" style="" alt="">
+                                            @else
+                                            <img src="{{asset('storage/course/'.$course->course_image)}}" class="img-fluid" style="" alt="">
+                                            @endif
+                                        </label>
+                                        <input type="file" name="courseImage" id="image" class="form-control" onchange="">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="" class="form-label">Course Name</label>
+                                        <input type="text" name="courseName" id="" class="form-control mb-2" value="{{ old('courseName', $course->course_name)}}">
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea id="description" name="description" class="form-control" cols="30" rows="10">{{ old('description', $course->course_description) }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        @endif
+
             @if (Auth::user()->id != $course->user_id)
-                @if ($course->enrolls->isEmpty())
+                @if ($course->enrollments->isEmpty())
                     <div class="">
                         <a href="{{route('course.enroll', $course->id)}}" class="btn btn-outline-primary float-end">Enroll Now</a>
                     </div>
@@ -95,7 +137,7 @@
     </div>
 
 
-    @if (Auth::user()->id == $course->user_id)
+    {{-- @if (Auth::user()->id == $course->user_id)
         <div class="container mt-5">
             <div class="row">
                 <div class="col">
@@ -137,7 +179,79 @@
                 </div>
             </div>
         </div>
-        {{-- Modal for add topic end --}}
+    @endif --}}
+
+    @if ($course->user_id == Auth::user()->id)
+    <div class="row mt-5 justify-content-start">
+        <div class="col-3 text-center">
+            <div class="btn btn-outline-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#topicModal">
+                <i class="fa-solid fa-file-medical"></i>
+            </div>
+        </div>
+    </div>
+
+    {{--topic modal start--}}
+    <div class="modal fade" id="topicModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 720px">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Topic Create</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form enctype="multipart/form-data" action="{{route('teacher.topic.create')}}" method="post" class="Input">
+                @csrf
+                <input type="hidden" name="courseId" value="{{$course->id}}">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-2 col-sm-6">
+                            <label for="topicName">Topic Name</label>
+                            <input type="text" name="topicName" id="" class="form-control">
+                        </div>
+                        <div class="mb-2 col-sm-6">
+                            <label for="topicDescription">Topic Description</label>
+                            <textarea name="topicDescription" class="form-control" id="" cols="30" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="mb-2">
+                        <label for="contentTitle">Content Title</label>
+                        <input type="text" name="contentTitle" id="" class="form-control">
+                    </div>
+                    <div class="mb-2">
+                        <label for="contentType">Content Type</label>
+                        <select id="selectContentType" name="contentType" class="form-select">
+                            <option value="text">Text</option>
+                            <option value="file">File</option>
+                            <option value="image">Image</option>
+                            <option value="video">Video</option>
+                        </select>
+                    </div>
+                    <div class="mb-2" id="textArea">
+                        <label for="contentBody">Content</label>
+                        <textarea name="contentBody" class="form-control textContent" id="textContent" cols="30" rows="5"></textarea>
+                    </div>
+                    <div class="mb-2" id="fileArea">
+                        <label for="contentBody">Content</label>
+                        <input type="file" name="contentBody" id="" class="form-control">
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary Input">Create</button>
+                </div>
+            </form>
+            <div id="spinner" class="text-center m-5 spin">
+                <div class="spinner-border text-info" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    {{--topic modal end--}}
     @endif
 
 
@@ -175,18 +289,18 @@
 
                             @if (Auth::user()->id == $t->course->user_id)
                                 <div class="my-2" style="height: 3rem">
-                                    <button class="btn btn-outline-dark float-end mb-2" data-bs-toggle="modal" data-bs-target="#addContentModal{{$t->id}}">+ content {{$t->id}}</button>
+                                    <button class="btn btn-outline-dark float-end mb-2" data-bs-toggle="modal" data-bs-target="#addContentModal{{$t->id}}">+ content</button>
                                 </div>
                                 {{-- modal for add content start --}}
                                 <div class="modal fade" id="addContentModal{{$t->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title {{$t->id}}</h1>
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
 
-                                            <form id="contentInput" class="contentInput" enctype="multipart/form-data" action="{{route('contentAdd', $t->topic_name)}}" method="post" >
+                                            <form id="contentInput" class="contentInput" enctype="multipart/form-data" action="{{route('teacher.content.add')}}" method="post" >
                                                 @csrf
                                             <div class="modal-body">
                                                 <input type="hidden" name="topicId" value="{{$t->id}}">
@@ -208,12 +322,12 @@
 
                                                 <div id="textBox" class="mb-3 textBox">
                                                     <label for="contentBody">content</label>
-                                                    <textarea name="textContent" id="contentBody" cols="30" rows="10" class="form-control contentBody"></textarea>
+                                                    <textarea name="contentBody" id="contentBody" cols="30" rows="10" class="form-control contentBody"></textarea>
                                                 </div>
 
                                                 <div id="inputFile" class="mb-3 inputFile">
                                                     <label for="contentBody">content</label>
-                                                    <input type="file" name="fileContent" id="contentBody" class="form-control">
+                                                    <input type="file" name="contentBody" id="contentBody" class="form-control">
                                                 </div>
                                             </div>
 
@@ -268,6 +382,54 @@
         });
 
         $(document).ready(function(){
+
+            let programId = $('#programSelected').val();
+
+            function takeCategories(pId) {
+                let chosenCat = $('#chosenCat').text();
+                console.log(chosenCat);
+                $.ajax({
+                    url : 'http://localhost:8000/teacher/categories/take',
+                    type : 'GET',
+                    data : {'selectProgramId' : pId},
+                    success: function(cats){
+                        $catsList = '<label class="d-block">choose Category :</label>';
+                        //console.log(cats);
+                        cats.forEach(cat => {
+                            $catsList += `
+                                <div class="form-check d-inline-block">
+                                    <input class="form-check-input" type="radio" name="catId" id="cat${cat.id}" value="${cat.id}" ${chosenCat == cat.id ? 'checked' : ''}>
+                                    <label class="form-check-label" for="cat">
+                                    ${cat.category_name}
+                                    </label>
+                                </div>`;
+                        });
+                        $('#cats').html($catsList);
+                    }
+                });
+            }
+
+            takeCategories(programId); // work for initial program id
+
+            $('#programSelected').on('change', function(){
+                programId = $(this).val();
+                console.log(programId);
+                takeCategories(programId); // work for changed program id
+
+            });
+
+            $('#fileArea').hide();
+            $('#selectContentType').on('change', function(){
+                let typeSelected = $(this).val();
+                console.log(typeSelected);
+                if (typeSelected == 'text') {
+                    $('#textArea').show();
+                    $('#fileArea').hide();
+                } else {
+                    $('#fileArea').show();
+                    $('#textArea').hide();
+                }
+            });
 
             //when user select text or file input
             $('.textBox').hide();

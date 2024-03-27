@@ -124,72 +124,73 @@
             <div class="col-sm-9">{{_($course->course_description)}}</div>
         </div>
 
-        <span class="position-absolute top-0 end-0" style="width: auto;">
-            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editCourseModal">
-                <i class="fa-regular fa-pen-to-square"></i>
-            </button>
-        </span>
+        @if ($course->user_id == Auth::user()->id)
+            <span class="position-absolute top-0 end-0" style="width: auto;">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editCourseModal">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </button>
+            </span>
 
 
+            <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="max-width: 730px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form enctype="multipart/form-data" action="{{route('admin.course.edit')}}" method="post">
+                        @csrf
+                        <input type="hidden" name="courseId" value="{{$course->id}}">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <select name="programSelected" id="programSelected" class="form-select mb-2">
+                                        {{-- <option value="">select program</option> --}}
+                                        @foreach ($programs as $program)
+                                        <option value="{{$program->id}}" {{ $course->category->program->id == $program->id ? 'selected' : '' }}>{{$program->name}}</option>
+                                        @endforeach
+                                    </select>
 
-        <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" style="max-width: 730px;">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                 <form enctype="multipart/form-data" action="{{route('admin.course.edit')}}" method="post">
-                    @csrf
-                    <input type="hidden" name="courseId" value="{{$course->id}}">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <select name="programSelected" id="programSelected" class="form-select mb-2">
-                                    {{-- <option value="">select program</option> --}}
-                                    @foreach ($programs as $program)
-                                    <option value="{{$program->id}}" {{ $course->category->program->id == $program->id ? 'selected' : '' }}>{{$program->name}}</option>
-                                    @endforeach
-                                </select>
+                                    <h2 id="chosenCat" class="visually-hidden">{{$course->category_id}}</h2>
+                                    <div id="cats" class="my-2">
 
-                                <h2 id="chosenCat" class="visually-hidden">{{$course->category_id}}</h2>
-                                <div id="cats" class="my-2">
-
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mt-2">
-                                    <label for="image">
-                                        @if ($course->course_image == null)
-                                        <img src="{{asset('img/default.png')}}" class="img-fluid" style="" alt="">
-                                        @else
-                                        <img src="{{asset('storage/course/'.$course->course_image)}}" class="img-fluid" style="" alt="">
-                                        @endif
-                                    </label>
-                                    <input type="file" name="courseImage" id="image" class="form-control" onchange="">
+                                <div class="col-6">
+                                    <div class="mt-2">
+                                        <label for="image">
+                                            @if ($course->course_image == null)
+                                            <img src="{{asset('img/default.png')}}" class="img-fluid" style="" alt="">
+                                            @else
+                                            <img src="{{asset('storage/course/'.$course->course_image)}}" class="img-fluid" style="" alt="">
+                                            @endif
+                                        </label>
+                                        <input type="file" name="courseImage" id="image" class="form-control" onchange="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-2">
-                                    <label for="" class="form-label">Course Name</label>
-                                    <input type="text" name="courseName" id="" class="form-control mb-2" value="{{ old('courseName', $course->course_name)}}">
-                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label for="" class="form-label">Course Name</label>
+                                        <input type="text" name="courseName" id="" class="form-control mb-2" value="{{ old('courseName', $course->course_name)}}">
+                                    </div>
 
-                                <div class="mb-2">
-                                    <label for="description" class="form-label">Description</label>
-                                    <textarea id="description" name="description" class="form-control" cols="30" rows="10">{{ old('description', $course->course_description) }}</textarea>
+                                    <div class="mb-2">
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea id="description" name="description" class="form-control" cols="30" rows="10">{{ old('description', $course->course_description) }}</textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                 </form>
-              </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 
     @if (count($course->topics)>0)
