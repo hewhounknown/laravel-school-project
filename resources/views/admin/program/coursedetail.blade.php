@@ -126,10 +126,37 @@
 
         @if ($course->user_id == Auth::user()->id)
             <span class="position-absolute top-0 end-0" style="width: auto;">
-                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editCourseModal">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#controlModal">
                     <i class="fa-regular fa-pen-to-square"></i>
                 </button>
             </span>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="controlModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Control</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row justify-content-between p-2">
+                            <div class="col-4">
+                                <button type="button" class="btn btn-outline-info w-100" data-bs-toggle="modal" data-bs-target="#editCourseModal">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                            </div>
+                            <div class="col-4">
+                                <a href="{{route('admin.course.delete',$course->id)}}" class="btn btn-outline-danger w-100">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
 
 
             <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

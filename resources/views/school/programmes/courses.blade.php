@@ -4,6 +4,8 @@
 
 @section('content')
 
+    <h1>{{$program->name}}</h1>
+
     @if (session('status'))
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
         {{ session('status') }}

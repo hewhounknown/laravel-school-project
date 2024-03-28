@@ -60,6 +60,10 @@ class LibraryController extends Controller
 
     public function readBook($bookId)
     {
+        if(!Auth::check()){
+            return back()->with(['status' => 'You need to login first!']);
+        }
+
         $book = Library::where('id', $bookId)->first();
 
         if(Auth::user()->role == 'admin'){

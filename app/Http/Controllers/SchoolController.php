@@ -81,6 +81,9 @@ class SchoolController extends Controller
 
     public function detailCourse($id)
     {
+        if(!Auth::check()){
+            return back()->with(['status' => 'You need to login first!']);
+        }
         $course = Course::where('id', $id)->first();
 
         $enrollStatus = false;

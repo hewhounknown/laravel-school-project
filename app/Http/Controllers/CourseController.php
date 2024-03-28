@@ -227,4 +227,21 @@ class CourseController extends Controller
 
         return back()->with(['status' => 'you updated '. $req->contentTitle . ' successfully.']);
     }
+
+    public function deleteCourse($courseId)
+    {
+        $course = Course::where('id', $courseId)->first();
+
+        if($course->topics->isNotEmpty()){
+            return back()->with(['status' => "this course has one or more topic, you can't delete!"]);
+        } else{
+            Course::where('id', $courseId)->delete();
+
+            if(Auth::user()->role == 'admin'){
+                return redirect()->route('admin.courses.manage')->with(['status' => 'you delete one course successfully']);
+            } else{
+                return redirect()->route('profile')->with(['status' => 'you delete one course successfully']);
+            }
+        }
+    }
 }

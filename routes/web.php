@@ -51,6 +51,7 @@ Route::get('teacher/categories/take', [CourseController::class, 'takeCategories'
 Route::get('select/choices', [SchoolController::class, 'selectChoices']);
 Route::post('course/create', [CourseController::class, 'createCourse'])->name('teacher.course.create');
 Route::get('course/detail/{id}', [SchoolController::class, 'detailCourse'])->name('course.detail');
+Route::get('course/delete/{id}', [CourseController::class, 'deleteCourse'])->name('teacher.course.delete');
 Route::post('course/topic/create', [CourseController::class, 'createTopic'])->name('teacher.topic.create');
 Route::post('course/topic/content/add', [CourseController::class, 'addContent'])->name('teacher.content.add');
 Route::get('course/topic={topicId}/view/content={contentId}', [SchoolController::class, 'content'])->name('contentView');
@@ -72,7 +73,7 @@ Route::prefix('programmes')->group(function () {
 
 Route::prefix('library')->group(function() {
     Route::get('center', [LibraryController::class, 'center'])->name('library');
-    Route::get('view/book/{bookId}', [LibraryController::class, 'viewBook'])->name('book.view');
+    Route::get('view/book/{bookId}', [LibraryController::class, 'readBook'])->name('book.view');
     Route::post('add/book', [LibraryController::class, 'addBook'])->name('book.add');
 });
 
@@ -105,6 +106,7 @@ Route::prefix('admin')->group(function() {
     Route::get('unpublic/course={id}', [AdminController::class, 'unpublicCourse'])->name('admin.course.unpublic');
     Route::get('detail/course={id}', [AdminController::class, 'detailCourse'])->name('admin.course.detail');
     Route::post('edit/course', [CourseController::class, 'editCourse'])->name('admin.course.edit');
+    Route::get('delete/course={id}', [CourseController::class, 'deleteCourse'])->name('admin.course.delete');
 
     Route::post('create/topic/', [CourseController::class, 'createTopic'])->name('admin.topic.create');
     Route::post('add/content/topic', [CourseController::class, 'addContent'])->name('admin.content.add');
