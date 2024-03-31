@@ -138,39 +138,69 @@
     </div>
 
 
+    <div class="m-4">
+        <ul class="list-group">
+            <li class="list-group-item active" aria-current="true"><b>Comments <span class="badge text-bg-info">{{count($content->comments)}}</span> </b></li>
+            @foreach ($content->comments as $comment)
+                <li class="list-group-item">
+                    <div class="fw-bold fst-italic">{{$comment->user->name}}</div>
+                    &nbsp; &nbsp; &nbsp;
+                    <div>{{$comment->body}}
+                        @if ($comment->user->id == Auth::user()->id)
+                            <a href="{{route('content.comment.delete',$comment->id)}}" class="btn btn-outline-danger float-end">
+                                <i class="fa-solid fa-delete-left"></i>
+                            </a>
+                        @endif
+                    </div>
+                </li>
+            @endforeach
+        </ul>
 
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#contentBody'))
-            .then(editor => {
-            console.log('Editor initialized:', editor);
-            // You can use the 'editor' instance for further operations
-            })
-            .catch(error => {
-            console.error('Error initializing the editor:', error);
-            });
+        <form action="{{route('content.comment.write')}}" method="post" class="mt-3">
+            @csrf
+            <input type="hidden" name="contentId" value="{{$content->id}}">
+            <textarea name="commentBody" class="form-control" id="" cols="30" rows="4"></textarea>
+            <button type="submit" class="btn btn-outline-primary float-end mt-2">
+                <i class="fa-regular fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
 
-        const select = document.getElementById('selectBox');
-        const text = document.getElementById('textBox');
-        const file = document.getElementById('inputFile');
-        //const currentType = document.getElementById('currentType').value;
-        // console.log(select);
-        if (select.value == 'text') {
+@endsection
+
+@section('J_Script')
+<script>
+    ClassicEditor
+        .create(document.querySelector('#contentBody'))
+        .then(editor => {
+        console.log('Editor initialized:', editor);
+        // You can use the 'editor' instance for further operations
+        })
+        .catch(error => {
+        console.error('Error initializing the editor:', error);
+        });
+
+    const select = document.getElementById('selectBox');
+    const text = document.getElementById('textBox');
+    const file = document.getElementById('inputFile');
+    //const currentType = document.getElementById('currentType').value;
+    // console.log(select);
+    if (select.value == 'text') {
+        file.style.display = 'none';
+    } else {
+        text.style.display = 'none';
+    }
+
+    select.addEventListener('change', e => {
+        let val = e.target.value;
+        if (val == 'text') {
             file.style.display = 'none';
+            text.style.display = 'block';
         } else {
             text.style.display = 'none';
+            file.style.display = 'block';
+            text.innerHTML = '';    // clear info in textarea for $req
         }
-
-        select.addEventListener('change', e => {
-            let val = e.target.value;
-            if (val == 'text') {
-                file.style.display = 'none';
-                text.style.display = 'block';
-            } else {
-                text.style.display = 'none';
-                file.style.display = 'block';
-                text.innerHTML = '';    // clear info in textarea for $req
-            }
-        })
-    </script>
+    })
+</script>
 @endsection

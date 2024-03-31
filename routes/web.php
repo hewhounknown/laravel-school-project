@@ -57,6 +57,8 @@ Route::post('course/topic/content/add', [CourseController::class, 'addContent'])
 Route::get('course/topic={topicId}/view/content={contentId}', [SchoolController::class, 'content'])->name('contentView');
 Route::post('course/topic/content={contentId}/edit', [CourseController::class, 'editContent'])->name('teacher.content.edit');
 Route::get('course/topic={topicId}/delete/content={contentId}', [SchoolController::class, 'deleteContent'])->name('content.delete');
+Route::post('content/comment/write', [SchoolController::class, 'writeComment'])->name('content.comment.write');
+Route::get('content/comment={id}/delete', [SchoolController::class, 'deleteComment'])->name('content.comment.delete');
 Route::get('download/{filename}', [SchoolController::class, 'downloadFile'])->name('file.download');
 
 Route::get('enroll/course={id}', [SchoolController::class, 'enrollCourse'])->name('course.enroll');

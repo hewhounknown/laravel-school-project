@@ -116,6 +116,17 @@
 
     </div>
 
+    <ul class="list-group">
+        <li class="list-group-item active" aria-current="true"><b>Comments <span class="badge text-bg-info">{{count($content->comments)}}</span> </b></li>
+        @foreach ($content->comments as $comment)
+            <li class="list-group-item">
+                <div class="fw-bold fst-italic">{{$comment->user->name}}</div>
+                &nbsp; &nbsp; &nbsp;
+                <div>{{$comment->body}}</div>
+            </li>
+        @endforeach
+    </ul>
+
 @endsection
 
 @section('J_Script')

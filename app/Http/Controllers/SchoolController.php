@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Topic;
-use App\Models\Content;
 use App\Models\Course;
+use App\Models\Comment;
+use App\Models\Content;
 use App\Models\Program;
 use App\Models\Category;
 use App\Models\Languages;
@@ -248,5 +249,22 @@ class SchoolController extends Controller
         Course::where('id', $course->id)->decrement('enroll_count');
 
         return back()->with(['status' => 'you kicked student successfully!']);
+    }
+
+    public function writeComment(Request $req)
+    {
+        $req->validate(['commentBody' => 'required']);
+        Comment::create([
+            'body' => $req->commentBody,
+            'user_id' => Auth::user()->id,
+            'content_id' => $req->contentId
+        ]);
+        return back()->with(['status' => 'you wrote comment successfully']);
+    }
+
+    public function deleteComment($commentId)
+    {
+        Comment::where('id', $commentId)->delete();
+        return back()->with(['status' => 'you deleted your comment successfully!']);
     }
 }

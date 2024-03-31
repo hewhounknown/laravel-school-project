@@ -20,4 +20,8 @@ class Content extends Model
     public function topic(){
         return $this->belongsTo(Topic::class);
     }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
 }
