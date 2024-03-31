@@ -97,16 +97,10 @@ class SchoolController extends Controller
         return view('school.programmes.coursedetail', ['course' => $course, 'enrollStatus' => $enrollStatus]);
     }
 
-    public function content($topicId, $contentId)
+    public function content($contentId)
     {
-        //dd($contentId);
         $content = Content::where('id', $contentId)->first();
-        $topic = Topic::where('id', $topicId)->first();
-        // print_r($topic);
-        //dd($content);
-        // $breadcrumbs = Breadcrumbs::render('contentView', $topic, $content); // for using breadcrumbs
-        // dd($breadcrumbs);
-        return view('school.programmes.content', ['content' => $content, 'topic' => $topic]);
+        return view('school.programmes.content', ['content' => $content]);
     }
 
     public function downloadFile($fileName)
@@ -119,53 +113,6 @@ class SchoolController extends Controller
         }
 
         abort(404, 'File not found');
-    }
-
-    public function editContent($topicId, $contentId, Request $req)
-    {
-       // $content = $req->except('_token');
-       // dd($content);
-        if($req->fileContent == null){
-            $req->validate([
-                'contentTitle' => 'required',
-                'textContent' => 'required',
-            ]);
-
-            Content::where('id', $contentId)->update([
-                'title' => $req->contentTitle,
-                'content_type' => $req->contentType,
-                'content_body' => $req->textContent,
-                'topic_id' => $topicId
-            ]);
-        } else {
-            //dd($req->all());
-            $req->validate([
-                'contentTitle' => 'required',
-                'fileContent' => 'required'
-            ]);
-
-            $file = $req->file('fileContent');
-
-            $fileInDB = Content::where('id',$contentId)->first();
-            $fileInDB = $fileInDB->content_path;
-
-            if($fileInDB != null){
-                Storage::disk('public')->delete('course/topic/content'. $fileInDB);  // Storage == storage/app
-            }
-
-            $fileName = time() . '_' . $file->getClientOriginalName();  // give a name combination with time
-
-            Storage::disk('public')->putFileAs('course/topic/content', $file, $fileName); // store in storage / app / public / course/topic/content
-
-            Content::where('id', $contentId)->update([
-                'title' => $req->contentTitle,
-                'content_type' => $req->contentType,
-                'content_path' => $fileName,
-                'topic_id' => $topicId
-            ]);
-        }
-
-        return back()->with(['status' => 'you updated '. $req->contentTitle . ' successfully.']);
     }
 
     public function deleteContent($topicId, $contentId)

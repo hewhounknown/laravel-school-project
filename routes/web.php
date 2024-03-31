@@ -45,26 +45,27 @@ Route::get('home', [SchoolController::class, 'home'])->name('home');
 
 Route::get('profile', [AuthController::class, 'profileForm'])->name('profile');
 Route::post('profile', [AuthController::class, 'editProfile']);
-Route::post('change/password', [AuthController::class, 'changePassword'])->name('password.change');
+Route::post('password/change', [AuthController::class, 'changePassword'])->name('password.change');
 
 Route::get('teacher/categories/take', [CourseController::class, 'takeCategories']);
 Route::get('select/choices', [SchoolController::class, 'selectChoices']);
+
 Route::post('course/create', [CourseController::class, 'createCourse'])->name('teacher.course.create');
 Route::get('course/detail/{id}', [SchoolController::class, 'detailCourse'])->name('course.detail');
 Route::get('course/delete/{id}', [CourseController::class, 'deleteCourse'])->name('teacher.course.delete');
 Route::post('course/topic/create', [CourseController::class, 'createTopic'])->name('teacher.topic.create');
 Route::post('course/topic/content/add', [CourseController::class, 'addContent'])->name('teacher.content.add');
-Route::get('course/topic={topicId}/view/content={contentId}', [SchoolController::class, 'content'])->name('contentView');
-Route::post('course/topic/content={contentId}/edit', [CourseController::class, 'editContent'])->name('teacher.content.edit');
-Route::get('course/topic={topicId}/delete/content={contentId}', [SchoolController::class, 'deleteContent'])->name('content.delete');
+Route::get('course/topic/content/view/{contentId}', [SchoolController::class, 'content'])->name('contentView');
+Route::post('course/topic/content/edit/{contentId}', [CourseController::class, 'editContent'])->name('teacher.content.edit');
+Route::get('course/topic={topicId}/content/delete{contentId}', [SchoolController::class, 'deleteContent'])->name('content.delete');
 Route::post('content/comment/write', [SchoolController::class, 'writeComment'])->name('content.comment.write');
-Route::get('content/comment={id}/delete', [SchoolController::class, 'deleteComment'])->name('content.comment.delete');
+Route::get('content/comment/delete/{id}', [SchoolController::class, 'deleteComment'])->name('content.comment.delete');
 Route::get('download/{filename}', [SchoolController::class, 'downloadFile'])->name('file.download');
 
-Route::get('enroll/course={id}', [SchoolController::class, 'enrollCourse'])->name('course.enroll');
-Route::get('unenroll/course={id}', [SchoolController::class, 'unenrollCourse'])->name('course.unenroll');
+Route::get('course/enroll/{id}', [SchoolController::class, 'enrollCourse'])->name('course.enroll');
+Route::get('course/unenroll/{id}', [SchoolController::class, 'unenrollCourse'])->name('course.unenroll');
 
-Route::get('control/students', [SchoolController::class, 'studentTable'])->name('student.control');
+Route::get('students/control', [SchoolController::class, 'studentTable'])->name('student.control');
 Route::get('accept/student={studentId}/for/course={courseName}', [SchoolController::class, 'acceptEnroll'])->name('student.accept');
 Route::get('kick/student={studentId}/from/course={courseName}', [SchoolController::class, 'kickStudent'])->name('student.kick');
 

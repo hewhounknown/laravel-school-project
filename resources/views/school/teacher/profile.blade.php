@@ -407,7 +407,7 @@
                 console.log(programId);
 
                 $.ajax({
-                    url : 'http://localhost:8000/take/categories',
+                    url : 'http://localhost:8000/teacher/categories/take',
                     type : 'GET',
                     data : {'selectProgramId' : programId},
                     success: function(cats){

@@ -305,7 +305,7 @@
                                 <table class="table table-hover">
                                     <tbody>
                                         @foreach ($t->contents as $content)
-                                            <hr> <a href="{{route('contentView',['topicId'=>$t->id, 'contentId'=>$content->id])}}">
+                                            <hr> <a href="{{route('contentView',$content->id)}}">
                                                 <tr>{{$content->title}}</tr>
                                             </a>
                                         @endforeach
