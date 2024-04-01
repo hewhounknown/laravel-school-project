@@ -52,6 +52,7 @@ Route::get('select/choices', [SchoolController::class, 'selectChoices']);
 
 Route::post('course/create', [CourseController::class, 'createCourse'])->name('teacher.course.create');
 Route::get('course/detail/{id}', [SchoolController::class, 'detailCourse'])->name('course.detail');
+Route::post('course/review/create', [SchoolController::class, 'createReview'])->name('course.review.create');
 Route::get('course/delete/{id}', [CourseController::class, 'deleteCourse'])->name('teacher.course.delete');
 Route::post('course/topic/create', [CourseController::class, 'createTopic'])->name('teacher.topic.create');
 Route::post('course/topic/content/add', [CourseController::class, 'addContent'])->name('teacher.content.add');

@@ -214,4 +214,20 @@ class SchoolController extends Controller
         Comment::where('id', $commentId)->delete();
         return back()->with(['status' => 'you deleted your comment successfully!']);
     }
+
+    public function createReview(Request $req)
+    {
+        $req->validate([
+            'rating' => 'required',
+            'comment' => 'required'
+        ]);
+        Review::create([
+            'rating' => $req->rating,
+            'comment' => $req->comment,
+            'course_id' => $req->courseId,
+            'user_id' => Auth::user()->id
+        ]);
+
+        return back()->with(['status' => 'you created review for this course successfully']);
+    }
 }

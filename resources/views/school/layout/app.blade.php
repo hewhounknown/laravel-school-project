@@ -140,6 +140,8 @@
         }
       </style>
 
+        @yield('Css');
+
       <!-- Custom styles for this template -->
       <link href="carousel.css" rel="stylesheet">
 </head>

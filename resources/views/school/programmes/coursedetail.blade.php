@@ -2,6 +2,24 @@
 
 @section('title', 'course detail')
 
+@section('Css')
+<style>
+    .rating {
+        font-size: 24px;
+    }
+    .rating .fa-star {
+        color: #ccc;
+        cursor: pointer;
+    }
+    .rating .fa-star:hover {
+        color: #FFD700;
+    }
+    .rating .fa-star.checked {
+        color: #FFD700;
+    }
+</style>
+@endsection
+
 @section('content')
 
     @if ($errors->any())
@@ -161,51 +179,6 @@
 
         </div>
     </div>
-
-
-    {{-- @if (Auth::user()->id == $course->user_id)
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col">
-                    <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#addTopicModal">+ Add Topic</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal for add topic start -->
-        <div class="modal fade" id="addTopicModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Create Topic</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="{{route('topicAdd',$course->course_name)}}" method="post">
-                        @csrf
-                        <div class="modal-body">
-
-                                <input type="hidden" name="courseId" value="{{$course->id}}">
-
-                                <div class="mb-3">
-                                    <label for="topicTitle">Your Topic title</label>
-                                    <input type="text" name="topicTitle" id="topicTitle" class="form-control">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="topicDescription">Description</label>
-                                    <textarea name="topicDescription" id="topicDescription" class="form-control" cols="30" rows="10"></textarea>
-                                </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endif --}}
 
     @if ($course->user_id == Auth::user()->id)
     <div class="row mt-5 justify-content-start">
@@ -391,6 +364,47 @@
         </h5>
     @endif
 
+    <div class="container mt-5">
+        <ul class="list-group">
+            <li class="list-group-item bg-info-subtle text-info-emphasis" aria-current="true">Reviews</li>
+            <li class="list-group-item">A second item</li>
+            <li class="list-group-item">A third item</li>
+            <li class="list-group-item">A fourth item</li>
+            <li class="list-group-item">And a fifth one</li>
+        </ul>
+
+        <form class="mt-3" action="{{route('course.review.create')}}" id="addStar" method="POST">
+            @csrf
+            <input type="hidden" name="courseId" value="{{$course->id}}">
+            <h5 class="border-bottom border-info">Review here:</h5>
+                <div class="rating">
+                    <label for="rat1">
+                        <span class="fa fa-star" onclick="rate(1)" id="star1"></span>
+                    </label>
+                    <input type="radio" name="rating" value="1" id="rat1" class="form-check-input d-none">
+                    <label for="rat2">
+                        <span class="fa fa-star" onclick="rate(2)" id="star2"></span>
+                    </label>
+                    <input type="radio" name="rating" value="2" id="rat2" class="form-check-input d-none">
+                    <label for="rat3">
+                        <span class="fa fa-star" onclick="rate(3)" id="star3"></span>
+                    </label>
+                    <input type="radio" name="rating" value="3" id="rat3" class="form-check-input d-none">
+                    <label for="rat4">
+                        <span class="fa fa-star" onclick="rate(4)" id="star4"></span>
+                    </label>
+                    <input type="radio" name="rating" value="4" id="rat4" class="form-check-input d-none">
+                    <label for="rat5">
+                        <span class="fa fa-star" onclick="rate(5)" id="star5"></span>
+                    </label>
+                    <input type="radio" name="rating" value="5" id="rat5" class="form-check-input d-none">
+                </div>
+
+                <textarea class="form-control" name="comment" id="" cols="30" rows="4"></textarea>
+                <button type="submit" class="btn btn-outline-primary mt-2 float-end">Create</button>
+        </form>
+    </div>
+
 @endsection
 
 @section('J_Script')
@@ -489,5 +503,19 @@
                 }, 1000);
             });
         });
+
+        let currentRating = 0;
+        function rate(stars) {
+            currentRating = stars;
+            for (let i = 1; i <= 5; i++) {
+                const star = document.getElementById('star' + i);
+                if (i <= stars) {
+                    star.classList.add('checked');
+                } else {
+                    star.classList.remove('checked');
+                }
+            }
+            // You can perform additional actions here, like sending the rating to the server via AJAX.
+        }
     </script>
 @endsection
