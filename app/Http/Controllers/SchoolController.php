@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Topic;
 use App\Models\Course;
+use App\Models\Review;
 use App\Models\Comment;
 use App\Models\Content;
 use App\Models\Program;
@@ -229,5 +230,11 @@ class SchoolController extends Controller
         ]);
 
         return back()->with(['status' => 'you created review for this course successfully']);
+    }
+
+    public function deleteReview($reviewId)
+    {
+        Review::where('id', $reviewId)->delete();
+        return back()->with(['status' => 'you deleted your review for this course']);
     }
 }

@@ -313,6 +313,27 @@
         <h6>There are no topic rightnow.</h6>
     </div>
     @endif
+
+    <div class="container my-5">
+        <ul class="list-group">
+            <li class="list-group-item bg-info-subtle text-info-emphasis fs-5" aria-current="true">Reviews <span class="badge text-bg-info">{{count($course->reviews)}}</span></li>
+            @foreach ($course->reviews as $review)
+            <li class="list-group-item">
+                <b>{{$review->user->name}}</b>
+                <div class="row mt-2">
+                    <div class="col-8">
+                        {{$review->comment}}
+                    </div>
+                    <div class="col-4">
+                        @for ($i=0; $i < $review->rating ; $i++)
+                        <span class="fa fa-star" style="color: #FFD700"></span>
+                        @endfor
+                    </div>
+                </div>
+            </li>
+            @endforeach
+        </ul>
+    </div>
 @endsection
 
 @section('J_Script')

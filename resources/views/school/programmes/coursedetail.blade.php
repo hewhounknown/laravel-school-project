@@ -366,13 +366,30 @@
 
     <div class="container mt-5">
         <ul class="list-group">
-            <li class="list-group-item bg-info-subtle text-info-emphasis" aria-current="true">Reviews</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-            <li class="list-group-item">A fourth item</li>
-            <li class="list-group-item">And a fifth one</li>
+            <li class="list-group-item bg-info-subtle text-info-emphasis fs-5" aria-current="true">Reviews <span class="badge text-bg-info">{{count($course->reviews)}}</span></li>
+            @foreach ($course->reviews as $review)
+            <li class="list-group-item">
+                <b>{{$review->user->name}}</b>
+                <div class="row mt-2">
+                    <div class="col-8">
+                        {{$review->comment}}
+                    </div>
+                    <div class="col-4">
+                        @for ($i=0; $i < $review->rating ; $i++)
+                        <span class="fa fa-star" style="color: #FFD700"></span>
+                        @endfor
+                    </div>
+                </div>
+                @if ($review->user_id == Auth::user()->id)
+                    <a href="{{route('course.review.delete', $review->id)}}" class="btn btn-sm btn-outline-danger mt-2 float-end">
+                        <i class="fa-solid fa-delete-left"></i>
+                    </a>
+                @endif
+            </li>
+            @endforeach
         </ul>
 
+        @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id)
         <form class="mt-3" action="{{route('course.review.create')}}" id="addStar" method="POST">
             @csrf
             <input type="hidden" name="courseId" value="{{$course->id}}">
@@ -403,6 +420,8 @@
                 <textarea class="form-control" name="comment" id="" cols="30" rows="4"></textarea>
                 <button type="submit" class="btn btn-outline-primary mt-2 float-end">Create</button>
         </form>
+        @endif
+
     </div>
 
 @endsection

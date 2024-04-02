@@ -38,4 +38,8 @@ class Course extends Model
     public function users(){
         return $this->belongsToMany(User::class, 'enrollments');
     }
+
+    public function reviews(){
+        return $this->hasMany(Review::class);
+    }
 }
