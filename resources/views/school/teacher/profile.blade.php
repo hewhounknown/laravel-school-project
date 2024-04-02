@@ -117,42 +117,6 @@
         </div>
     </div>
 
-        <!-- Modal to add course -->
-        {{-- <div class="modal fade" id="choiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Choose your course's type</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row justify-content-between p-3">
-                        @foreach ($program as $p)
-                            <div class="col bg-text-light rounded mb-2">
-                                    <a href="{{route('courseForm', $p->id)}}">
-                                        <button type="submit" class="btn btn-outline-dark w-100" style="height: 5rem;">{{$p->name}}</button>
-                                    </a>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-            </div>
-        </div> --}}
-
-
-
-    {{-- <div class="container mb-5">
-        <div class="row shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-            <div class="d-grid col-7 mx-auto">
-                <a href="" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#choiceModal">
-                    create your courses here!
-                </a>
-            </div>
-        </div>
-    </div> --}}
-
-
 
     <div id="content">
 
@@ -244,52 +208,63 @@
             </div>
             @endforeach
         </div>
+
+        @if ($list != null)
+        <div class="container my-5">
+            <div class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
+                <h3 class="default">Your enrolled courses</h3>
+
+                @foreach ($list as $l)
+                    @foreach ($l['course'] as $course)
+                        {{-- {{$data}} --}}
+                        <div class="col-md-3 mx-5 my-3">
+                            <div class="card " style="width: 20rem;">
+                                @if ($course->course_image == null)
+                                    <img src="{{asset('img/default.png')}}" class="card-img-top" alt="...">
+                                @else
+                                    <img src="{{asset('storage/course/'.$course->course_image)}}" class="card-img-top" style="height: 10rem" alt="..." >
+                                @endif
+                                <div class="card-body" style="height: 9rem">
+                                    <h5 class="card-title">{{$course->course_name}}</h5>
+                                    <p class="card-text">{{$course->course_description}}</p>
+                                </div>
+                                <div class="card-footer">
+                                    @if ($l['enroll']->status == false)
+                                    <a href="//" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#enrollModal">pls wait</a>
+
+                                    <div id="enrollModal" class="modal" tabindex="-1">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title">Modal title</h5>
+                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <p>You can unenroll this {{$course->course_name}} , Do you want to?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
+                                              <a href="{{route('course.unenroll', $course->id)}}" type="button" class="btn btn-primary">Unenroll</a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    @else
+                                    <a href="{{route('courseDetail', $course->id)}}" class="btn btn-outline-primary">View Courses</a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endforeach
+            </div>
+        </div>
+        @endif
     </div>
 
-    {{-- <div id="createForm" class="container">
-            <form enctype="multipart/form-data" method="POST" action="{{route('teacher.course.create')}}">
-                @csrf
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <select name="programSelected" id="programSelected" class="form-select mb-2">
-                                <option value="">select program</option>
-                                @foreach ($programs as $program)
-                                <option value="{{$program->id}}">{{$program->name}}</option>
-                                @endforeach
-                            </select>
 
-                            <div id="cats" class="my-2">
 
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="mt-2">
-                                <label for="image">
-                                    <img id="img" src="{{asset('img/add_image.png')}}" alt="profile picture" class="rounded"  style="width:230px; hieght: 180px;">
-                                </label>
-                                <input type="file" name="courseImage" id="image" class="form-control" onchange="">
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="mb-2">
-                                <label for="" class="form-label">Course Name</label>
-                                <input type="text" name="courseName" id="" class="form-control mb-2">
-                            </div>
-
-                            <div class="mb-2">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea id="description" name="description" class="form-control" cols="30" rows="10"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </div>
-            </form>
-    </div> --}}
 @endsection
 
 @section('J_Script')

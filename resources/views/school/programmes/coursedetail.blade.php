@@ -166,7 +166,7 @@
         @endif
 
             @if (Auth::user()->id != $course->user_id)
-                @if ($course->enrollments->isEmpty())
+                @if (count(Auth::user()->enrollments) < 1)
                     <div class="">
                         <a href="{{route('course.enroll', $course->id)}}" class="btn btn-outline-primary float-end">Enroll Now</a>
                     </div>

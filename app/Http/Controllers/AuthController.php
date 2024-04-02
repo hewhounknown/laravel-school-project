@@ -81,31 +81,37 @@ class AuthController extends Controller
       if (Auth::user()->role == 'student') {
         if(Enrollment::where('user_id', Auth::user()->id)->exists()){
             $enroll = Enrollment::where('user_id', Auth::user()->id)->get();
-            //dd($enroll);
             $list = [];
             foreach($enroll as $e){
-                //dd($e->course_id);
                 $course = Course::where('id', $e->course_id)->get();
                 $list[] = [
                     'course' => $course,
                     'enroll' => $e
                 ];
-                //
             }
-            //dd($course);
-
-            // dd($list);
             return view('school.student.profile', ['list' => $list]);
         }
         return view('school.student.profile', ['list' => null]);
       }
       elseif (Auth::user()->role == 'teacher') {
-        # code...
         $courses = Course::where('user_id', Auth::user()->id)->get();
 
         $program = Program::get(); // for course create
 
-        return view('school.teacher.profile', ['courses' => $courses, 'program' => $program]);
+        if(Enrollment::where('user_id', Auth::user()->id)->exists()){
+            $enroll = Enrollment::where('user_id', Auth::user()->id)->get();
+            $list = [];
+            foreach($enroll as $e){
+                $course = Course::where('id', $e->course_id)->get();
+                $list[] = [
+                    'course' => $course,
+                    'enroll' => $e
+                ];
+            }
+            return view('school.teacher.profile', ['courses' => $courses, 'program' => $program, 'list' => $list]);
+        }
+
+        return view('school.teacher.profile', ['courses' => $courses, 'program' => $program, 'list' => null]);
       }
       elseif(Auth::user()->role == 'admin'){
         return view('admin.acc.profile');
