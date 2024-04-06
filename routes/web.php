@@ -45,6 +45,7 @@ Route::prefix('programmes')->group(function () {
 });
 
 Route::middleware('auth')->group(function(){
+
     Route::get('profile', [AuthController::class, 'profileForm'])->name('profile');
     Route::post('profile', [AuthController::class, 'editProfile']);
     Route::post('password/change', [AuthController::class, 'changePassword'])->name('password.change');
@@ -66,6 +67,7 @@ Route::middleware('auth')->group(function(){
         Route::get('review/delete/{id}', [SchoolController::class, 'deleteReview'])->name('course.review.delete');
 
         Route::middleware('teacher_middleware')->group(function(){
+            Route::post('edit', [CourseController::class, 'editCourse'])->name('teacher.course.edit');
             Route::get('delete/{id}', [CourseController::class, 'deleteCourse'])->name('teacher.course.delete');
 
             Route::post('topic/create', [CourseController::class, 'createTopic'])->name('teacher.topic.create');
@@ -84,12 +86,13 @@ Route::middleware('auth')->group(function(){
     Route::get('kick/student={studentId}/from/course={courseName}', [SchoolController::class, 'kickStudent'])->name('student.kick');
 
     Route::prefix('library')->group(function() {
-        Route::get('center', [LibraryController::class, 'center'])->name('library');
+        Route::get('center', [LibraryController::class, 'center'])->name('library')->withoutMiddleware('auth');
         Route::get('view/book/{bookId}', [LibraryController::class, 'readBook'])->name('book.view');
         Route::post('add/book', [LibraryController::class, 'addBook'])->name('book.add');
     });
 
     Route::group(['prefix'=> 'admin', 'middleware' => 'admin_middleware'], function() {
+
         Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware('auth');
 
         Route::get('manage/users', [AdminController::class, 'manageUsers'])->name('users.manage');
