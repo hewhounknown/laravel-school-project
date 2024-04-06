@@ -2,8 +2,8 @@
 @extends('school.layout.app')
 
 @section('content')
-    <div class="p-5">
-        <div class="card m-5 p-2">
+    <div class="row justify-content-center"">
+        <div class="card col-sm-6 m-5 p-2">
             <div class="mb-2 text-sm text-gray-400">
                 {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
             </div>

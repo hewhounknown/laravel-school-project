@@ -6,8 +6,8 @@
 @section('title', 'Login')
 
 @section('content')
-    <div class="p-5">
-        <form method="POST" action="{{ route('login') }}" class="card m-5 p-4">
+    <div class="row justify-content-center">
+        <form method="POST" action="{{ route('login') }}" class="card col-sm-6 m-5 p-4">
             @csrf
 
             <!-- Email Address -->

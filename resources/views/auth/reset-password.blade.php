@@ -2,8 +2,8 @@
 @extends('school.layout.app')
 
 @section('content')
-    <div class="p-5">
-        <form method="POST" action="{{ route('password.store') }}" class="m-5">
+    <div class="row justify-content-center">
+        <form method="POST" action="{{ route('password.store') }}" class="col-sm-6 card m-5 p-4">
             @csrf
 
             <!-- Password Reset Token -->
