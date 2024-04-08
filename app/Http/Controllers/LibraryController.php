@@ -13,7 +13,7 @@ class LibraryController extends Controller
     //
     public function center()
     {
-        $books = Library::all();
+        $books = Library::where('public_status', true)->get();
 
         return view('school.library.center', ['books' => $books]);
     }
@@ -65,12 +65,31 @@ class LibraryController extends Controller
         }
 
         $book = Library::where('id', $bookId)->first();
-
+        //dd($book->book_path);
+        // $filePath = 'public/library/books/' . $book->book_path;
+        // $pdfContent = Storage::get($filePath);
+        // //dd($pdfContent);
         if(Auth::user()->role == 'admin'){
-            return view('admin.library.book', compact('book'));
+            return view('admin.library.book', ['book' => $book]);
         } else{
-            return Pdf::view('school.library.book', ['book'=>$book])->format('a4')->name($book->book_name);
+            return view('school.library.book', ['book' => $book]);
         }
+    }
+
+    public function showPDF($id)
+    {
+        //dd($id);
+        // Retrieve the PDF file path from the database
+        $pdfFile = Library::findOrFail($id);
+        $filePath = public_path('storage/library/books/' . $pdfFile->book_path);
+
+        // Check if the file exists
+        if (!file_exists($filePath)) {
+            abort(404);
+        }
+
+        // Stream the file to the browser
+        return response()->file($filePath, ['Content-Type' => 'application/pdf']);
     }
 }
 

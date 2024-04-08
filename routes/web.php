@@ -20,20 +20,6 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
 require __DIR__.'/auth.php';
 
 Route::get('/', [SchoolController::class, 'home']);
@@ -45,7 +31,6 @@ Route::prefix('programmes')->group(function () {
 });
 
 Route::middleware('auth')->group(function(){
-
     Route::get('profile', [AuthController::class, 'profileForm'])->name('profile');
     Route::post('profile', [AuthController::class, 'editProfile']);
     Route::post('password/change', [AuthController::class, 'changePassword'])->name('password.change');
@@ -56,7 +41,6 @@ Route::middleware('auth')->group(function(){
     Route::prefix('course')->group(function() {
         Route::post('create', [CourseController::class, 'createCourse'])->name('teacher.course.create');
         Route::get('detail/{id}', [SchoolController::class, 'detailCourse'])->name('course.detail');
-
 
         Route::get('enroll/{id}', [SchoolController::class, 'enrollCourse'])->name('course.enroll');
         Route::get('unenroll/{id}', [SchoolController::class, 'unenrollCourse'])->name('course.unenroll');
@@ -93,7 +77,7 @@ Route::middleware('auth')->group(function(){
 
     Route::group(['prefix'=> 'admin', 'middleware' => 'admin_middleware'], function() {
 
-        Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware('auth');
+        Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
         Route::get('manage/users', [AdminController::class, 'manageUsers'])->name('users.manage');
         Route::get('delete/user={id}', [AdminController::class, 'deleteUser'])->name('admin.user.delete');
@@ -108,6 +92,7 @@ Route::middleware('auth')->group(function(){
         Route::get('view/bookslist', [AdminController::class, 'booksList'])->name('book.list');
         Route::get('search/book', [AdminController::class, 'searchBook']);
         Route::get('read/book={id}', [LibraryController::class, 'readBook'])->name('admin.book.read');
+
 
         Route::get('manage/programs', [AdminController::class, 'managePrograms'])->name('programs.manage');
         Route::post('create/program', [AdminController::class, 'createProgram'])->name('program.create');
@@ -131,6 +116,8 @@ Route::middleware('auth')->group(function(){
 
         Route::get('view/profile', [AuthController::class, 'profileForm'])->name('admin.profile.view');
     });
+
+    Route::get('show/pdf={id}', [LibraryController::class, 'showPDF'])->name('pdf.show');
 });
 
 
