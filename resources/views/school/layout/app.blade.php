@@ -143,7 +143,7 @@
         }
     </style>
 
-    @yield('Css');
+    @yield('Css')
 
     <!-- Custom styles for this template -->
     <link href="carousel.css" rel="stylesheet">
@@ -151,7 +151,7 @@
 
 <body>
     <header class="sticky-top">
-        <nav class="navbar navbar-expand-md bg-body-tertiary mx-1">
+        <nav class="navbar bg-body-tertiary ">
             <div class="container-fluid">
                 <a class="navbar-brand fs-3" href="{{ route('home') }}">School</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -192,12 +192,13 @@
                     </ul>
                     <div class="ms-md-auto">
                         <div class="d-flex align-items-center">
-                            <a href="#" class="nav-link d-md-inline">About us |</a>
-                            <form class="d-inline-flex mx-2" role="search">
-                                <input class="form-control me-2" type="search" placeholder="Search"
-                                    aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
+                            <div class="nav-item">
+                                @if (Auth::user()->role == 'admin')
+                                    <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                    </a>
+                                @endif
+                            </div>
                             <div class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
