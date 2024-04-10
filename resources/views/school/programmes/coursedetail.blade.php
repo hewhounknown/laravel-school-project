@@ -41,6 +41,23 @@
         </div>
     @endif
 
+    @if ($course->course_status == false)
+        @if (count($course->topics) < 3)
+            <div class="alert alert-primary d-flex align-items-center m-3" role="alert">
+                <i class="fa-solid fa-circle-info"></i> &ThickSpace;
+                <div>
+                    your course must have at least 3 topic for admin approve.
+                </div>
+            </div>
+        @else
+            <div class="alert alert-success d-flex align-items-center m-3" role="alert">
+                <i class="fa-solid fa-circle-info"></i> &ThickSpace;
+                <div>
+                    please, wait for admin approve.
+                </div>
+            </div>
+        @endif
+    @endif
 
     <div class="container mt-5 ">
         <div class="row align-items-center justify-content-center shadow-lg p-3 rounded position-relative ">
