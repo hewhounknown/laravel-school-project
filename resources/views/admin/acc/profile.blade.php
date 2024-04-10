@@ -49,8 +49,8 @@
             <div class="row p-2">
                 <div class="col-sm-4 text-center">
                     @if (Auth::user()->image != null)
-                        <img src="{{ asset('storage/uploads/' . Auth::user()->image) }}" class="rounded-circle img-fluid"
-                            style="width: 180px; height: 180px;" alt="">
+                        <img src="{{ asset('storage/uploads/' . Auth::user()->image) }}"
+                            class="rounded-circle img-fluid" style="width: 180px; height: 180px;" alt="">
                     @else
                         <img src="{{ asset('img/default.png') }}" class="rounded-circle img-fluid"
                             style="width: 180px; height: 180px;" alt="">
@@ -91,18 +91,28 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="row text-center justify-content-evently">
-                                <div class="col">
+                            <div class="row text-center">
+                                <div class="m-2">
                                     <button class="btn  btn-outline-dark w-100" data-bs-toggle="modal"
                                         data-bs-target="#editModal">
                                         <i class="fa-regular fa-address-card"></i>
                                     </button>
                                 </div>
-                                <div class="col">
+                                <div class="m-2">
                                     <button class="btn btn-outline-dark w-100" data-bs-toggle="modal"
                                         data-bs-target="#changePasswordModal">
                                         <i class="fa-solid fa-key"></i>
                                     </button>
+                                </div>
+                                <div class="m-2">
+                                    <a href="" class="btn btn-outline-dark w-100"
+                                        onclick="event.preventDefault();
+                                                                document.getElementById('logout-form').submit();">
+                                        <i class="fa-solid fa-arrow-right-from-bracket fa-rotate-270"></i>
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
                                 </div>
                             </div>
                         </div>

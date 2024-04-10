@@ -65,28 +65,24 @@
         <div class="row">
             <nav class="col-3 pe-2 bg-light-subtle fs-6">
                 <ul id="TT" style="position: fixed; top: auto; width:23%" class="">
-                    <a href="{{ route('admin.dashboard') }}"
-                        class="list-group-item p-3 shadow-sm my-2 me-4 bg-body-tertiary">
+                    <a href="{{ route('admin.dashboard') }}" class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary">
                         <i class="fa-solid fa-house-flag"></i>
                         <span class="d-none d-lg-inline">Dashboard</span>
                     </a>
-                    <a href="{{ route('users.manage') }}"
-                        class="list-group-item p-3 shadow-sm my-2 me-4 bg-body-tertiary">
+                    <a href="{{ route('users.manage') }}" class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary">
                         <i class="fa-solid fa-people-group"></i>
                         <span class="d-none d-lg-inline">Users</span>
                     </a>
-                    <a href="{{ route('library.manage') }}"
-                        class="list-group-item p-3 shadow-sm my-2 me-4 bg-body-tertiary">
+                    <a href="{{ route('library.manage') }}" class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary">
                         <i class="fa-solid fa-book-open"></i>
                         <span class="d-none d-lg-inline">Library</span>
                     </a>
-                    <a href="{{ route('programs.manage') }}"
-                        class="list-group-item p-3 shadow-sm my-2 me-4 bg-body-tertiary">
+                    <a href="{{ route('programs.manage') }}" class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary">
                         <i class="fa-solid fa-list"></i>
                         <span class="d-none d-lg-inline">Programs</span>
                     </a>
                     <a href="{{ route('admin.courses.manage') }}"
-                        class="list-group-item p-3 shadow-sm my-2 me-4 bg-body-tertiary">
+                        class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary">
                         <i class="fa-solid fa-folder"></i>
                         <span class="d-none d-lg-inline">Courses</span>
                     </a>
