@@ -65,10 +65,7 @@ class LibraryController extends Controller
         }
 
         $book = Library::where('id', $bookId)->first();
-        //dd($book->book_path);
-        // $filePath = 'public/library/books/' . $book->book_path;
-        // $pdfContent = Storage::get($filePath);
-        // //dd($pdfContent);
+
         if(Auth::user()->role == 'admin'){
             return view('admin.library.book', ['book' => $book]);
         } else{
@@ -92,4 +89,3 @@ class LibraryController extends Controller
         return response()->file($filePath, ['Content-Type' => 'application/pdf']);
     }
 }
-

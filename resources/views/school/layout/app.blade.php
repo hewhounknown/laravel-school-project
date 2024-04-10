@@ -151,7 +151,7 @@
 
 <body>
     <header class="sticky-top">
-        <nav class="navbar bg-body-tertiary ">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary ">
             <div class="container-fluid">
                 <a class="navbar-brand fs-3" href="{{ route('home') }}">School</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -193,11 +193,16 @@
                     <div class="ms-md-auto">
                         <div class="d-flex align-items-center">
                             <div class="nav-item">
-                                @if (Auth::user()->role == 'admin')
-                                    <a href="{{ route('admin.dashboard') }}" class="nav-link">
-                                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                                    </a>
-                                @endif
+                                @guest
+                                @else
+                                    @if (Auth::user()->role == 'admin')
+                                        @if (Auth::user()->role == 'admin')
+                                            <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                                                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                            </a>
+                                        @endif
+                                    @endif
+                                @endguest
                             </div>
                             <div class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
