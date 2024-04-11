@@ -329,6 +329,7 @@
                         "{{ route('student.kick', ['studentId' => ':studentId', 'courseName' => ':courseName']) }}";
                     let studentAcceptRoute =
                         "{{ route('student.accept', ['studentId' => ':studentId', 'courseName' => ':courseName']) }}";
+                    let studentProfileRoute = "{{ route('profile.view'), ['id' => ':id'] }}";
 
                     $.ajax({
                         url: 'http://localhost:8000/select/choices',
@@ -365,7 +366,12 @@
                                         console.log(enroll.enrollStatus);
                                         $content += `
                                                                         <tr>
-                                                                            <td>${enroll.stuInfo.name}</td>
+                                                                            <td>
+                                                                                <a href="${studentProfileRoute.replace(':id', enroll.stuInfo.id)}"
+                                                                                    class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                                                                    ${enroll.stuInfo.name}
+                                                                                </a>
+                                                                            </td>
                                                                             <td></td>`;
                                         if (enroll.enrollStatus) {
                                             $content += `<td>
