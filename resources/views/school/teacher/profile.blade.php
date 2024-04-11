@@ -127,7 +127,6 @@
         </div>
     </div>
 
-
     <div id="content">
 
     </div>
@@ -237,7 +236,6 @@
 
                     @foreach ($list as $l)
                         @foreach ($l['course'] as $course)
-                            {{-- {{$data}} --}}
                             <div class="col-md-3 m-2">
                                 <div class="card " style="">
                                     @if ($course->course_image == null)

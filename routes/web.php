@@ -39,7 +39,6 @@ Route::middleware('auth')->group(function(){
     Route::get('select/choices', [SchoolController::class, 'selectChoices']);
 
     Route::prefix('course')->group(function() {
-        Route::post('create', [CourseController::class, 'createCourse'])->name('teacher.course.create');
         Route::get('detail/{id}', [SchoolController::class, 'detailCourse'])->name('course.detail');
 
         Route::get('enroll/{id}', [SchoolController::class, 'enrollCourse'])->name('course.enroll');
@@ -51,6 +50,7 @@ Route::middleware('auth')->group(function(){
         Route::get('review/delete/{id}', [SchoolController::class, 'deleteReview'])->name('course.review.delete');
 
         Route::middleware('teacher_middleware')->group(function(){
+            Route::post('create', [CourseController::class, 'createCourse'])->name('teacher.course.create');
             Route::post('edit', [CourseController::class, 'editCourse'])->name('teacher.course.edit');
             Route::get('delete/{id}', [CourseController::class, 'deleteCourse'])->name('teacher.course.delete');
 
@@ -68,6 +68,8 @@ Route::middleware('auth')->group(function(){
     Route::get('students/control', [SchoolController::class, 'studentTable'])->name('student.control');
     Route::get('accept/student={studentId}/for/course={courseName}', [SchoolController::class, 'acceptEnroll'])->name('student.accept');
     Route::get('kick/student={studentId}/from/course={courseName}', [SchoolController::class, 'kickStudent'])->name('student.kick');
+
+    Route::get('profile/view/{id}', [SchoolController::class, 'viewProfile'])->name('profile.view');
 
     Route::prefix('library')->group(function() {
         Route::get('center', [LibraryController::class, 'center'])->name('library')->withoutMiddleware('auth');

@@ -237,4 +237,21 @@ class SchoolController extends Controller
         Review::where('id', $reviewId)->delete();
         return back()->with(['status' => 'you deleted your review for this course']);
     }
+
+    public function viewProfile($userId)
+    {
+        $user = User::where('id', $userId)->first();
+        $list = [];
+        if(Enrollment::where('user_id', $user->id)->exists()){
+            $enroll = Enrollment::where('user_id', $user->id)->get();
+            foreach($enroll as $e){
+                $course = Course::where('id', $e->course_id)->get();
+                $list[] = [
+                    'course' => $course,
+                    'enroll' => $e
+                ];
+            }
+        }
+        return view('school.acc.user', ['user' => $user, 'list' => $list]);
+    }
 }

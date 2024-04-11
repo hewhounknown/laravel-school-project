@@ -43,7 +43,7 @@
 
     @if ($course->course_status == false)
         @if (count($course->topics) < 3)
-            <div class="alert alert-primary d-flex align-items-center m-3" role="alert">
+            <div class="alert alert-warning d-flex align-items-center m-3" role="alert">
                 <i class="fa-solid fa-circle-info"></i> &ThickSpace;
                 <div>
                     your course must have at least 3 topic for admin approve.
@@ -81,7 +81,12 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-3"><strong>By</strong></div>
-                    <div class="col-sm-9">{{ _($course->teacher->name) }}</div>
+                    <div class="col-sm-9">
+                        <a href="{{ route('profile.view', $course->teacher->id) }}"
+                            class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                            {{ _($course->teacher->name) }}
+                        </a>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3"><strong>Date</strong></div>
@@ -426,7 +431,10 @@
                     class="badge text-bg-info">{{ count($course->reviews) }}</span></li>
             @foreach ($course->reviews as $review)
                 <li class="list-group-item">
-                    <b>{{ $review->user->name }}</b>
+                    <a href="{{ route('profile.view', $review->user_id) }}"
+                        class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                        <b>{{ $review->user->name }}</b>
+                    </a>
                     <div class="row mt-2">
                         <div class="col-8">
                             {{ $review->comment }}
@@ -447,7 +455,7 @@
             @endforeach
         </ul>
 
-        @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id)
+        @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id && $enrollStatus == true)
             <form class="mt-3" action="{{ route('course.review.create') }}" id="addStar" method="POST">
                 @csrf
                 <input type="hidden" name="courseId" value="{{ $course->id }}">
