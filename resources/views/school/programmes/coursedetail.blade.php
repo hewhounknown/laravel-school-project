@@ -421,7 +421,7 @@
         {{-- topic session end --}}
     @else
         <h5 class="text-center text-muted bg-white shadow-sm p-3">
-            Wait a while for you're accepted by the teacher!
+            You need to enroll and wait a while for you're accepted by the teacher!
         </h5>
     @endif
 

@@ -22,7 +22,11 @@ class SchoolController extends Controller
     //
     public function home()
     {
-        return view('school.index');
+        $teachers = User::where('role', 'teacher')->inRandomOrder()->take(5)->get();
+        $popularCourses = Course::where('course_status', true)
+                                ->orderBy('enroll_count', 'desc')->take(3)->get();
+        $newCourses = Course::where('course_status', true)->orderBy('id', 'desc')->take(4)->get();
+        return view('school.index', ['teachers' => $teachers, 'popularCourses' => $popularCourses, 'newCourses' => $newCourses]);
     }
 
     public function courseList($programId)
@@ -48,33 +52,21 @@ class SchoolController extends Controller
     public function selectChoices(Request $req)
     {
         if($req->userChoice == 'Students') {
-
             $courses = Course::where('user_id', Auth::user()->id)->get();
-
             $students = [];
             if($courses->isNotEmpty()) {
-
                 foreach($courses as $c){
-
                     if($c->enrollments->isNotEmpty()){
-
                         foreach($c->enrollments as $e){
-
                             $students[$c->course_name][] = [
                                 'enrollStatus' => $e->status,
                                 'stuInfo' => $e->user
                             ];
-
                         }
-
                     }
-
                 }
-
             }
-            //dd($students);
             return ['students' => $students];
-
         } elseif($req->userChoice == 'Reports') {
             $reports = 'cc';
             return ['reports' => $reports];
@@ -83,18 +75,12 @@ class SchoolController extends Controller
 
     public function detailCourse($id)
     {
-        if(!Auth::check()){
-            return back()->with(['status' => 'You need to login first!']);
-        }
         $course = Course::where('id', $id)->first();
-
         $enrollStatus = false;
         if(Enrollment::where(['user_id' => Auth::user()->id, 'course_id' => $id ])->exists()){
             $enroll = Enrollment::where(['user_id' => Auth::user()->id, 'course_id' => $id ])->first();
-            //dd($enroll->status);
             $enrollStatus = $enroll->status;
         }
-        //dd($enrollStatus);
         return view('school.programmes.coursedetail', ['course' => $course, 'enrollStatus' => $enrollStatus]);
     }
 
@@ -106,20 +92,16 @@ class SchoolController extends Controller
 
     public function downloadFile($fileName)
     {
-        //dd($fileName);
         $filePath = public_path('storage/course/topic/content/'.$fileName);
-
         if (file_exists($filePath)) {
             return response()->download($filePath, $fileName);
         }
-
         abort(404, 'File not found');
     }
 
     public function deleteContent($topicId, $contentId)
     {
         Content::where('id', $contentId)->delete();
-
         $topic = Topic::where('id', $topicId)->first();
         return redirect()->route('courseDetail', $topic->course->course_name)->with(['success' => 'you deleted one content']);
     }
@@ -129,50 +111,33 @@ class SchoolController extends Controller
         if(Enrollment::where(['user_id'=>Auth::user()->id, 'course_id'=>$courseId])->exists()){
             return redirect()->back()->with(['status' => "sorry, you've already enrolled!"]);
         }
-
         Enrollment::create([
             'user_id' => Auth::user()->id,
             'course_id' => $courseId,
         ]);
-
         Course::where('id', $courseId)->increment('enroll_count');
-
         return redirect()->route('profile')->with(['status' => 'you enrolled successfully!']);
     }
 
     public function unenrollCourse($courseId)
     {
         Enrollment::where(['user_id' => Auth::user()->id, 'course_id' => $courseId])->delete();
-
         Course::where('id', $courseId)->decrement('enroll_count');
-
         return back()->with(['status' => 'you unenroll this course successfully!']);
     }
 
     public function studentTable()
     {
         $course = Course::where('user_id', Auth::user()->id)->get();
-
         foreach ($course as $c) {
             $enroll = Enrollment::where('course_id', $c->id)->get();
-
             $students = User::whereIn('id', $enroll->pluck('user_id'))->get();
-
             $enrollCourses = Course::whereIn('id', $enroll->pluck('course_id'))->get();
-
             $lists[] = [
                 'course' => $enrollCourses,
                 'student' => $students,
                 'enroll' => $enroll,
             ];
-
-            $enro[] = $enroll;
-        }
-        //dd($lists);
-        for ($i=0; $i < count($enro) ; $i++) {
-            // dd($enro[1][0]->id);
-            $stu[] = User::where('id', $enro[$i][0]->user_id)->get();
-            //dd($stu);
         }
         return view('school.teacher.studentcontrol', ['lists'=>$lists]);
     }
@@ -180,22 +145,17 @@ class SchoolController extends Controller
     public function acceptEnroll($studentId, $courseName)
     {
         $course = Course::where('course_name', $courseName)->first();
-
         Enrollment::where(['user_id' => $studentId, 'course_id' => $course->id])
                         ->update(['status' => true]);
-
         return back()->with(['status' => 'you accepted!']);
     }
 
     public function kickStudent($studentId, $courseName)
     {
         $course = Course::where('course_name', $courseName)->first();
-
         Enrollment::where(['user_id' => $studentId, 'course_id' => $course->id])
         ->update(['status' => false]);
-
         Course::where('id', $course->id)->decrement('enroll_count');
-
         return back()->with(['status' => 'you kicked student successfully!']);
     }
 
@@ -228,7 +188,6 @@ class SchoolController extends Controller
             'course_id' => $req->courseId,
             'user_id' => Auth::user()->id
         ]);
-
         return back()->with(['status' => 'you created review for this course successfully']);
     }
 

@@ -211,11 +211,18 @@
                             <img src="{{ asset('storage/course/' . $c->course_image) }}" class="card-img-top"
                                 style="height: 10rem" alt="...">
                         @endif
-                        <div class="card-body" style="height: 100px">
+                        <div class="card-body" style="">
                             <h5 class="card-title">{{ $c->course_name }}</h5>
                             <p class="card-text">{{ $c->course_description }}</p>
+                            @if ($c->course_status == false)
+                                <a href="{{ route('course.detail', $c->id) }}"
+                                    class="btn btn-warning bg-warning-subtle text-warning-emphasis">View</a>
+                            @else
+                                <a href="{{ route('course.detail', $c->id) }}"
+                                    class="btn btn-primary bg-info-subtle text-info-emphasis">View</a>
+                            @endif
                         </div>
-                        @if ($c->course_status == false)
+                        {{-- @if ($c->course_status == false)
                             <div class="card-footer bg-warning-subtle text-warning-emphasis">
                                 <a href="{{ route('course.detail', $c->id) }}" class="btn btn-warning">View</a>
                             </div>
@@ -223,7 +230,7 @@
                             <div class="card-footer bg-info-subtle text-info-emphasis">
                                 <a href="{{ route('course.detail', $c->id) }}" class="btn btn-primary">View</a>
                             </div>
-                        @endif
+                        @endif --}}
                     </div>
                 </div>
             @endforeach
@@ -244,11 +251,12 @@
                                         <img src="{{ asset('storage/course/' . $course->course_image) }}"
                                             class="card-img-top" style="height: 10rem" alt="...">
                                     @endif
-                                    <div class="card-body" style="height: 100px">
-                                        <h5 class="card-title">{{ $course->course_name }}</h5>
+                                    <div class="card-body" style="">
+                                        <h5 class="card-title">{{ $course->course_name }}
+                                            <span
+                                                class="badge text-bg-secondary">{{ $course->category->category_name }}</span>
+                                        </h5>
                                         <p class="card-text">{{ $course->course_description }}</p>
-                                    </div>
-                                    <div class="card-footer">
                                         @if ($l['enroll']->status == false)
                                             <a href="//" class="btn btn-outline-dark" data-bs-toggle="modal"
                                                 data-bs-target="#enrollModal">pls wait</a>
@@ -329,7 +337,7 @@
                         "{{ route('student.kick', ['studentId' => ':studentId', 'courseName' => ':courseName']) }}";
                     let studentAcceptRoute =
                         "{{ route('student.accept', ['studentId' => ':studentId', 'courseName' => ':courseName']) }}";
-                    let studentProfileRoute = "{{ route('profile.view'), ['id' => ':id'] }}";
+                    let studentProfileRoute = "{{ route('profile.view', ['id' => ':id']) }}";
 
                     $.ajax({
                         url: 'http://localhost:8000/select/choices',

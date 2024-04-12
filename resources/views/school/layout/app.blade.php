@@ -183,11 +183,13 @@
                         @endif
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Opportunities</a>
+                            <a class="nav-link" href="{{ route('library') }}">Library
+                                <i class="fa-solid fa-book-open-reader"></i>
+                            </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('library') }}">Library <i
-                                    class="fa-solid fa-book-open-reader"></i></a>
+                            <a class="nav-link" href="#">Activities</a>
                         </li>
                     </ul>
                     <div class="ms-md-auto">
