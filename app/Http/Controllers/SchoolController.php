@@ -199,6 +199,9 @@ class SchoolController extends Controller
 
     public function viewProfile($userId)
     {
+        if(Auth::user()->id == $userId){
+            return redirect()->route('profile');
+        }
         $user = User::where('id', $userId)->first();
         $list = [];
         if(Enrollment::where('user_id', $user->id)->exists()){

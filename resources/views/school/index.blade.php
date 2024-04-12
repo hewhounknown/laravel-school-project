@@ -69,8 +69,8 @@
         </a>
     </div> <br> <br> <br>
 
-    <div class="row my-5 justify-content-around p-2" style="">
-        <h4>New >>></h4>
+    <div class="row my-5 mx-3 justify-content-around p-2 bg-body-tertiary rounded" style="">
+        <h4 class="text-warning">New >>></h4>
         @foreach ($newCourses as $course)
             <div class="col-md-3 my-2">
                 <div class="card">
@@ -95,8 +95,8 @@
     </div>
 
 
-    <div class="row my-5 justify-content-around p-2" style="">
-        <h4>Popular >>></h4>
+    <div class="row my-5 mx-3 justify-content-around p-2 bg-body-tertiary rounded" style="">
+        <h4 class="text-info">Popular >>></h4>
         @foreach ($popularCourses as $course)
             <div class="col-md-4 my-2">
                 <div class="card">
@@ -120,8 +120,30 @@
         @endforeach
     </div>
 
+    <div class="row p-2">
+        @foreach ($teachers as $teacher)
+            <div class="col-md-2 m-2 ">
+                <a href="{{ route('profile.view', $teacher->id) }}" class="card bg-body-tertiary text-decoration-none">
+                    <div class="card-body text-center" style="height: 300px;">
+                        @if ($teacher->image == null)
+                            <img src="{{ asset('img/defaultprofile.jpg') }}" alt="profile picture"
+                                class="img-fluid rounded-circle" style="max-height: 360px; height: 180px;">
+                        @else
+                            <img src="{{ asset('storage/uploads/' . $teacher->image) }}" alt="profile picture"
+                                class="img-fluid rounded-circle" style="max-height: 360px; height: 180px;">
+                        @endif
+                        <h5 class="mt-2">{{ $teacher->name }}</h5>
+                    </div>
+                </a>
+            </div>
+        @endforeach
+    </div>
+
+
     <div class="container">
-        <div class="row my-5 justify-content-evenly" style="height: 400px;">
+
+
+        {{-- <div class="row my-5 justify-content-evenly" style="height: 400px;">
             <div class="col-md-4 d-sm-block">
                 <h3>Lorem, ipsum dolor sit amet consectetur</h3>
                 <hr>
@@ -161,7 +183,7 @@
                     <span>more...</span>
                 </a>
             </div>
-        </div>
+        </div> --}}
     </div>
 
 @endsection
