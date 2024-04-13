@@ -231,14 +231,12 @@
         <li class="nav-item">
             <a id="mates" class="nav-link" href="#">Classmates</a>
         </li>
-        <li class="nav-item">
-            <a id="reviews" class="nav-link" href="#">Reviews</a>
-        </li>
     </ul>
 
     <input type="hidden" id="courseId" value="{{ $course->id }}">
+    <input type="hidden" id="authId" value="{{ Auth::user()->id }}">
 
-    <div id="pannel" class="container my-3">
+    <div id="matesPannel" class="container my-3">
 
     </div>
 
@@ -449,71 +447,76 @@
                 You need to enroll and wait a while for you're accepted by the teacher!
             </h5>
         @endif
-    </div>
 
-    <div class="container mt-5">
-        <ul class="list-group">
-            <li class="list-group-item bg-info-subtle text-info-emphasis fs-5" aria-current="true">Reviews <span
-                    class="badge text-bg-info">{{ count($course->reviews) }}</span></li>
-            @foreach ($course->reviews as $review)
-                <li class="list-group-item">
-                    <a href="{{ route('profile.view', $review->user_id) }}"
-                        class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
-                        <b>{{ $review->user->name }}</b>
-                    </a>
-                    <div class="row mt-2">
-                        <div class="col-8">
-                            {{ $review->comment }}
-                        </div>
-                        <div class="col-4">
-                            @for ($i = 0; $i < $review->rating; $i++)
-                                <span class="fa fa-star" style="color: #FFD700"></span>
-                            @endfor
-                        </div>
-                    </div>
-                    @if ($review->user_id == Auth::user()->id)
-                        <a href="{{ route('course.review.delete', $review->id) }}"
-                            class="btn btn-sm btn-outline-danger mt-2 float-end">
-                            <i class="fa-solid fa-delete-left"></i>
+        <div id="" class="container mt-5">
+            <ul class="list-group">
+                <li class="list-group-item bg-info-subtle text-info-emphasis fs-5" aria-current="true">Reviews <span
+                        class="badge text-bg-info">{{ count($course->reviews) }}</span></li>
+                @foreach ($course->reviews as $review)
+                    <li class="list-group-item">
+                        <a href="{{ route('profile.view', $review->user_id) }}"
+                            class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                            <b>{{ $review->user->name }}</b>
                         </a>
-                    @endif
-                </li>
-            @endforeach
-        </ul>
+                        <div class="row mt-2">
+                            <div class="col-8">
+                                {{ $review->comment }}
+                            </div>
+                            <div class="col-4">
+                                @for ($i = 0; $i < $review->rating; $i++)
+                                    <span class="fa fa-star" style="color: #FFD700"></span>
+                                @endfor
+                            </div>
+                        </div>
+                        @if ($review->user_id == Auth::user()->id)
+                            <a href="{{ route('course.review.delete', $review->id) }}"
+                                class="btn btn-sm btn-outline-danger mt-2 float-end">
+                                <i class="fa-solid fa-delete-left"></i>
+                            </a>
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
 
-        @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id && $enrollStatus == true)
-            <form class="mt-3" action="{{ route('course.review.create') }}" id="addStar" method="POST">
-                @csrf
-                <input type="hidden" name="courseId" value="{{ $course->id }}">
-                <h5 class="border-bottom border-info">Review here:</h5>
-                <div class="rating">
-                    <label for="rat1">
-                        <span class="fa fa-star" onclick="rate(1)" id="star1"></span>
-                    </label>
-                    <input type="radio" name="rating" value="1" id="rat1" class="form-check-input d-none">
-                    <label for="rat2">
-                        <span class="fa fa-star" onclick="rate(2)" id="star2"></span>
-                    </label>
-                    <input type="radio" name="rating" value="2" id="rat2" class="form-check-input d-none">
-                    <label for="rat3">
-                        <span class="fa fa-star" onclick="rate(3)" id="star3"></span>
-                    </label>
-                    <input type="radio" name="rating" value="3" id="rat3" class="form-check-input d-none">
-                    <label for="rat4">
-                        <span class="fa fa-star" onclick="rate(4)" id="star4"></span>
-                    </label>
-                    <input type="radio" name="rating" value="4" id="rat4" class="form-check-input d-none">
-                    <label for="rat5">
-                        <span class="fa fa-star" onclick="rate(5)" id="star5"></span>
-                    </label>
-                    <input type="radio" name="rating" value="5" id="rat5" class="form-check-input d-none">
-                </div>
+            @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id && $enrollStatus == true)
+                <form class="mt-3" action="{{ route('course.review.create') }}" id="addStar" method="POST">
+                    @csrf
+                    <input type="hidden" name="courseId" value="{{ $course->id }}">
+                    <h5 class="border-bottom border-info">Review here:</h5>
+                    <div class="rating">
+                        <label for="rat1">
+                            <span class="fa fa-star" onclick="rate(1)" id="star1"></span>
+                        </label>
+                        <input type="radio" name="rating" value="1" id="rat1"
+                            class="form-check-input d-none">
+                        <label for="rat2">
+                            <span class="fa fa-star" onclick="rate(2)" id="star2"></span>
+                        </label>
+                        <input type="radio" name="rating" value="2" id="rat2"
+                            class="form-check-input d-none">
+                        <label for="rat3">
+                            <span class="fa fa-star" onclick="rate(3)" id="star3"></span>
+                        </label>
+                        <input type="radio" name="rating" value="3" id="rat3"
+                            class="form-check-input d-none">
+                        <label for="rat4">
+                            <span class="fa fa-star" onclick="rate(4)" id="star4"></span>
+                        </label>
+                        <input type="radio" name="rating" value="4" id="rat4"
+                            class="form-check-input d-none">
+                        <label for="rat5">
+                            <span class="fa fa-star" onclick="rate(5)" id="star5"></span>
+                        </label>
+                        <input type="radio" name="rating" value="5" id="rat5"
+                            class="form-check-input d-none">
+                    </div>
 
-                <textarea class="form-control" name="comment" id="" cols="30" rows="4"></textarea>
-                <button type="submit" class="btn btn-outline-primary mt-2 float-end">Create</button>
-            </form>
-        @endif
+                    <textarea class="form-control" name="comment" id="" cols="30" rows="4"></textarea>
+                    <button type="submit" class="btn btn-outline-primary mt-2 float-end">Create</button>
+                </form>
+            @endif
 
+        </div>
     </div>
 
 @endsection
@@ -631,36 +634,37 @@
                 }, 1000);
             });
 
-            $('#pannel')
             $('.nav-link').on('click', function(e) {
                 e.preventDefault();
 
                 $('.nav-link').removeClass('active');
                 $(this).addClass('active');
 
-                let tab = $(this).text();
+                let tab = $(this).attr('id');
                 let courseId = $('#courseId').val();
 
-                console.log(courseId);
 
-                if ($(this).attr('id') == "topic") {
-                    $('#pannel').hide();
+                console.log(tab);
+
+                if (tab == "topic") {
+                    $('#matesPannel').hide();
                     $('#topicPannel').show();
-                } else if ($(this).attr('id') == "mates") {
+                } else if (tab == "mates") {
                     $('#topicPannel').hide();
-                    $('#pannel').show();
+                    $('#matesPannel').show();
 
+                    let profileViewRoute = "{{ route('profile.view', ['id' => ':id']) }}";
                     $.ajax({
-                        url: 'http://localhost:8000/course/take/about',
+                        url: 'http://localhost:8000/course/take/classmates',
                         type: 'GET',
                         data: {
                             'data': tab,
                             'courseId': courseId
                         },
                         success: function(response) {
-                            console.log(response);
+                            console.log(response.length);
                             $content = '';
-                            if (response.students) {
+                            if (response.length > 0) {
                                 $content = `<table class="table table-striped table-hover">
                                                 <thead>
                                                     <tr>
@@ -669,11 +673,11 @@
                                                 </thead>
                                                 <tbody>
                                                     `;
-                                Object.entries(response.students).forEach(([tmp, student]) => {
+                                response.forEach(student => {
                                     console.log(student);
                                     $content += `<tr>
                                                     <td>
-                                                         <a href="//"
+                                                         <a href="${profileViewRoute.replace(':id', student.id)}"
                                                                 class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
                                                                 href="#">
                                                                 ${student.name}
@@ -684,12 +688,15 @@
                                 $content += `
                                                 </tbody>
                                             </table>`;
+                            } else {
+                                $content = `<h3>There are no students.</h3>`;
                             }
-                            $('#pannel').html($content);
+                            $('#matesPannel').html($content);
                         }
-                    })
+                    });
                 }
             });
+
         });
     </script>
 @endsection

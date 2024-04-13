@@ -123,7 +123,7 @@
                                             </div>
                                         </div>
                                     @else
-                                        <a href="{{ route('courseDetail', $course->id) }}"
+                                        <a href="{{ route('course.detail', $course->id) }}"
                                             class="btn btn-outline-primary">View Courses</a>
                                     @endif
                                 </div>

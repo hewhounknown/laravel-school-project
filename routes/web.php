@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function(){
             Route::get('topic={topicId}/content/delete{contentId}', [SchoolController::class, 'deleteContent'])->name('content.delete');
         });
 
-        Route::get('take/about', [CourseController::class, 'takeCourseAbout']);
+        Route::get('take/classmates', [CourseController::class, 'takeClassmates']);
     });
 
     Route::post('content/comment/write', [SchoolController::class, 'writeComment'])->name('content.comment.write');

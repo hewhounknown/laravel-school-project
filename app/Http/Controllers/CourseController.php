@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Topic;
 use App\Models\Course;
+use App\Models\Review;
 use App\Models\Content;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -220,13 +221,12 @@ class CourseController extends Controller
         }
     }
 
-    public function takeCourseAbout(Request $req)
+    public function takeClassmates(Request $req)
     {
-        if($req->data == "Classmates"){
-            $course = Course::where('id', $req->courseId)->first();
+        $course = Course::where('id', $req->courseId)->with('reviews')->first();
+        if($req->data == "mates"){
             $students = $course->users;
-            //dd($students);
-            return ['students' => $students];
+            return  $students;
         }
     }
 }
