@@ -3,7 +3,7 @@
 @section('title', 'school')
 
 @section('content')
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    {{-- <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
             <li data-target="#myCarousel" data-slide-to="1"></li>
@@ -67,31 +67,65 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
-    </div> <br> <br> <br>
+    </div> <br> <br> <br> --}}
 
-    <div class="row my-5 mx-3 justify-content-around p-2 bg-body-tertiary rounded" style="">
-        <h4 class="text-warning">New >>></h4>
-        @foreach ($newCourses as $course)
-            <div class="col-md-3 my-2">
-                <div class="card">
-                    @if ($course->course_image == null)
-                        <img src="{{ asset('img/default.png') }}" class="card-img-top img-fluid" alt="...">
-                    @else
-                        <img src="{{ asset('storage/course/' . $course->course_image) }}" class="card-img-top img-fluid"
-                            alt="...">
-                    @endif
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $course->course_name }}
-                            <span class="badge text-bg-secondary">{{ $course->category->category_name }}</span>
-                        </h5>
-                        <p class="card-text">
-                            {{ $course->course_description }}
-                        </p>
-                        <a href="{{ route('course.detail', $course->id) }}" class="btn btn-primary">View</a>
-                    </div>
+
+
+
+    <div id="carouselNewCourses" class="carousel slide bg-body-tertiary my-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="row ">
+                <h4 class="text-warning m-3">New >>></h4>
+                <div class="col-1">
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselNewCourses"
+                        data-bs-slide="prev" style="left: 0; margin-left: 0px;">
+                        <span aria-hidden="true">
+                            <i class="fa-solid fa-angle-left fa-xl" style="color: #000000;"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="col-10">
+                    @foreach ($newCourses->chunk(4) as $key => $chunk)
+                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                            <div class="row">
+                                @foreach ($chunk as $course)
+                                    <div class="col-lg-3">
+                                        <div class="card m-2">
+                                            @if ($course->course_image == null)
+                                                <img src="{{ asset('img/default.png') }}" class="card-img-top img-fluid"
+                                                    alt="...">
+                                            @else
+                                                <img src="{{ asset('storage/course/' . $course->course_image) }}"
+                                                    class="card-img-top img-fluid" alt="...">
+                                            @endif
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ $course->course_name }}
+                                                    <span
+                                                        class="badge text-bg-secondary">{{ $course->category->category_name }}</span>
+                                                </h5>
+                                                <p class="card-text">
+                                                    {{ $course->course_description }}
+                                                </p>
+                                                <a href="{{ route('course.detail', $course->id) }}"
+                                                    class="btn btn-primary">View</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="col-1">
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselNewCourses"
+                        data-bs-slide="next" style="">
+                        <span aria-hidden="true">
+                            <i class="fa-solid fa-angle-right fa-xl" style="color: #000000;"></i>
+                        </span>
+                    </button>
                 </div>
             </div>
-        @endforeach
+        </div>
     </div>
 
 
@@ -121,6 +155,7 @@
     </div>
 
     <div class="row p-2">
+        <h5 class="text-success">Our Teachers >></h5>
         @foreach ($teachers as $teacher)
             <div class="col-md-2 m-2 ">
                 <a href="{{ route('profile.view', $teacher->id) }}" class="card bg-body-tertiary text-decoration-none">

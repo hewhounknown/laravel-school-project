@@ -25,7 +25,7 @@ class SchoolController extends Controller
         $teachers = User::where('role', 'teacher')->inRandomOrder()->take(5)->get();
         $popularCourses = Course::where('course_status', true)
                                 ->orderBy('enroll_count', 'desc')->take(3)->get();
-        $newCourses = Course::where('course_status', true)->orderBy('id', 'desc')->take(4)->get();
+        $newCourses = Course::where('course_status', true)->orderBy('id', 'desc')->take(8)->get();
         return view('school.index', ['teachers' => $teachers, 'popularCourses' => $popularCourses, 'newCourses' => $newCourses]);
     }
 
