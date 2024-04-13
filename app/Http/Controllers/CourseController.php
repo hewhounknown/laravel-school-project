@@ -21,17 +21,13 @@ class CourseController extends Controller
             'courseName' => 'required|unique:courses,course_name',
             'description' => 'required'
         ]);
-
         if (Course::where(['course_name' => $req->courseName, 'user_id' => Auth::user()->id])->exists()) {
             return back()->with(['status' => 'this course is already existed!']);
         } else{
-
             $image = null;
-            //$imageName = null;
             if($req->hasFile('courseImage')){
                 $image = $req->file('courseImage');
                 $imageName = time() . '_' . $image->getClientOriginalName();    // give a name combination with time
-                //dd($imageName);
                 Storage::disk('public')->putFileAs('course', $image, $imageName); // store in storage / app / public / uploads
                 Course::create(['course_image' => $imageName]);
             }
@@ -42,10 +38,8 @@ class CourseController extends Controller
                 'category_id' => $req->catId,
                 'user_id' => Auth::user()->id
             ]);
-
             return back()->with(['status' => 'created course successfully!']);
         }
-
     }
 
     public function editCourse(Request $req)
@@ -56,39 +50,29 @@ class CourseController extends Controller
             'courseName' => 'required',
             'description' => 'required'
         ]);
-
-        // if (Course::where(['course_name' => $req->courseName, 'user_id' => Auth::user()->id])->exists()) {
-        //     return back()->with(['status' => 'this course is already existed!']);
-        // } else {
             $image = null;
             if($req->hasFile('courseImage')){
                 $image = $req->file('courseImage');
-
                 $dbImage = Course::where('id', $req->courseId)->first();
                 $dbImage = $dbImage->course_image;
                 if($dbImage != null){
                     Storage::disk('public')->delete('course/'. $dbImage);
                 }
-
                 $imageName = time() . '_' . $image->getClientOriginalName();
                 Storage::disk('public')->putFileAs('course', $image, $imageName);
                 Course::where('id', $req->courseId)->update(['course_image' => $imageName]);
             }
-
             Course::where('id', $req->courseId)->update([
                 'course_name' => $req->courseName,
                 'course_description' => $req->description,
                 'category_id' => $req->catId,
                 'user_id' => Auth::user()->id
             ]);
-
             return back()->with(['status' => 'updated course successfully!']);
-        // }
     }
 
     public function createTopic(Request $req)
     {
-       // dd($req->all());
         $req->validate([
             'topicName' => 'required',
             'topicDescription' => 'required',
@@ -96,7 +80,6 @@ class CourseController extends Controller
             'contentType' => 'required',
             'contentBody' => 'required'
         ]);
-
         if($req->contentType == 'video'){
             $req->validate(['contentBody' => 'mimetypes:video/mp4,video/avi,video/quicktim']);
         } elseif($req->contentType == 'image'){
@@ -104,19 +87,15 @@ class CourseController extends Controller
         } elseif($req->contentType == 'file') {
             $req->validate(['contentBody' => 'mimes:pdf,docx,txt']);
         }
-
         if($req->hasFile('contentBody')){
-            //dd($req->contentType);
             $content = $req->file('contentBody');
             $fileName = time() . '_' . $content->getClientOriginalName();
             Storage::disk('public')->putFileAs('course/topic/content', $content, $fileName);
-
             $topic = Topic::create([
                 'topic_name' => $req->topicName,
                 'topic_description' => $req->topicDescription,
                 'course_id' => $req->courseId
             ]);
-
             Content::create([
                 'title' => $req->contentTitle,
                 'content_type' => $req->contentType,
@@ -129,7 +108,6 @@ class CourseController extends Controller
                 'topic_description' => $req->topicDescription,
                 'course_id' => $req->courseId
             ]);
-
             Content::create([
                 'title' => $req->contentTitle,
                 'content_type' => $req->contentType,
@@ -142,7 +120,6 @@ class CourseController extends Controller
 
     public function addContent(Request $req)
     {
-        //dd($req->all());
         $req->validate([
             'contentTitle' => 'required',
             'contentType' => 'required',
@@ -187,7 +164,6 @@ class CourseController extends Controller
 
     public function editContent($contentId, Request $req)
     {
-        //dd($req->all());
         $text = null;
         $fileName = null;
         if($req->fileContent == null){
@@ -216,7 +192,6 @@ class CourseController extends Controller
 
             Storage::disk('public')->putFileAs('course/topic/content', $file, $fileName); // store in storage / app / public / course/topic/content
         }
-        //dd($text);
         Content::where('id', $contentId)->update([
             'title' => $req->contentTitle,
                 'content_type' => $req->contentType,
@@ -242,6 +217,16 @@ class CourseController extends Controller
             } else{
                 return redirect()->route('profile')->with(['status' => 'you delete one course successfully']);
             }
+        }
+    }
+
+    public function takeCourseAbout(Request $req)
+    {
+        if($req->data == "Classmates"){
+            $course = Course::where('id', $req->courseId)->first();
+            $students = $course->users;
+            //dd($students);
+            return ['students' => $students];
         }
     }
 }

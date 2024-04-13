@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function(){
             Route::post('topic/content/edit/{contentId}', [CourseController::class, 'editContent'])->name('teacher.content.edit');
             Route::get('topic={topicId}/content/delete{contentId}', [SchoolController::class, 'deleteContent'])->name('content.delete');
         });
+
+        Route::get('take/about', [CourseController::class, 'takeCourseAbout']);
     });
 
     Route::post('content/comment/write', [SchoolController::class, 'writeComment'])->name('content.comment.write');

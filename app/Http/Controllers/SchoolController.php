@@ -81,6 +81,7 @@ class SchoolController extends Controller
             $enroll = Enrollment::where(['user_id' => Auth::user()->id, 'course_id' => $id ])->first();
             $enrollStatus = $enroll->status;
         }
+       // dd($course->users);
         return view('school.programmes.coursedetail', ['course' => $course, 'enrollStatus' => $enrollStatus]);
     }
 
