@@ -133,19 +133,24 @@ class AdminController extends Controller
     public function createProgram(Request $req)
     {
         // dd($req);
-        $req->validate(['programName' => 'required|unique:programs,name']);
-
-        $program = Program::create(['name'=>$req->programName]);
+        $req->validate([
+            'programName' => 'required|unique:programs,name',
+            'cat1' => 'required|unique:categories,category_name',
+            'cat2' => 'required|unique:categories,category_name',
+            'cat3' => 'required|unique:categories,category_name',
+        ]);
 
         if(in_array('cat1', array_keys($req->all()))){
             //dd($req->all());
             $cats = array_filter($req->all(), function($key){
                 return strpos($key, 'cat') === 0;
             }, ARRAY_FILTER_USE_KEY);
-            // dd($cats);
+             //dd($cats);
 
+           $program = Program::create(['name'=>$req->programName]);
             foreach($cats as $key => $value){
-                Category::firstOrCreate([
+               // dd($value);
+                Category::create([
                     'category_name' => $value,
                     'program_id' => $program->id
                 ]);

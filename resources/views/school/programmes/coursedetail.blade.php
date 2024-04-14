@@ -228,9 +228,11 @@
         <li class="nav-item">
             <a id="topic" class="nav-link active" aria-current="page" href="#">Topics</a>
         </li>
-        <li class="nav-item">
-            <a id="mates" class="nav-link" href="#">Classmates</a>
-        </li>
+        @if (Auth::user()->id == $course->user_id || $enrollStatus == true)
+            <li class="nav-item">
+                <a id="mates" class="nav-link" href="#">Classmates</a>
+            </li>
+        @endif
     </ul>
 
     <input type="hidden" id="courseId" value="{{ $course->id }}">

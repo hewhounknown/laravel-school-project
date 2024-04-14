@@ -22,9 +22,11 @@ class CourseController extends Controller
             'courseName' => 'required|unique:courses,course_name',
             'description' => 'required'
         ]);
+
         if (Course::where(['course_name' => $req->courseName, 'user_id' => Auth::user()->id])->exists()) {
             return back()->with(['status' => 'this course is already existed!']);
         } else{
+
             $image = null;
             if($req->hasFile('courseImage')){
                 $image = $req->file('courseImage');
@@ -39,6 +41,7 @@ class CourseController extends Controller
                 'category_id' => $req->catId,
                 'user_id' => Auth::user()->id
             ]);
+
             return back()->with(['status' => 'created course successfully!']);
         }
     }
@@ -51,6 +54,7 @@ class CourseController extends Controller
             'courseName' => 'required',
             'description' => 'required'
         ]);
+
             $image = null;
             if($req->hasFile('courseImage')){
                 $image = $req->file('courseImage');
@@ -63,6 +67,7 @@ class CourseController extends Controller
                 Storage::disk('public')->putFileAs('course', $image, $imageName);
                 Course::where('id', $req->courseId)->update(['course_image' => $imageName]);
             }
+
             Course::where('id', $req->courseId)->update([
                 'course_name' => $req->courseName,
                 'course_description' => $req->description,
@@ -81,6 +86,7 @@ class CourseController extends Controller
             'contentType' => 'required',
             'contentBody' => 'required'
         ]);
+
         if($req->contentType == 'video'){
             $req->validate(['contentBody' => 'mimetypes:video/mp4,video/avi,video/quicktim']);
         } elseif($req->contentType == 'image'){
@@ -88,27 +94,34 @@ class CourseController extends Controller
         } elseif($req->contentType == 'file') {
             $req->validate(['contentBody' => 'mimes:pdf,docx,txt']);
         }
+
         if($req->hasFile('contentBody')){
+
             $content = $req->file('contentBody');
             $fileName = time() . '_' . $content->getClientOriginalName();
             Storage::disk('public')->putFileAs('course/topic/content', $content, $fileName);
+
             $topic = Topic::create([
                 'topic_name' => $req->topicName,
                 'topic_description' => $req->topicDescription,
                 'course_id' => $req->courseId
             ]);
+
             Content::create([
                 'title' => $req->contentTitle,
                 'content_type' => $req->contentType,
                 'content_path' => $fileName,
                 'topic_id' => $topic->id
             ]);
+
         }else{
+
             $topic = Topic::create([
                 'topic_name' => $req->topicName,
                 'topic_description' => $req->topicDescription,
                 'course_id' => $req->courseId
             ]);
+
             Content::create([
                 'title' => $req->contentTitle,
                 'content_type' => $req->contentType,
