@@ -560,7 +560,7 @@
                 let chosenCat = $('#chosenCat').text();
                 //console.log(chosenCat);
                 $.ajax({
-                    url: 'http://localhost:8000/teacher/categories/take',
+                    url: 'http://localhost:8000/teacher/take/categories',
                     type: 'GET',
                     data: {
                         'selectProgramId': pId

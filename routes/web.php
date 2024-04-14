@@ -103,7 +103,7 @@ Route::middleware('auth')->group(function(){
         Route::post('edit/program={id}', [AdminController::class, 'editProgram'])->name('program.edit');
 
         Route::get('manage/cources', [AdminController::class, 'manageCourses'])->name('admin.courses.manage');
-        Route::get('take/categories', [AdminController::class, 'takeCategories']);
+        Route::get('take/categories', [CourseController::class, 'takeCategories']);
         Route::get('search/course', [AdminController::class, 'searchCourse']);
         Route::post('create/course', [CourseController::class, 'createCourse'])->name('admin.course.create');
         Route::get('public/course={id}', [AdminController::class, 'publicCourse'])->name('admin.course.public');
