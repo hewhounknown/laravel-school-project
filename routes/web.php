@@ -111,6 +111,7 @@ Route::middleware('auth')->group(function(){
         Route::get('detail/course={id}', [AdminController::class, 'detailCourse'])->name('admin.course.detail');
         Route::post('edit/course', [CourseController::class, 'editCourse'])->name('admin.course.edit');
         Route::get('delete/course={id}', [CourseController::class, 'deleteCourse'])->name('admin.course.delete');
+        Route::get('take/students', [CourseController::class, 'takeClassmates']);
 
         Route::post('create/topic/', [CourseController::class, 'createTopic'])->name('admin.topic.create');
         Route::post('add/content/topic', [CourseController::class, 'addContent'])->name('admin.content.add');

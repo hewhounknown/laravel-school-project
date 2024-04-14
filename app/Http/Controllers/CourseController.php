@@ -237,6 +237,7 @@ class CourseController extends Controller
     public function takeClassmates(Request $req)
     {
         $course = Course::where('id', $req->courseId)->with('reviews')->first();
+        //dd($course);
         if($req->data == "mates"){
             $students = $course->users;
             return  $students;

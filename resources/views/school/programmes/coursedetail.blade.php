@@ -228,7 +228,7 @@
         <li class="nav-item">
             <a id="topic" class="nav-link active" aria-current="page" href="#">Topics</a>
         </li>
-        @if (Auth::user()->id == $course->user_id || $enrollStatus == true)
+        @if (Auth::user()->id == $course->user_id || $enrollStatus == true || Auth::user()->role == 'admin')
             <li class="nav-item">
                 <a id="mates" class="nav-link" href="#">Classmates</a>
             </li>
@@ -676,7 +676,7 @@
                                                 <tbody>
                                                     `;
                                 response.forEach(student => {
-                                    console.log(student);
+                                    //console.log(student);
                                     $content += `<tr>
                                                     <td>
                                                          <a href="${profileViewRoute.replace(':id', student.id)}"
