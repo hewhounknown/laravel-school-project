@@ -149,7 +149,7 @@
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form enctype="multipart/form-data" method="POST" action="{{ route('admin.course.create') }}">
+                    <form enctype="multipart/form-data" method="POST" action="{{ route('teacher.course.create') }}">
                         @csrf
                         <div class="modal-body">
                             <div class="row">
@@ -222,15 +222,6 @@
                                     class="btn btn-primary bg-info-subtle text-info-emphasis">View</a>
                             @endif
                         </div>
-                        {{-- @if ($c->course_status == false)
-                            <div class="card-footer bg-warning-subtle text-warning-emphasis">
-                                <a href="{{ route('course.detail', $c->id) }}" class="btn btn-warning">View</a>
-                            </div>
-                        @else
-                            <div class="card-footer bg-info-subtle text-info-emphasis">
-                                <a href="{{ route('course.detail', $c->id) }}" class="btn btn-primary">View</a>
-                            </div>
-                        @endif --}}
                     </div>
                 </div>
             @endforeach

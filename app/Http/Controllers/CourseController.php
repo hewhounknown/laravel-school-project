@@ -27,20 +27,19 @@ class CourseController extends Controller
             return back()->with(['status' => 'this course is already existed!']);
         } else{
 
-            $image = null;
+            $course = Course::create([
+                        'course_name' => $req->courseName,
+                        'course_description' => $req->description,
+                        'category_id' => $req->catId,
+                        'user_id' => Auth::user()->id
+                    ]);
+
             if($req->hasFile('courseImage')){
                 $image = $req->file('courseImage');
                 $imageName = time() . '_' . $image->getClientOriginalName();    // give a name combination with time
                 Storage::disk('public')->putFileAs('course', $image, $imageName); // store in storage / app / public / uploads
-                Course::create(['course_image' => $imageName]);
+                Course::where('id', $course->id)->update(['course_image' => $imageName]);
             }
-
-            Course::create([
-                'course_name' => $req->courseName,
-                'course_description' => $req->description,
-                'category_id' => $req->catId,
-                'user_id' => Auth::user()->id
-            ]);
 
             return back()->with(['status' => 'created course successfully!']);
         }
