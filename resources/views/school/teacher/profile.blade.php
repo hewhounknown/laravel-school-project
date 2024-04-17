@@ -53,7 +53,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Your form content goes here -->
                     <form id="myForm" enctype="multipart/form-data" method="post" action="{{ route('profile') }}">
                         @csrf
                         <div class="row justify-content-evenly">
@@ -104,20 +103,10 @@
                                     <label for="phone" class="form-label">{{ __('phone') }}</label>
                                     <input id="phone" type="number" class="form-control" name="phone"
                                         value="{{ old('phone', Auth::user()->phone) }}" autocomplete="phone">
-                                    {{-- @error('phone')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror --}}
                                 </div>
                                 <div class="mb-2">
                                     <label for="address" class="form-label">{{ __('address') }}</label>
                                     <textarea name="address" id="" class="form-control" cols="30" rows="10">{{ old('address', Auth::user()->address) }}</textarea>
-                                    {{-- @error('address')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror --}}
                                 </div>
                             </div>
                         </div>
@@ -213,7 +202,7 @@
                         @endif
                         <div class="card-body" style="">
                             <h5 class="card-title">{{ $c->course_name }}</h5>
-                            <p class="card-text">{{ $c->course_description }}</p>
+                            <p class="card-text">{{ Str::limit($c->course_description, 20, '...') }}</p>
                             @if ($c->course_status == false)
                                 <a href="{{ route('course.detail', $c->id) }}"
                                     class="btn btn-warning bg-warning-subtle text-warning-emphasis">View</a>
@@ -247,7 +236,7 @@
                                             <span
                                                 class="badge text-bg-secondary">{{ $course->category->category_name }}</span>
                                         </h5>
-                                        <p class="card-text">{{ $course->course_description }}</p>
+                                        <p class="card-text">{{ Str::limit($course->course_description, 20, '...') }}</p>
                                         @if ($l['enroll']->status == false)
                                             <a href="//" class="btn btn-outline-dark" data-bs-toggle="modal"
                                                 data-bs-target="#enrollModal">pls wait</a>

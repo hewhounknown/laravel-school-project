@@ -32,7 +32,7 @@
                                     <h5 class="card-title">{{ $course->course_name }}
                                         <span class="badge text-bg-secondary">{{ $course->category->category_name }}</span>
                                     </h5>
-                                    <p class="card-text">{{ $course->course_description }}</p>
+                                    <p class="card-text">{{ Str::limit($course->course_description, 20, '...') }}</p>
                                     @if ($l['enroll']->status == false)
                                         <a href="//" class="btn btn-outline-dark" data-bs-toggle="modal"
                                             data-bs-target="#enrollModal">pls wait</a>

@@ -347,7 +347,8 @@
                                                 <table class="table table-hover">
                                                     <tbody>
                                                         @foreach ($t->contents as $content)
-                                                            <hr> <a href="{{ route('contentView', $content->id) }}">
+                                                            <hr> <a href="{{ route('contentView', $content->id) }}"
+                                                                class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
                                                                 <tr>{{ $content->title }}</tr>
                                                             </a>
                                                         @endforeach

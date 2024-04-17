@@ -14,67 +14,67 @@ use Illuminate\Support\Facades\Storage;
 class AuthController extends Controller
 {
     //
-    public function registerForm ()
-    {
-        return view('register');
-    }
+    // public function registerForm ()
+    // {
+    //     return view('register');
+    // }
 
-    public function register(Request $req)
-    {
-        $req->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'required|min:6|max:15',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+    // public function register(Request $req)
+    // {
+    //     $req->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|string|email|max:255|unique:users',
+    //         'phone' => 'required|min:6|max:15',
+    //         'password' => 'required|string|min:8|confirmed',
+    //     ]);
 
-        User::create([
-            'name' => $req->name,
-            'email' => $req->email,
-            'phone' => $req->phone,
-            'password' => Hash::make($req->password),
-        ]);
+    //     User::create([
+    //         'name' => $req->name,
+    //         'email' => $req->email,
+    //         'phone' => $req->phone,
+    //         'password' => Hash::make($req->password),
+    //     ]);
 
-        return redirect()->route('login')->with('success', 'Registration successful!');
-    }
+    //     return redirect()->route('login')->with('success', 'Registration successful!');
+    // }
 
-    public function loginForm()
-    {
-        return view('login');
-    }
+    // public function loginForm()
+    // {
+    //     return view('login');
+    // }
 
-    public function login(Request $req)
-    {
-        $credentials = $req->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+    // public function login(Request $req)
+    // {
+    //     $credentials = $req->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required',
+    //     ]);
 
-        // Attempt to authenticate the user
-        if (Auth::attempt($credentials)) {
-            // Authentication successful
-            $req->session()->regenerate();
+    //     // Attempt to authenticate the user
+    //     if (Auth::attempt($credentials)) {
+    //         // Authentication successful
+    //         $req->session()->regenerate();
 
-            return redirect()->intended('/');
-        }
+    //         return redirect()->intended('/');
+    //     }
 
-        // Authentication failed, redirect back with error message
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
-    }
+    //     // Authentication failed, redirect back with error message
+    //     return back()->withErrors([
+    //         'email' => 'The provided credentials do not match our records.',
+    //     ]);
+    // }
 
-    public function logout(Request $req)
-    {
-        //dd($req->all());
-        Auth::logout();
+    // public function logout(Request $req)
+    // {
+    //     //dd($req->all());
+    //     Auth::logout();
 
-        $req->session()->invalidate();
+    //     $req->session()->invalidate();
 
-        $req->session()->regenerateToken(); //Regenerates the CSRF token
+    //     $req->session()->regenerateToken(); //Regenerates the CSRF token
 
-        return redirect()->route('home')->with('success', 'Logged out successfully.');
-    }
+    //     return redirect()->route('home')->with('success', 'Logged out successfully.');
+    // }
 
     public function profileForm()
     {

@@ -24,10 +24,10 @@
                                         <div class="card m-2">
                                             @if ($course->course_image == null)
                                                 <img src="{{ asset('img/default.png') }}" class="card-img-top img-fluid"
-                                                    alt="...">
+                                                    alt="..." style="height: 100px">
                                             @else
                                                 <img src="{{ asset('storage/course/' . $course->course_image) }}"
-                                                    class="card-img-top img-fluid" alt="...">
+                                                    class="card-img-top img-fluid" alt="..." style="height: 100px">
                                             @endif
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ $course->course_name }}
@@ -35,7 +35,7 @@
                                                         class="badge text-bg-secondary">{{ $course->category->category_name }}</span>
                                                 </h5>
                                                 <p class="card-text">
-                                                    {{ $course->course_description }}
+                                                    {{ Str::limit($course->course_description, 20, '...') }}
                                                 </p>
                                                 <a href="{{ route('course.detail', $course->id) }}"
                                                     class="btn btn-primary">View</a>
@@ -66,17 +66,18 @@
             <div class="col-md-4 my-2">
                 <div class="card">
                     @if ($course->course_image == null)
-                        <img src="{{ asset('img/default.png') }}" class="card-img-top img-fluid" alt="...">
+                        <img src="{{ asset('img/default.png') }}" class="card-img-top img-fluid" alt="..."
+                            style="height: 170px;">
                     @else
                         <img src="{{ asset('storage/course/' . $course->course_image) }}" class="card-img-top img-fluid"
-                            alt="...">
+                            alt="..." style="height: 170px">
                     @endif
                     <div class="card-body">
                         <h5 class="card-title">{{ $course->course_name }}
                             <span class="badge text-bg-secondary">{{ $course->category->category_name }}</span>
                         </h5>
                         <p class="card-text">
-                            {{ $course->course_description }}
+                            {{ Str::limit($course->course_description, 20, '...') }}
                         </p>
                         <a href="{{ route('course.detail', $course->id) }}" class="btn btn-primary">View</a>
                     </div>
