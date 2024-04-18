@@ -18,7 +18,11 @@ class AdminController extends Controller
     //
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $admins = User::where('role', 'admin')->get();
+        $teachers = User::where('role', 'teacher')->get();
+        $students = User::where('role', 'student')->get();
+        $books = Library::all();
+        return view('admin.dashboard', ['admins'=>$admins, 'teachers'=>$teachers, 'students'=>$students, 'books'=>$books]);
     }
 
     public function manageUsers()
