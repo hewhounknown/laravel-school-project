@@ -1,7 +1,14 @@
 @extends('admin.layout.app')
 
+@section('title', $course->course_name)
+
 @section('content')
-    course detail
+
+    <div class="m-3 fs-4">
+        <a href="http://" onclick="history.back(); return false;" title="Go back">
+            <i class="fa-solid fa-arrow-right-from-bracket fa-flip-horizontal"></i>
+        </a>
+    </div>
 
     @if ($errors->any())
         <div class="alert alert-danger">

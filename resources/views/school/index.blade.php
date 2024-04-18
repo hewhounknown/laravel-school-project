@@ -70,7 +70,7 @@
                             style="height: 170px;">
                     @else
                         <img src="{{ asset('storage/course/' . $course->course_image) }}" class="card-img-top img-fluid"
-                            alt="..." style="height: 170px">
+                            alt="..." style="height: 230px">
                     @endif
                     <div class="card-body">
                         <h5 class="card-title">{{ $course->course_name }}

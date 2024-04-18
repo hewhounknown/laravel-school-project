@@ -1,5 +1,7 @@
 @extends('admin.layout.app')
 
+@section('title', 'Program Management')
+
 @section('content')
     <h4 class="my-3">Program Management</h4>
 
