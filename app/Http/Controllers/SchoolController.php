@@ -56,8 +56,11 @@ class SchoolController extends Controller
             $students = [];
             if($courses->isNotEmpty()) {
                 foreach($courses as $c){
+
                     if($c->enrollments->isNotEmpty()){
+
                         foreach($c->enrollments as $e){
+
                             $students[$c->course_name][] = [
                                 'enrollStatus' => $e->status,
                                 'stuInfo' => $e->user
@@ -67,6 +70,7 @@ class SchoolController extends Controller
                 }
             }
             return ['students' => $students];
+
         } elseif($req->userChoice == 'Reports') {
             $reports = 'cc';
             return ['reports' => $reports];
@@ -76,13 +80,8 @@ class SchoolController extends Controller
     public function detailCourse($id)
     {
         $course = Course::where('id', $id)->first();
-        $enrollStatus = false;
-        if(Enrollment::where(['user_id' => Auth::user()->id, 'course_id' => $id ])->exists()){
-            $enroll = Enrollment::where(['user_id' => Auth::user()->id, 'course_id' => $id ])->first();
-            $enrollStatus = $enroll->status;
-        }
-       // dd($course->users);
-        return view('school.programmes.coursedetail', ['course' => $course, 'enrollStatus' => $enrollStatus]);
+        $enroll = Enrollment::where(['user_id' => Auth::user()->id, 'course_id' => $id ])->first();
+        return view('school.programmes.coursedetail', ['course' => $course, 'enroll' => $enroll]);
     }
 
     public function content($contentId)
@@ -154,9 +153,12 @@ class SchoolController extends Controller
     public function kickStudent($studentId, $courseName)
     {
         $course = Course::where('course_name', $courseName)->first();
+
         Enrollment::where(['user_id' => $studentId, 'course_id' => $course->id])
-        ->update(['status' => false]);
+                    ->update(['status' => false]);
+
         Course::where('id', $course->id)->decrement('enroll_count');
+
         return back()->with(['status' => 'you kicked student successfully!']);
     }
 
@@ -183,6 +185,7 @@ class SchoolController extends Controller
             'rating' => 'required',
             'comment' => 'required'
         ]);
+
         Review::create([
             'rating' => $req->rating,
             'comment' => $req->comment,

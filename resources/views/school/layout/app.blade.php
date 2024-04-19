@@ -198,11 +198,9 @@
                                 @guest
                                 @else
                                     @if (Auth::user()->role == 'admin')
-                                        @if (Auth::user()->role == 'admin')
-                                            <a href="{{ route('admin.dashboard') }}" class="nav-link">
-                                                <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                                            </a>
-                                        @endif
+                                        <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                        </a>
                                     @endif
                                 @endguest
                             </div>

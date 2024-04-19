@@ -55,8 +55,8 @@ class AdminController extends Controller
     public function searchUsers(Request $req)
     {
         $users = User::where('name', 'like', '%' . $req->search . '%')
-            ->orwhere('email', 'like', '%' . $req->search . '%')
-            ->orwhere('role', 'like', '%' . $req->search . '%')->get();
+                        ->orwhere('email', 'like', '%' . $req->search . '%')
+                        ->orwhere('role', 'like', '%' . $req->search . '%')->get();
         return $users;
     }
 
@@ -213,8 +213,8 @@ class AdminController extends Controller
 
     public function searchCourse(Request $req)
     {
-        $courses = Course::where('course_name', 'like', '%' . $req->searchData . '%')->where('course_status', true)
-        ->with('category', 'category.program', 'teacher')->get();
+        $courses = Course::where('course_status', true)->where('course_name', 'like', '%' . $req->searchData . '%')
+                            ->with('category', 'category.program', 'teacher')->get();
         return $courses;
     }
 

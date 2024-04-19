@@ -207,8 +207,8 @@
                 </div>
             @endif
 
-            @if (Auth::user()->id != $course->user_id)
-                @if (count(Auth::user()->enrollments) < 1)
+            @if (Auth::user()->id != $course->user_id || Auth::user()->role != 'admin')
+                @if ($enroll == null)
                     <div class="">
                         <a href="{{ route('course.enroll', $course->id) }}"
                             class="btn btn-outline-primary float-end">Enroll Now</a>
@@ -228,11 +228,14 @@
         <li class="nav-item">
             <a id="topic" class="nav-link active" aria-current="page" href="#">Topics</a>
         </li>
-        @if (Auth::user()->id == $course->user_id || $enrollStatus == true || Auth::user()->role == 'admin')
-            <li class="nav-item">
-                <a id="mates" class="nav-link" href="#">Classmates</a>
-            </li>
+        @if ($enroll != null)
+            @if (Auth::user()->id == $course->user_id || $enroll->status == true)
+                <li class="nav-item">
+                    <a id="mates" class="nav-link" href="#">Classmates</a>
+                </li>
+            @endif
         @endif
+
     </ul>
 
     <input type="hidden" id="courseId" value="{{ $course->id }}">
@@ -294,7 +297,7 @@
                                 </div>
                                 <div class="mb-2" id="textArea">
                                     <label for="contentBody">Content</label>
-                                    <textarea name="contentBody" class="form-control textContent" id="textContent" cols="30" rows="5"></textarea>
+                                    <textarea name="contentBody" class="form-control contentBody" id="textContent" cols="30" rows="5"></textarea>
                                 </div>
                                 <div class="mb-2" id="fileArea">
                                     <label for="contentBody">Content</label>
@@ -320,136 +323,146 @@
         @endif
 
 
-        @if (Auth::user()->id == $course->user_id || $enrollStatus == true)
-            {{-- Topic session start --}}
-            <div class="container mt-5">
-                <div class="row shadow-lg p-3 rounded">
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        @if ($course->topics->isEmpty())
-                            <h2 class="default">There are no topic to learn</h2>
-                        @else
-                            @foreach ($course->topics as $t)
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading{{ $t->id }}">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#collapse{{ $t->id }}"
-                                            aria-expanded="true" aria-controls="collapse{{ $t->id }}">
-                                            {{ $t->topic_name }}
-                                        </button>
-                                    </h2>
+        @if ($enroll != null)
+            @if (Auth::user()->id == $course->user_id || $enroll->status == true)
+                {{-- Topic session start --}}
+                <div class="container mt-5">
+                    <div class="row shadow-lg p-3 rounded">
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                            @if ($course->topics->isEmpty())
+                                <h2 class="default">There are no topic to learn</h2>
+                            @else
+                                @foreach ($course->topics as $t)
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading{{ $t->id }}">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapse{{ $t->id }}"
+                                                aria-expanded="true" aria-controls="collapse{{ $t->id }}">
+                                                {{ $t->topic_name }}
+                                            </button>
+                                        </h2>
 
-                                    {{-- content session start --}}
-                                    <div id="collapse{{ $t->id }}" class="accordion-collapse collapse"
-                                        aria-labelledby="heading{{ $t->id }}" data-bs-parent="#accordionTopics">
-                                        <div class="accordion-body">
-                                            {{ $t->topic_description }}
-                                            <div>
-                                                <table class="table table-hover">
-                                                    <tbody>
-                                                        @foreach ($t->contents as $content)
-                                                            <hr> <a href="{{ route('contentView', $content->id) }}"
-                                                                class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
-                                                                <tr>{{ $content->title }}</tr>
-                                                            </a>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                            @if (Auth::user()->id == $t->course->user_id)
-                                                <div class="my-2" style="height: 3rem">
-                                                    <button class="btn btn-outline-dark float-end mb-2"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#addContentModal{{ $t->id }}">+
-                                                        content</button>
+                                        {{-- content session start --}}
+                                        <div id="collapse{{ $t->id }}" class="accordion-collapse collapse"
+                                            aria-labelledby="heading{{ $t->id }}"
+                                            data-bs-parent="#accordionTopics">
+                                            <div class="accordion-body">
+                                                {{ $t->topic_description }}
+                                                <div>
+                                                    <table class="table table-hover">
+                                                        <tbody>
+                                                            @foreach ($t->contents as $content)
+                                                                <hr> <a href="{{ route('contentView', $content->id) }}"
+                                                                    class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                                                    <tr>{{ $content->title }}</tr>
+                                                                </a>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-                                                {{-- modal for add content start --}}
-                                                <div class="modal fade" id="addContentModal{{ $t->id }}"
-                                                    tabindex="-1" aria-labelledby="exampleModalLabel"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal
-                                                                    title</h1>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
 
-                                                            <form id="contentInput" class="contentInput"
-                                                                enctype="multipart/form-data"
-                                                                action="{{ route('teacher.content.add') }}"
-                                                                method="post">
-                                                                @csrf
-                                                                <div class="modal-body">
-                                                                    <input type="hidden" name="topicId"
-                                                                        value="{{ $t->id }}">
-
-                                                                    <div class="mb-3">
-                                                                        <label for="contentTitle">Title</label>
-                                                                        <input type="text" name="contentTitle"
-                                                                            id="contentTitle" class="form-control">
-                                                                    </div>
-
-                                                                    <div class="mb-3">
-                                                                        <select id="selectBox" name="contentType"
-                                                                            class="form-select choiceContentType"
-                                                                            aria-label="Default select example">
-                                                                            <option selected>Choose your content type
-                                                                            </option>
-                                                                            <option value="text">Text</option>
-                                                                            <option value="video">video</option>
-                                                                            <option value="image">image</option>
-                                                                            <option value="file">file</option>
-                                                                        </select>
-                                                                    </div>
-
-                                                                    <div id="textBox" class="mb-3 textBox">
-                                                                        <label for="contentBody">content</label>
-                                                                        <textarea name="contentBody" id="contentBody" cols="30" rows="10" class="form-control contentBody"></textarea>
-                                                                    </div>
-
-                                                                    <div id="inputFile" class="mb-3 inputFile">
-                                                                        <label for="contentBody">content</label>
-                                                                        <input type="file" name="contentBody"
-                                                                            id="contentBody" class="form-control">
-                                                                    </div>
+                                                @if (Auth::user()->id == $t->course->user_id)
+                                                    <div class="my-2" style="height: 3rem">
+                                                        <button class="btn btn-outline-dark float-end mb-2"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#addContentModal{{ $t->id }}">+
+                                                            content</button>
+                                                    </div>
+                                                    {{-- modal for add content start --}}
+                                                    <div class="modal fade" id="addContentModal{{ $t->id }}"
+                                                        tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Modal
+                                                                        title</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
                                                                 </div>
 
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-outline-primary">Save</button>
-                                                                </div>
-                                                            </form>
+                                                                <form id="contentInput" class="contentInput"
+                                                                    enctype="multipart/form-data"
+                                                                    action="{{ route('teacher.content.add') }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    <div class="modal-body">
+                                                                        <input type="hidden" name="topicId"
+                                                                            value="{{ $t->id }}">
 
-                                                            <div id="spinner" class="text-center m-5 spin">
-                                                                <div class="spinner-border text-info" role="status">
-                                                                    <span class="visually-hidden">Loading...</span>
+                                                                        <div class="mb-3">
+                                                                            <label for="contentTitle">Title</label>
+                                                                            <input type="text" name="contentTitle"
+                                                                                id="contentTitle" class="form-control">
+                                                                        </div>
+
+                                                                        <div class="mb-3">
+                                                                            <select id="selectBox" name="contentType"
+                                                                                class="form-select choiceContentType"
+                                                                                aria-label="Default select example">
+                                                                                <option selected>Choose your content type
+                                                                                </option>
+                                                                                <option value="text">Text</option>
+                                                                                <option value="video">video</option>
+                                                                                <option value="image">image</option>
+                                                                                <option value="file">file</option>
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <div id="textBox" class="mb-3 textBox">
+                                                                            <label for="contentBody">content</label>
+                                                                            <textarea name="contentBody" id="contentBody" cols="30" rows="10" class="form-control contentBody"></textarea>
+                                                                        </div>
+
+                                                                        <div id="inputFile" class="mb-3 inputFile">
+                                                                            <label for="contentBody">content</label>
+                                                                            <input type="file" name="contentBody"
+                                                                                id="contentBody" class="form-control">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-outline-primary">Save</button>
+                                                                    </div>
+                                                                </form>
+
+                                                                <div id="spinner" class="text-center m-5 spin">
+                                                                    <div class="spinner-border text-info" role="status">
+                                                                        <span class="visually-hidden">Loading...</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                {{-- modal for add content end --}}
-                                            @endif
+                                                    {{-- modal for add content end --}}
+                                                @endif
 
+                                            </div>
                                         </div>
+                                        {{-- content session end --}}
                                     </div>
-                                    {{-- content session end --}}
-                                </div>
-                            @endforeach
-                        @endif
+                                @endforeach
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-            {{-- topic session end --}}
+                {{-- topic session end --}}
+            @else
+                <h5 class="text-center text-muted bg-white shadow-sm p-3">
+                    wait a while for you're accepted by the teacher!
+                </h5>
+            @endif
         @else
             <h5 class="text-center text-muted bg-white shadow-sm p-3">
-                You need to enroll and wait a while for you're accepted by the teacher!
+                You need to enroll first!
             </h5>
         @endif
+
 
         <div id="" class="container mt-5">
             <ul class="list-group">
@@ -481,43 +494,46 @@
                 @endforeach
             </ul>
 
-            @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id && $enrollStatus == true)
-                <form class="mt-3" action="{{ route('course.review.create') }}" id="addStar" method="POST">
-                    @csrf
-                    <input type="hidden" name="courseId" value="{{ $course->id }}">
-                    <h5 class="border-bottom border-info">Review here:</h5>
-                    <div class="rating">
-                        <label for="rat1">
-                            <span class="fa fa-star" onclick="rate(1)" id="star1"></span>
-                        </label>
-                        <input type="radio" name="rating" value="1" id="rat1"
-                            class="form-check-input d-none">
-                        <label for="rat2">
-                            <span class="fa fa-star" onclick="rate(2)" id="star2"></span>
-                        </label>
-                        <input type="radio" name="rating" value="2" id="rat2"
-                            class="form-check-input d-none">
-                        <label for="rat3">
-                            <span class="fa fa-star" onclick="rate(3)" id="star3"></span>
-                        </label>
-                        <input type="radio" name="rating" value="3" id="rat3"
-                            class="form-check-input d-none">
-                        <label for="rat4">
-                            <span class="fa fa-star" onclick="rate(4)" id="star4"></span>
-                        </label>
-                        <input type="radio" name="rating" value="4" id="rat4"
-                            class="form-check-input d-none">
-                        <label for="rat5">
-                            <span class="fa fa-star" onclick="rate(5)" id="star5"></span>
-                        </label>
-                        <input type="radio" name="rating" value="5" id="rat5"
-                            class="form-check-input d-none">
-                    </div>
+            @if ($enroll != null)
+                @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id && $enroll->status == true)
+                    <form class="mt-3" action="{{ route('course.review.create') }}" id="addStar" method="POST">
+                        @csrf
+                        <input type="hidden" name="courseId" value="{{ $course->id }}">
+                        <h5 class="border-bottom border-info">Review here:</h5>
+                        <div class="rating">
+                            <label for="rat1">
+                                <span class="fa fa-star" onclick="rate(1)" id="star1"></span>
+                            </label>
+                            <input type="radio" name="rating" value="1" id="rat1"
+                                class="form-check-input d-none">
+                            <label for="rat2">
+                                <span class="fa fa-star" onclick="rate(2)" id="star2"></span>
+                            </label>
+                            <input type="radio" name="rating" value="2" id="rat2"
+                                class="form-check-input d-none">
+                            <label for="rat3">
+                                <span class="fa fa-star" onclick="rate(3)" id="star3"></span>
+                            </label>
+                            <input type="radio" name="rating" value="3" id="rat3"
+                                class="form-check-input d-none">
+                            <label for="rat4">
+                                <span class="fa fa-star" onclick="rate(4)" id="star4"></span>
+                            </label>
+                            <input type="radio" name="rating" value="4" id="rat4"
+                                class="form-check-input d-none">
+                            <label for="rat5">
+                                <span class="fa fa-star" onclick="rate(5)" id="star5"></span>
+                            </label>
+                            <input type="radio" name="rating" value="5" id="rat5"
+                                class="form-check-input d-none">
+                        </div>
 
-                    <textarea class="form-control" name="comment" id="" cols="30" rows="4"></textarea>
-                    <button type="submit" class="btn btn-outline-primary mt-2 float-end">Create</button>
-                </form>
+                        <textarea class="form-control" name="comment" id="" cols="30" rows="4"></textarea>
+                        <button type="submit" class="btn btn-outline-primary mt-2 float-end">Create</button>
+                    </form>
+                @endif
             @endif
+
 
         </div>
     </div>
@@ -561,7 +577,7 @@
                 let chosenCat = $('#chosenCat').text();
                 //console.log(chosenCat);
                 $.ajax({
-                    url: 'http://localhost:8000/teacher/take/categories',
+                    url: 'http://localhost:8000/teacher/categories/take',
                     type: 'GET',
                     data: {
                         'selectProgramId': pId
