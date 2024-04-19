@@ -20,19 +20,19 @@
                         <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                             <div class="row mx-3">
                                 @foreach ($chunk as $course)
-                                    <div class="col-lg-3">
+                                    <div class="col-3">
                                         <div class="card m-2">
                                             @if ($course->course_image == null)
                                                 <img src="{{ asset('img/default.png') }}" class="card-img-top img-fluid"
-                                                    alt="..." style="height: 100px">
+                                                    alt="..." style="">
                                             @else
                                                 <img src="{{ asset('storage/course/' . $course->course_image) }}"
-                                                    class="card-img-top img-fluid" alt="..." style="height: 100px">
+                                                    class="card-img-top img-fluid" alt="..." style="">
                                             @endif
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ $course->course_name }}
-                                                    <span
-                                                        class="badge text-bg-secondary">{{ $course->category->category_name }}</span>
+                                                    <h6 class="badge text-bg-secondary">
+                                                        {{ $course->category->category_name }}</h6>
                                                 </h5>
                                                 <p class="card-text">
                                                     {{ Str::limit($course->course_description, 20, '...') }}
@@ -67,14 +67,14 @@
                 <div class="card">
                     @if ($course->course_image == null)
                         <img src="{{ asset('img/default.png') }}" class="card-img-top img-fluid" alt="..."
-                            style="height: 170px;">
+                            style="height: 230px;">
                     @else
                         <img src="{{ asset('storage/course/' . $course->course_image) }}" class="card-img-top img-fluid"
                             alt="..." style="height: 230px">
                     @endif
                     <div class="card-body">
                         <h5 class="card-title">{{ $course->course_name }}
-                            <span class="badge text-bg-secondary">{{ $course->category->category_name }}</span>
+                            <h6 class="badge text-bg-secondary">{{ $course->category->category_name }}</h6>
                         </h5>
                         <p class="card-text">
                             {{ Str::limit($course->course_description, 20, '...') }}

@@ -341,7 +341,7 @@
                                                    <h4 class="text-primary-emphasis">${course}</h4>
                                                 </div>
                                                 <div class="card-body">
-                                                    <table class="table table-striped text-center">
+                                                    <table class="table table-hover text-center">
                                                         <thead>
                                                             <tr>
                                                                 <th>Name</th>
@@ -363,22 +363,16 @@
                                                                             <td></td>`;
                                         if (enroll.enrollStatus) {
                                             $content += `<td>
-                                                                                                <a href="${studentKickRoute.replace(':studentId', enroll.stuInfo.id).replace(':courseName', course)}" class="btn btn-outline-danger">
-                                                                                                    Kick
-                                                                                                </a>
-                                                                                                <a href="" class="btn btn-outline-warning">
-                                                                                                    Ban
-                                                                                                </a>
-                                                                                            </td>`;
+                                                            <a href="${studentKickRoute.replace(':studentId', enroll.stuInfo.id).replace(':courseName', course)}" class="btn btn-outline-danger">
+                                                                Kick
+                                                            </a>
+                                                        </td>`;
                                         } else {
                                             $content += `<td>
-                                                                                                <a class="btn btn-outline-primary" href="${studentAcceptRoute.replace(':studentId', enroll.stuInfo.id).replace(':courseName', course)}">
-                                                                                                    Accept
-                                                                                                </a>
-                                                                                                <a class="btn btn-outline-danger" href="http://">
-                                                                                                    Cancle
-                                                                                                </a>
-                                                                                            </td>`;
+                                                            <a class="btn btn-outline-primary" href="${studentAcceptRoute.replace(':studentId', enroll.stuInfo.id).replace(':courseName', course)}">
+                                                                Accept
+                                                            </a>
+                                                        </td>`;
                                         }
                                         $content += ` </tr>`;
                                     })

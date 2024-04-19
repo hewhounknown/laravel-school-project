@@ -148,7 +148,7 @@
                                         @endif
                                         <div>
                                             {{-- <input type="file" name="image" id="" class="form-control"> --}}
-                                            <input type="file" name="image" id="" class="form-control"
+                                            <input type="file" name="image" class="form-control"
                                                 onchange="readURL(this)">
                                         </div>
                                     </div>
@@ -183,8 +183,8 @@
                                                 value="{{ old('phone', Auth::user()->phone) }}" autocomplete="phone">
                                         </div>
                                         <div class="mb-2">
-                                            <label for="address" class="form-label">{{ __('address') }}</label>
-                                            <textarea name="address" id="" class="form-control" cols="30" rows="10">{{ old('address', Auth::user()->address) }}</textarea>
+                                            <h5 class="form-label">{{ __('address') }}</h5>
+                                            <textarea name="address" class="form-control" cols="30" rows="10">{{ old('address', Auth::user()->address) }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -216,8 +216,7 @@
                                         Current Password
                                     </div>
                                     <div class="col-sm-8">
-                                        <input type="password" name="currentPassword" id=""
-                                            class="form-control">
+                                        <input type="password" name="currentPassword" class="form-control">
                                     </div>
                                     @error('currentPassword')
                                         <span class="invalid-feedback" role="alert">
@@ -230,8 +229,7 @@
                                         New Password
                                     </div>
                                     <div class="col-sm-8">
-                                        <input type="password" name="newPassword" id=""
-                                            class="form-control">
+                                        <input type="password" name="newPassword" class="form-control">
                                     </div>
                                     @error('newPassword')
                                         <span class="invalid-feedback" role="alert">

@@ -207,8 +207,8 @@
                 </div>
             @endif
 
-            @if (Auth::user()->id != $course->user_id || Auth::user()->role != 'admin')
-                @if ($enroll == null)
+            @if (Auth::user()->id != $course->user_id)
+                @if ($enrollStatus == null)
                     <div class="">
                         <a href="{{ route('course.enroll', $course->id) }}"
                             class="btn btn-outline-primary float-end">Enroll Now</a>
@@ -228,13 +228,13 @@
         <li class="nav-item">
             <a id="topic" class="nav-link active" aria-current="page" href="#">Topics</a>
         </li>
-        @if ($enroll != null)
-            @if (Auth::user()->id == $course->user_id || $enroll->status == true)
-                <li class="nav-item">
-                    <a id="mates" class="nav-link" href="#">Classmates</a>
-                </li>
-            @endif
+        {{-- @if ($enroll != null) --}}
+        @if (Auth::user()->id == $course->user_id || $enrollStatus == true)
+            <li class="nav-item">
+                <a id="mates" class="nav-link" href="#">Classmates</a>
+            </li>
         @endif
+        {{-- @endif --}}
 
     </ul>
 
@@ -323,8 +323,8 @@
         @endif
 
 
-        @if ($enroll != null)
-            @if (Auth::user()->id == $course->user_id || $enroll->status == true)
+        @if ($enrollStatus != null || Auth::user()->id == $course->user_id)
+            @if (Auth::user()->id == $course->user_id || $enrollStatus == true)
                 {{-- Topic session start --}}
                 <div class="container mt-5">
                     <div class="row shadow-lg p-3 rounded">
@@ -494,8 +494,8 @@
                 @endforeach
             </ul>
 
-            @if ($enroll != null)
-                @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id && $enroll->status == true)
+            @if ($enrollStatus != null)
+                @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id && $enrollStatus == true)
                     <form class="mt-3" action="{{ route('course.review.create') }}" id="addStar" method="POST">
                         @csrf
                         <input type="hidden" name="courseId" value="{{ $course->id }}">
@@ -662,7 +662,6 @@
                 let tab = $(this).attr('id');
                 let courseId = $('#courseId').val();
 
-
                 console.log(tab);
 
                 if (tab == "topic") {
@@ -677,7 +676,6 @@
                         url: 'http://localhost:8000/course/take/classmates',
                         type: 'GET',
                         data: {
-                            'data': tab,
                             'courseId': courseId
                         },
                         success: function(response) {

@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Review;
 use App\Models\Content;
 use App\Models\Category;
+use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -235,11 +236,10 @@ class CourseController extends Controller
 
     public function takeClassmates(Request $req)
     {
-        $course = Course::where('id', $req->courseId)->with('reviews')->first();
-        //dd($course);
-        if($req->data == "mates"){
-            $students = $course->users;
-            return  $students;
+        $enrolls = Enrollment::where('course_id', $req->courseId)->where('status', true)->get();
+        foreach($enrolls as $enroll){
+            $students[] = $enroll->user;
         }
+        return $students;
     }
 }

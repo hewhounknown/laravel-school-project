@@ -80,8 +80,13 @@ class SchoolController extends Controller
     public function detailCourse($id)
     {
         $course = Course::where('id', $id)->first();
+        $enrollStatus = null;
         $enroll = Enrollment::where(['user_id' => Auth::user()->id, 'course_id' => $id ])->first();
-        return view('school.programmes.coursedetail', ['course' => $course, 'enroll' => $enroll]);
+        if($enroll != null){
+            $enrollStatus = $enroll->status;
+        }
+        //dd($enrollStatus);
+        return view('school.programmes.coursedetail', ['course' => $course, 'enrollStatus' => $enrollStatus]);
     }
 
     public function content($contentId)
