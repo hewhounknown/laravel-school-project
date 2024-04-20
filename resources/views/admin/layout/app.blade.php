@@ -64,25 +64,29 @@
 
         <div class="row">
             <nav class="col-3 pe-2 bg-light-subtle fs-6">
-                <ul id="TT" style="position: fixed; top: auto; width:23%" class="">
-                    <a href="{{ route('admin.dashboard') }}" class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary">
+                <ul style="position: fixed; top: auto; width:23%">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary pageBtn">
                         <i class="fa-solid fa-house-flag"></i>
                         <span class="d-none d-lg-inline">Dashboard</span>
                     </a>
-                    <a href="{{ route('users.manage') }}" class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary">
+                    <a href="{{ route('users.manage') }}"
+                        class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary pageBtn">
                         <i class="fa-solid fa-people-group"></i>
                         <span class="d-none d-lg-inline">Users</span>
                     </a>
-                    <a href="{{ route('library.manage') }}" class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary">
+                    <a href="{{ route('library.manage') }}"
+                        class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary pageBtn">
                         <i class="fa-solid fa-book-open"></i>
                         <span class="d-none d-lg-inline">Library</span>
                     </a>
-                    <a href="{{ route('programs.manage') }}" class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary">
+                    <a href="{{ route('programs.manage') }}"
+                        class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary pageBtn">
                         <i class="fa-solid fa-list"></i>
                         <span class="d-none d-lg-inline">Programs</span>
                     </a>
                     <a href="{{ route('admin.courses.manage') }}"
-                        class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary">
+                        class="btn w-75 p-2 shadow-sm my-2 me-4 bg-body-tertiary pageBtn">
                         <i class="fa-solid fa-folder"></i>
                         <span class="d-none d-lg-inline">Courses</span>
                     </a>
@@ -113,6 +117,32 @@
 
     {{-- for  ckeditor --}}
     <script src="{{ asset('school/js/ckeditor.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            function setActiveClass() {
+                let currentUrl = window.location.href;
+
+                $('.pageBtn').removeClass('active');
+
+                $('.pageBtn').each(function() {
+                    let btnHref = $(this).attr('href');
+                    if (btnHref === currentUrl) {
+                        $(this).addClass('active');
+                    }
+                });
+            }
+
+            setActiveClass();
+
+            $('.pageBtn').on('click', function(e) {
+                e.preventDefault();
+
+                window.location.href = $(this).attr('href');
+            });
+        });
+    </script>
 
     @yield('J_Script')
 </body>

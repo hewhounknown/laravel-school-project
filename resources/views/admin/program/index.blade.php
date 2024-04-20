@@ -71,7 +71,7 @@
                                 </button>
                                 @foreach ($program->categories as $cat)
                                     <div class="fs-6 mt-2">
-                                        <a href="http://"
+                                        <a href="#"
                                             class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ $cat->category_name }}</a>
                                     </div>
                                 @endforeach

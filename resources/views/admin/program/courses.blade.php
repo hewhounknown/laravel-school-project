@@ -66,8 +66,8 @@
                             </div>
                             <div class="col-6">
                                 <div class="mb-2">
-                                    <label for="" class="form-label">Course Name</label>
-                                    <input type="text" name="courseName" id="" class="form-control mb-2">
+                                    <label class="form-label">Course Name</label>
+                                    <input type="text" name="courseName" class="form-control mb-2">
                                 </div>
 
                                 <div class="mb-2">

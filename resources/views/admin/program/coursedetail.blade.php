@@ -122,7 +122,12 @@
             </div>
             <div class="row">
                 <div class="col-sm-3"><strong>By</strong></div>
-                <div class="col-sm-9">{{ _($course->teacher->name) }}</div>
+                <div class="col-sm-9">
+                    <a href="{{ route('admin.user.detail', $course->user_id) }}"
+                        class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                        {{ _($course->teacher->name) }}
+                    </a>
+                </div>
             </div>
             <div class="row">
                 <div class="col-sm-3"><strong>Date</strong></div>
