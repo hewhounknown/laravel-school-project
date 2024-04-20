@@ -96,7 +96,8 @@ Route::middleware('auth')->group(function(){
         Route::get('view/bookslist', [AdminController::class, 'booksList'])->name('book.list');
         Route::get('search/book', [AdminController::class, 'searchBook']);
         Route::get('read/book={id}', [LibraryController::class, 'readBook'])->name('admin.book.read');
-
+        Route::get('unpublic/book={id}', [AdminController::class, 'unpublicBook'])->name('book.unpublic');
+        Route::get('delete/book={id}', [AdminController::class, 'deleteBook'])->name('book.delete');
 
         Route::get('manage/programs', [AdminController::class, 'managePrograms'])->name('programs.manage');
         Route::post('create/program', [AdminController::class, 'createProgram'])->name('program.create');

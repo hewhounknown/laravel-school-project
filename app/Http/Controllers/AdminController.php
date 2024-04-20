@@ -110,8 +110,20 @@ class AdminController extends Controller
 
     public function publicBook($bookId)
     {
-        Library::where('id', $bookId)->update(['public_status' => true,]);
+        Library::where('id', $bookId)->update(['public_status' => true]);
         return back()->with(['status' => 'you confirmed a book to the public successfully!']);
+    }
+
+    public function unpublicBook($bookId)
+    {
+        Library::where('id', $bookId)->update(['public_status' => false]);
+        return back()->with(['status' => 'you confirmed a book to the private successfully!']);
+    }
+
+    public function deleteBook($bookId)
+    {
+        Library::where('id', $bookId)->delete();
+        return redirect()->route('book.list')->with(['status' => 'you deleted one book successfully']);
     }
 
     public function booksList()

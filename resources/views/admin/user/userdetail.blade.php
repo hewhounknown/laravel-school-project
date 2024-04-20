@@ -114,10 +114,6 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div> --}}
                 </div>
             </div>
         </div>
@@ -126,7 +122,7 @@
     </div>
 
     @if ($user->courses->isNotEmpty())
-        <h5 class="pb-2 m-2 border-bottom border-dark">Your Courses</h5>
+        <h5 class="pb-2 m-2 border-bottom border-dark">Courses</h5>
         @foreach ($user->courses as $course)
             @if (count($course->topics) < 3)
                 <div class="card  mx-2 my-3" style="min-height: 150px">

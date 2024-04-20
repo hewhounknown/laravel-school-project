@@ -42,7 +42,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ route('admin.profile.view') }}" class="dropdown-item">User Profile</a>
+                            <a href="{{ route('admin.profile.view') }}" class="dropdown-item">Profile</a>
                         </li>
                         <li>
                             <div class="">

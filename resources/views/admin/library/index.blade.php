@@ -34,8 +34,8 @@
                         <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                             <div class="row">
                                 @foreach ($chunk as $new)
-                                    <div class="">
-                                        <a href="" class="btn col-md-3 m-2" data-bs-toggle="modal"
+                                    <div class="col-3 m-2">
+                                        <a href="" class="btn" data-bs-toggle="modal"
                                             data-bs-target="#new{{ $new->id }}">
                                             <div class="card mb-2" style="height: 210px;">
                                                 @if ($new->cover == null)
@@ -128,8 +128,9 @@
                         <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                             <div class="row">
                                 @foreach ($chunk as $book)
-                                    <div class="col-md-3 m-2">
-                                        <div class="card" style="height: 210px;">
+                                    <div class="col-3 m-2">
+                                        <a href="{{ route('admin.book.read', $book->id) }}"
+                                            class="card link-underline link-underline-opacity-0" style="height: 210px;">
                                             @if ($book->cover == null)
                                                 <img src="{{ asset('img/default.png') }}" class="card-img-top"
                                                     style="height: 120px" alt="...">
@@ -141,7 +142,7 @@
                                                 <h5 class="card-title">{{ _($book->book_name) }}</h5>
                                                 <p class="card-text">{{ _($book->author_name) }}</p>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
                                 @endforeach
                             </div>
@@ -196,7 +197,7 @@
                             @csrf
                             <div class="modal-body">
                                 <div class="mt-2">
-                                    <label for="coverImg">Cover Image</label>
+                                    <h6>Cover Image</h6>
                                     <img id="coverImg" src="{{ asset('img/default.png') }}" alt="profile picture"
                                         class="rounded d-block mb-2" style="width:27rem; hieght: 35rem;">
                                     <input type="file" name="bookCover" id="bookCover" class="form-control d-none"
