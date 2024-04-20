@@ -56,8 +56,8 @@
                         @endif
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('library') }}">Library
-                                <i class="fa-solid fa-book-open-reader"></i>
+                            <a href="{{ route('library') }}" class="nav-link">
+                                Library <i class="fa-solid fa-book-open-reader"></i>
                             </a>
                         </li>
 

@@ -141,14 +141,14 @@
                     <div class="modal-dialog" style="max-width: 730px;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit here</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <form enctype="multipart/form-data" action="{{ route('teacher.course.edit') }}" method="post">
                                 @csrf
                                 <input type="hidden" name="courseId" value="{{ $course->id }}">
-                                <div class="modal-body" style="max-height: calc(100vh - 200px); overflow-y: auto;">>
+                                <div class="modal-body" style="max-height: calc(100vh - 200px); overflow-y: auto;">
                                     <div class="row">
                                         <div class="col-12 mb-3">
                                             <select name="programSelected" id="programSelected" class="form-select mb-2">
@@ -182,9 +182,8 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="mb-2">
-                                                <label for="" class="form-label">Course Name</label>
-                                                <input type="text" name="courseName" id=""
-                                                    class="form-control mb-2"
+                                                <label class="form-label">Course Name</label>
+                                                <input type="text" name="courseName" class="form-control mb-2"
                                                     value="{{ old('courseName', $course->course_name) }}">
                                             </div>
 
@@ -199,7 +198,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
                                 </div>
                             </form>
                         </div>
@@ -273,21 +272,21 @@
                                 <div class="row">
                                     <div class="mb-2 col-sm-6">
                                         <label for="topicName">Topic Name</label>
-                                        <input type="text" name="topicName" id="" class="form-control">
+                                        <input type="text" name="topicName" id="topicName" class="form-control">
                                     </div>
                                     <div class="mb-2 col-sm-6">
                                         <label for="topicDescription">Topic Description</label>
-                                        <textarea name="topicDescription" class="form-control" id="" cols="30" rows="5"></textarea>
+                                        <textarea name="topicDescription" class="form-control" id="topicDescription" cols="30" rows="5"></textarea>
                                     </div>
                                 </div>
                                 <hr>
 
                                 <div class="mb-2">
                                     <label for="contentTitle">Content Title</label>
-                                    <input type="text" name="contentTitle" id="" class="form-control">
+                                    <input type="text" name="contentTitle" id="contentTitle" class="form-control">
                                 </div>
                                 <div class="mb-2">
-                                    <label for="contentType">Content Type</label>
+                                    <label for="selectContentType">Content Type</label>
                                     <select id="selectContentType" name="contentType" class="form-select">
                                         <option value="text">Text</option>
                                         <option value="file">File</option>
@@ -296,11 +295,11 @@
                                     </select>
                                 </div>
                                 <div class="mb-2" id="textArea">
-                                    <label for="contentBody">Content</label>
+                                    <label></label>
                                     <textarea name="contentBody" class="form-control contentBody" id="textContent" cols="30" rows="5"></textarea>
                                 </div>
                                 <div class="mb-2" id="fileArea">
-                                    <label for="contentBody">Content</label>
+                                    <label>Content</label>
                                     <input type="file" name="contentBody" id="" class="form-control">
                                 </div>
 
@@ -589,7 +588,7 @@
                             $catsList += `
                                 <div class="form-check d-inline-block">
                                     <input class="form-check-input" type="radio" name="catId" id="cat${cat.id}" value="${cat.id}" ${chosenCat == cat.id ? 'checked' : ''}>
-                                    <label class="form-check-label" for="cat">
+                                    <label class="form-check-label">
                                     ${cat.category_name}
                                     </label>
                                 </div>`;

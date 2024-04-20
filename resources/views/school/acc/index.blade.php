@@ -76,7 +76,7 @@
                                                             document.getElementById('logout-form').submit();">
                                     <i class="fa-solid fa-arrow-right-from-bracket fa-rotate-270"></i>
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <form action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </div>
@@ -110,7 +110,7 @@
                                     @endif
                                     <div>
                                         {{-- <input type="file" name="image" id="" class="form-control"> --}}
-                                        <input type="file" name="image" id="" class="form-control"
+                                        <input type="file" name="image" id="image" class="form-control"
                                             onchange="readURL(this)">
                                     </div>
                                 </div>
@@ -146,7 +146,7 @@
                                     </div>
                                     <div class="mb-2">
                                         <label for="address" class="form-label">{{ __('address') }}</label>
-                                        <textarea name="address" id="" class="form-control" cols="30" rows="10">{{ old('address', Auth::user()->address) }}</textarea>
+                                        <textarea name="address" id="address" class="form-control" cols="30" rows="10">{{ old('address', Auth::user()->address) }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@
                                     Current Password
                                 </div>
                                 <div class="col-sm-8">
-                                    <input type="password" name="currentPassword" id="" class="form-control">
+                                    <input type="password" name="currentPassword" class="form-control">
                                 </div>
                                 @error('currentPassword')
                                     <span class="invalid-feedback" role="alert">
@@ -189,7 +189,7 @@
                                     New Password
                                 </div>
                                 <div class="col-sm-8">
-                                    <input type="password" name="newPassword" id="" class="form-control">
+                                    <input type="password" name="newPassword" class="form-control">
                                 </div>
                                 @error('newPassword')
                                     <span class="invalid-feedback" role="alert">
@@ -202,7 +202,7 @@
                                     Confirm Password
                                 </div>
                                 <div class="col-sm-8">
-                                    <input type="password" name="confirmPassword" id="" class="form-control">
+                                    <input type="password" name="confirmPassword" class="form-control">
                                 </div>
                                 @error('confirmPassword')
                                     <span class="invalid-feedback" role="alert">

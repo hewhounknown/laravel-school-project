@@ -34,13 +34,6 @@
                 <i class="fas fa-users"></i>
                 <span class="d-none d-lg-inline">Students</span>
             </a>
-            {{-- <span class="badge bg-danger rounded-pill float-end text-white d-none d-lg-inline">20</span> --}}
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" aria-disabled="true">
-                <i class="fas fa-flag"></i>
-                <span class="d-none d-lg-inline">Reports</span>
-            </a>
         </li>
     </ul>
 
@@ -59,16 +52,14 @@
                             <input type="hidden" name="id" value="{{ Auth::user()->id }}">
                             <div class="col-4">
                                 @if (Auth::user()->image == null)
-                                    <img id="img" src="{{ asset('img/defaultprofile.jpg') }}" alt="profile picture"
+                                    <img src="{{ asset('img/defaultprofile.jpg') }}" alt="profile picture"
                                         class="rounded mx-auto d-block mb-2" style="width:20rem; hieght: 38rem;">
                                 @else
-                                    <img id="img" src="{{ asset('storage/uploads/' . Auth::user()->image) }}"
-                                        alt="profile picture" class="rounded mx-auto d-block mb-2"
-                                        style="width: 15rem; hieght: 38rem;">
+                                    <img src="{{ asset('storage/uploads/' . Auth::user()->image) }}" alt="profile picture"
+                                        class="rounded mx-auto d-block mb-2" style="width: 15rem; hieght: 38rem;">
                                 @endif
                                 <div>
-                                    {{-- <input type="file" name="image" id="" class="form-control"> --}}
-                                    <input type="file" name="image" id="" class="form-control"
+                                    <input type="file" name="image" id="img" class="form-control"
                                         onchange="readURL(this)">
                                 </div>
                                 <div class="mt-3">
@@ -77,8 +68,8 @@
                             </div>
                             <div class="col-6">
                                 <div class="mb-2">
-                                    <label for="name" class="form-label">{{ __('Name') }}</label>
-                                    <input id="name" type="text"
+                                    <label for="editName" class="form-label">{{ __('Name') }}</label>
+                                    <input id="editName" type="text"
                                         class="form-control @error('name') is-invalid @enderror" name="name"
                                         value="{{ old('name', Auth::user()->name) }}" required autocomplete="name"
                                         autofocus>
@@ -89,8 +80,8 @@
                                     @enderror
                                 </div>
                                 <div class="mb-2">
-                                    <label for="email" class="form-label">{{ __('Email') }}</label>
-                                    <input id="email" type="email"
+                                    <label for="editEmail" class="form-label">{{ __('Email') }}</label>
+                                    <input id="editEmail" type="email"
                                         class="form-control @error('email') is-invalid @enderror" name="email"
                                         value="{{ old('email', Auth::user()->email) }}" required autocomplete="email">
                                     @error('email')
@@ -100,13 +91,13 @@
                                     @enderror
                                 </div>
                                 <div class="mb-2">
-                                    <label for="phone" class="form-label">{{ __('phone') }}</label>
-                                    <input id="phone" type="number" class="form-control" name="phone"
+                                    <label for="editPhone" class="form-label">{{ __('phone') }}</label>
+                                    <input id="editPhone" type="number" class="form-control" name="phone"
                                         value="{{ old('phone', Auth::user()->phone) }}" autocomplete="phone">
                                 </div>
                                 <div class="mb-2">
-                                    <label for="address" class="form-label">{{ __('address') }}</label>
-                                    <textarea name="address" id="" class="form-control" cols="30" rows="10">{{ old('address', Auth::user()->address) }}</textarea>
+                                    <label for="editAddress" class="form-label">{{ __('address') }}</label>
+                                    <textarea name="address" id="editAddress" class="form-control" cols="30" rows="10">{{ old('address', Auth::user()->address) }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -135,7 +126,7 @@
             <div class="modal-dialog" style="max-width: 730px;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <h1 class="modal-title fs-5">Course</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form enctype="multipart/form-data" method="POST" action="{{ route('teacher.course.create') }}">
@@ -157,19 +148,16 @@
                                 <div class="col-6">
                                     <div class="mt-2">
                                         <label for="image">
-                                            <img id="img" src="{{ asset('img/add_image.png') }}"
-                                                alt="profile picture" class="rounded"
-                                                style="width:230px; hieght: 180px;">
+                                            <img src="{{ asset('img/add_image.png') }}" alt="profile picture"
+                                                class="rounded" style="width:230px; hieght: 180px;">
                                         </label>
-                                        <input type="file" name="courseImage" id="image" class="form-control"
-                                            onchange="">
+                                        <input type="file" name="courseImage" class="form-control" onchange="">
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-2">
-                                        <label for="" class="form-label">Course Name</label>
-                                        <input type="text" name="courseName" id=""
-                                            class="form-control mb-2">
+                                        <label class="form-label">Course Name</label>
+                                        <input type="text" name="courseName" class="form-control mb-2">
                                     </div>
 
                                     <div class="mb-2">
