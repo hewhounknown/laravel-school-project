@@ -207,7 +207,7 @@
             @endif
 
             @if (Auth::user()->id != $course->user_id)
-                @if ($enrollStatus == null)
+                @if ($enrollStatus === null)
                     <div class="">
                         <a href="{{ route('course.enroll', $course->id) }}"
                             class="btn btn-outline-primary float-end">Enroll Now</a>
@@ -228,7 +228,7 @@
             <a id="topic" class="nav-link active" aria-current="page" href="#">Topics</a>
         </li>
         {{-- @if ($enroll != null) --}}
-        @if (Auth::user()->id == $course->user_id || $enrollStatus == true)
+        @if (Auth::user()->id == $course->user_id || $enrollStatus === true)
             <li class="nav-item">
                 <a id="mates" class="nav-link" href="#">Classmates</a>
             </li>
@@ -322,8 +322,8 @@
         @endif
 
 
-        @if ($enrollStatus != null || Auth::user()->id == $course->user_id)
-            @if (Auth::user()->id == $course->user_id || $enrollStatus == true)
+        @if ($enrollStatus !== null || Auth::user()->id == $course->user_id)
+            @if (Auth::user()->id == $course->user_id || $enrollStatus === true)
                 {{-- Topic session start --}}
                 <div class="container mt-5">
                     <div class="row shadow-lg p-3 rounded">
@@ -493,8 +493,8 @@
                 @endforeach
             </ul>
 
-            @if ($enrollStatus != null)
-                @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id && $enrollStatus == true)
+            @if ($enrollStatus !== null)
+                @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id && $enrollStatus === true)
                     <form class="mt-3" action="{{ route('course.review.create') }}" id="addStar" method="POST">
                         @csrf
                         <input type="hidden" name="courseId" value="{{ $course->id }}">

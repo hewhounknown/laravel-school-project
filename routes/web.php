@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function(){
         Route::get('enroll/{id}', [SchoolController::class, 'enrollCourse'])->name('course.enroll');
         Route::get('unenroll/{id}', [SchoolController::class, 'unenrollCourse'])->name('course.unenroll');
 
-        Route::get('topic/content/view/{contentId}', [SchoolController::class, 'content'])->name('contentView');
+        Route::get('topic/content/view/{contentId}', [SchoolController::class, 'content'])->name('contentView')->middleware('student_check');
 
         Route::post('review/create', [SchoolController::class, 'createReview'])->name('course.review.create');
         Route::get('review/delete/{id}', [SchoolController::class, 'deleteReview'])->name('course.review.delete');

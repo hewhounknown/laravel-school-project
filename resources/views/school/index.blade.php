@@ -3,7 +3,7 @@
 @section('title', 'school')
 
 @section('content')
-    <div id="carouselNewCourses" class="carousel slide bg-body-tertiary my-5" data-bs-ride="carousel">
+    <div id="carouselNewCourses" class="carousel slide bg-body-tertiary my-5 d-none d-md-block" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="row ">
                 <h4 class="text-warning m-3">New >>></h4>
@@ -24,10 +24,10 @@
                                         <div class="card m-2">
                                             @if ($course->course_image == null)
                                                 <img src="{{ asset('img/default.png') }}" class="card-img-top img-fluid"
-                                                    alt="..." style="">
+                                                    alt="..." style="height: 120px">
                                             @else
                                                 <img src="{{ asset('storage/course/' . $course->course_image) }}"
-                                                    class="card-img-top img-fluid" alt="..." style="">
+                                                    class="card-img-top img-fluid" alt="..." style="height: 120px">
                                             @endif
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ $course->course_name }}
@@ -58,7 +58,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="row my-5 mx-3 justify-content-around p-2 bg-body-tertiary rounded" style="">
         <h4 class="text-info">Popular >>></h4>
