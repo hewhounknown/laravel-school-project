@@ -31,54 +31,63 @@ Route::prefix('programmes')->group(function () {
 });
 
 Route::middleware('auth')->group(function(){
+
+    //account route
     Route::get('profile', [AuthController::class, 'profileForm'])->name('profile');
     Route::post('profile', [AuthController::class, 'editProfile']);
     Route::post('password/change', [AuthController::class, 'changePassword'])->name('password.change');
-
-    Route::get('teacher/categories/take', [CourseController::class, 'takeCategories']);
+    Route::get('profile/view/{id}', [SchoolController::class, 'viewProfile'])->name('profile.view');
     Route::get('select/choices', [SchoolController::class, 'selectChoices']);
 
-    Route::prefix('course')->group(function() {
-        Route::get('detail/{id}', [SchoolController::class, 'detailCourse'])->name('course.detail');
+    //course routes
+    Route::get('teacher/categories/take', [CourseController::class, 'takeCategories']);
 
-        Route::get('enroll/{id}', [SchoolController::class, 'enrollCourse'])->name('course.enroll');
-        Route::get('unenroll/{id}', [SchoolController::class, 'unenrollCourse'])->name('course.unenroll');
+    Route::middleware('acc_status')->group(function(){
 
-        Route::get('topic/content/view/{contentId}', [SchoolController::class, 'content'])->name('contentView')->middleware('student_check');
+        Route::prefix('course')->group(function() {
 
-        Route::post('review/create', [SchoolController::class, 'createReview'])->name('course.review.create');
-        Route::get('review/delete/{id}', [SchoolController::class, 'deleteReview'])->name('course.review.delete');
+            Route::withoutMiddleware('acc_status')->group(function(){
+                Route::get('detail/{id}', [SchoolController::class, 'detailCourse'])->name('course.detail');
+                Route::get('take/classmates', [CourseController::class, 'takeClassmates']);
+                Route::get('topic/content/view/{contentId}', [SchoolController::class, 'content'])->name('contentView')->middleware('student_check');
+            });
 
-        Route::middleware('teacher_middleware')->group(function(){
-            Route::post('create', [CourseController::class, 'createCourse'])->name('teacher.course.create');
-            Route::post('edit', [CourseController::class, 'editCourse'])->name('teacher.course.edit');
-            Route::get('delete/{id}', [CourseController::class, 'deleteCourse'])->name('teacher.course.delete');
+            Route::get('enroll/{id}', [SchoolController::class, 'enrollCourse'])->name('course.enroll');
+            Route::get('unenroll/{id}', [SchoolController::class, 'unenrollCourse'])->name('course.unenroll');
 
-            Route::post('topic/create', [CourseController::class, 'createTopic'])->name('teacher.topic.create');
-            Route::post('topic/content/add', [CourseController::class, 'addContent'])->name('teacher.content.add');
-            Route::post('topic/content/edit/{contentId}', [CourseController::class, 'editContent'])->name('teacher.content.edit');
-            Route::get('topic={topicId}/content/delete{contentId}', [SchoolController::class, 'deleteContent'])->name('content.delete');
+            Route::post('review/create', [SchoolController::class, 'createReview'])->name('course.review.create');
+            Route::get('review/delete/{id}', [SchoolController::class, 'deleteReview'])->name('course.review.delete');
+
+            Route::middleware('teacher_middleware')->group(function(){
+                Route::post('create', [CourseController::class, 'createCourse'])->name('teacher.course.create');
+                Route::post('edit', [CourseController::class, 'editCourse'])->name('teacher.course.edit');
+                Route::get('delete/{id}', [CourseController::class, 'deleteCourse'])->name('teacher.course.delete');
+
+                Route::post('topic/create', [CourseController::class, 'createTopic'])->name('teacher.topic.create');
+                Route::post('topic/content/add', [CourseController::class, 'addContent'])->name('teacher.content.add');
+                Route::post('topic/content/edit/{contentId}', [CourseController::class, 'editContent'])->name('teacher.content.edit');
+                Route::get('topic={topicId}/content/delete{contentId}', [SchoolController::class, 'deleteContent'])->name('content.delete');
+            });
         });
-
-        Route::get('take/classmates', [CourseController::class, 'takeClassmates']);
+        Route::post('content/comment/write', [SchoolController::class, 'writeComment'])->name('content.comment.write');
+        Route::get('content/comment/delete/{id}', [SchoolController::class, 'deleteComment'])->name('content.comment.delete');
+        Route::get('download/{filename}', [SchoolController::class, 'downloadFile'])->name('file.download');
     });
 
-    Route::post('content/comment/write', [SchoolController::class, 'writeComment'])->name('content.comment.write');
-    Route::get('content/comment/delete/{id}', [SchoolController::class, 'deleteComment'])->name('content.comment.delete');
-    Route::get('download/{filename}', [SchoolController::class, 'downloadFile'])->name('file.download');
-
+    //student control routes
     Route::get('students/control', [SchoolController::class, 'studentTable'])->name('student.control');
     Route::get('accept/student={studentId}/for/course={courseName}', [SchoolController::class, 'acceptEnroll'])->name('student.accept');
     Route::get('kick/student={studentId}/from/course={courseName}', [SchoolController::class, 'kickStudent'])->name('student.kick');
 
-    Route::get('profile/view/{id}', [SchoolController::class, 'viewProfile'])->name('profile.view');
-
+    //library routes
     Route::prefix('library')->group(function() {
         Route::get('center', [LibraryController::class, 'center'])->name('library')->withoutMiddleware('auth');
         Route::get('view/book/{bookId}', [LibraryController::class, 'readBook'])->name('book.view');
         Route::post('add/book', [LibraryController::class, 'addBook'])->name('book.add');
     });
+    Route::get('show/pdf={id}', [LibraryController::class, 'showPDF'])->name('pdf.show');
 
+    //admin routes
     Route::group(['prefix'=> 'admin', 'middleware' => 'admin_middleware'], function() {
 
         Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -122,8 +131,6 @@ Route::middleware('auth')->group(function(){
 
         Route::get('view/profile', [AuthController::class, 'profileForm'])->name('admin.profile.view');
     });
-
-    Route::get('show/pdf={id}', [LibraryController::class, 'showPDF'])->name('pdf.show');
 });
 
 

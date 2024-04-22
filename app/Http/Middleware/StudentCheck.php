@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\Content;
 use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,21 +22,27 @@ class StudentCheck
 
         $enrolls = Enrollment::where('user_id', Auth::user()->id)->get();
 
-        //dd($enrolls);
-        foreach($enrolls as $enroll){
-            if($enroll->status == true){
-                foreach($enroll->course->topics as $topic){
-                    foreach($topic->contents as $content){
-                        if($content->id == $contentId){
-                            return $next($request);
+        $content = Content::where('id', $contentId)->first();
+        $teacherId = $content->topic->course->user_id;
+
+        if(Auth::user()->id == $teacherId){
+            return $next($request);
+        } else{
+            foreach($enrolls as $enroll){
+                if($enroll->status == true){
+                    foreach($enroll->course->topics as $topic){
+                        foreach($topic->contents as $content){
+                            if($content->id == $contentId){
+                                return $next($request);
+                            }
                         }
                     }
+                }else{
+                    return back()->with(['status' => 'you need to enroll this course and wait for permission']);
                 }
-            }else{
-                return back()->with(['status' => 'you need to enroll this course and wait for permission']);
             }
-
         }
+
         return abort(404);
     }
 }

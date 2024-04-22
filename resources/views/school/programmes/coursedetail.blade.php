@@ -98,7 +98,7 @@
                 <div class="col-sm-9">{{ _($course->course_description) }}</div>
             </div>
 
-            @if ($course->user_id == Auth::user()->id)
+            @if ($course->user_id == Auth::user()->id && Auth::user()->account_status == 'active')
                 <span class="position-absolute top-0 end-0" style="width: auto;">
                     <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#controlModal">
                         <i class="fa-regular fa-pen-to-square"></i>
@@ -245,7 +245,7 @@
     </div>
 
     <div id="topicPannel">
-        @if ($course->user_id == Auth::user()->id)
+        @if ($course->user_id == Auth::user()->id && Auth::user()->account_status == 'active')
             <div class="row mt-5 justify-content-start">
                 <div class="col-3 text-center">
                     <div class="btn btn-outline-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#topicModal">
@@ -493,7 +493,7 @@
                 @endforeach
             </ul>
 
-            @if ($enrollStatus !== null)
+            @if ($enrollStatus !== null && Auth::user()->account_status == 'active')
                 @if (count(Auth::user()->reviews) < 1 && Auth::user()->id != $course->user_id && $enrollStatus === true)
                     <form class="mt-3" action="{{ route('course.review.create') }}" id="addStar" method="POST">
                         @csrf
