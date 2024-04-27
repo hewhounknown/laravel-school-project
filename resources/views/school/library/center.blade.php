@@ -125,12 +125,8 @@
         function readURL(input) {
             if (input.files && input.files[0]) {
                 let reader = new FileReader();
-                //let img = document.getElementById('img');
-
                 reader.onload = e => $('#coverImg').attr('src', e.target.result);
-
                 reader.readAsDataURL(input.files[0]);
-                //console.log(reader);
             }
         }
     </script>

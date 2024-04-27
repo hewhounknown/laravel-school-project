@@ -63,7 +63,6 @@
         $(document).ready(function() {
             $('.category').on('click', function() {
                 let catId = $(this).attr('id');
-                console.log(catId);
 
                 let courseEnrollRoute = "{{ route('course.enroll', ['id' => ':id']) }}";
                 let courseDetailRoute = "{{ route('course.detail', ['id' => ':id']) }}"
@@ -77,12 +76,10 @@
                         console.log(response.length);
                         $list = '';
                         if (response.length != 0) {
-                            console.log(response);
                             $list =
                                 `<div class="container mb-5">
                                         <div id="avaliableCourses" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">`;
                             response.forEach(course => {
-                                console.log(course);
                                 $list += `<div class="col mx-auto">
                                             <div class="card h-100">`;
                                 if (course.course_image == null) {

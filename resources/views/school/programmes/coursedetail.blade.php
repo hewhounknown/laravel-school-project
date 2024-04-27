@@ -105,7 +105,7 @@
                     </button>
                 </span>
 
-                <!-- Modal -->
+                <!--Control Modal Start -->
                 <div class="modal fade" id="controlModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
@@ -134,8 +134,10 @@
                         </div>
                     </div>
                 </div>
+                {{-- Control Modal End --}}
 
 
+                {{-- Course Edit Start --}}
                 <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog" style="max-width: 730px;">
@@ -204,6 +206,7 @@
                         </div>
                     </div>
                 </div>
+                {{-- Course Edit End --}}
             @endif
 
             @if (Auth::user()->id != $course->user_id)
@@ -227,14 +230,11 @@
         <li class="nav-item">
             <a id="topic" class="nav-link active" aria-current="page" href="#">Topics</a>
         </li>
-        {{-- @if ($enroll != null) --}}
         @if (Auth::user()->id == $course->user_id || $enrollStatus === true)
             <li class="nav-item">
                 <a id="mates" class="nav-link" href="#">Classmates</a>
             </li>
         @endif
-        {{-- @endif --}}
-
     </ul>
 
     <input type="hidden" id="courseId" value="{{ $course->id }}">
@@ -440,7 +440,6 @@
                                                     </div>
                                                     {{-- modal for add content end --}}
                                                 @endif
-
                                             </div>
                                         </div>
                                         {{-- content session end --}}
@@ -541,7 +540,6 @@
 
 @section('J_Script')
     <script>
-        // add ckeditor to each content textarea
         document.querySelectorAll('.contentBody').forEach(element => {
             ClassicEditor
                 .create(element)
@@ -565,7 +563,6 @@
                     star.classList.remove('checked');
                 }
             }
-            // You can perform additional actions here, like sending the rating to the server via AJAX.
         }
 
         $(document).ready(function() {
@@ -602,15 +599,12 @@
 
             $('#programSelected').on('change', function() {
                 programId = $(this).val();
-                console.log(programId);
                 takeCategories(programId); // work for changed program id
-
             });
 
             $('#fileArea').hide();
             $('#selectContentType').on('change', function() {
                 let typeSelected = $(this).val();
-                console.log(typeSelected);
                 if (typeSelected == 'text') {
                     $('#textArea').show();
                     $('#fileArea').hide();
@@ -661,7 +655,6 @@
                 let tab = $(this).attr('id');
                 let courseId = $('#courseId').val();
 
-                console.log(tab);
 
                 if (tab == "topic") {
                     $('#matesPannel').hide();
@@ -678,7 +671,6 @@
                             'courseId': courseId
                         },
                         success: function(response) {
-                            console.log(response.length);
                             $content = '';
                             if (response.length > 0) {
                                 $content = `<table class="table table-striped table-hover">

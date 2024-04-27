@@ -81,7 +81,6 @@
         <div class="container my-5">
             <div class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded m-3">
                 <h3 class="default">Your enrolled courses</h3>
-
                 @foreach ($list as $l)
                     @foreach ($l['course'] as $course)
                         <div class="col-md-3 m-2">

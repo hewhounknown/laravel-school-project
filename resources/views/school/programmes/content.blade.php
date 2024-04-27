@@ -197,7 +197,6 @@
             .create(document.querySelector('#contentBody'))
             .then(editor => {
                 console.log('Editor initialized:', editor);
-                // You can use the 'editor' instance for further operations
             })
             .catch(error => {
                 console.error('Error initializing the editor:', error);
@@ -206,8 +205,7 @@
         const select = document.getElementById('selectBox');
         const text = document.getElementById('textBox');
         const file = document.getElementById('inputFile');
-        //const currentType = document.getElementById('currentType').value;
-        // console.log(select);
+
         if (select.value == 'text') {
             file.style.display = 'none';
         } else {

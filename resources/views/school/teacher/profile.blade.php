@@ -37,7 +37,7 @@
         </li>
     </ul>
 
-    <!-- Modal for edit profile -->
+    <!-- Modal for edit profile Start-->
     <div class="modal" id="editForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" style="max-width: 730px;">
             <div class="modal-content">
@@ -106,6 +106,7 @@
             </div>
         </div>
     </div>
+    <!-- Modal for edit profile End-->
 
     <div id="content">
 
@@ -208,7 +209,6 @@
             <div class="container my-5">
                 <div class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
                     <h3 class="default">Your enrolled courses</h3>
-
                     @foreach ($list as $l)
                         @foreach ($l['course'] as $course)
                             <div class="col-md-3 m-2">
@@ -264,8 +264,6 @@
         @endif
     </div>
 
-
-
 @endsection
 
 @section('J_Script')
@@ -273,12 +271,8 @@
         function readURL(input) {
             if (input.files && input.files[0]) {
                 let reader = new FileReader();
-                //let img = document.getElementById('img');
-
                 reader.onload = e => $('#img').attr('src', e.target.result);
-
                 reader.readAsDataURL(input.files[0]);
-                //console.log(reader);
             }
         }
 
@@ -291,10 +285,7 @@
 
                 let choice = $(this).text();
 
-                console.log($(this).attr('id'));
-
                 if ($(this).attr('id') == 'forDash') {
-                    console.log('lll');
                     $('#content').hide();
                     $('#dashboard').show();
                 } else {
@@ -323,7 +314,6 @@
                                 Object.entries(response.students).forEach(([course,
                                     enrolls
                                 ]) => { //change obj to arr and loop
-                                    //console.log(jQuery.type(students));
                                     $content += `<div class="card m-3">
                                                 <div class="card-header">
                                                    <h4 class="text-primary-emphasis">${course}</h4>
@@ -339,16 +329,13 @@
                                                         </thead>
                                                         <tbody>`;
                                     enrolls.forEach(enroll => {
-                                        console.log(enroll.enrollStatus);
-                                        $content += `
-                                                                        <tr>
-                                                                            <td>
-                                                                                <a href="${studentProfileRoute.replace(':id', enroll.stuInfo.id)}"
-                                                                                    class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
-                                                                                    ${enroll.stuInfo.name}
-                                                                                </a>
-                                                                            </td>
-                                                                            <td></td>`;
+                                        $content += `<tr>
+                                                        <td>
+                                                            <a href="${studentProfileRoute.replace(':id', enroll.stuInfo.id)}"
+                                                                class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                                                ${enroll.stuInfo.name}
+                                                            </a>
+                                                        </td>`;
                                         if (enroll.enrollStatus) {
                                             $content += `<td>
                                                             <a href="${studentKickRoute.replace(':studentId', enroll.stuInfo.id).replace(':courseName', course)}" class="btn btn-outline-danger">
@@ -362,31 +349,24 @@
                                                             </a>
                                                         </td>`;
                                         }
-                                        $content += ` </tr>`;
+                                        $content += `</tr>`;
                                     })
                                     $content += `</tbody>
                                                     </table>
                                                 </div>
                                             </div>`;
                                 })
-
-                            } else if (response.reports) {
-                                console.log(response);
-                                $content = `<h4>Re,w,v</h4>`;
                             } else {
                                 console.log($('#dashboard'));
                             }
-
                             $('#content').html($content);
                         }
                     });
                 }
-
             });
 
             $('#programSelected').on('change', function() {
                 let programId = $(this).val();
-                console.log(programId);
 
                 $.ajax({
                     url: 'http://localhost:8000/teacher/categories/take',

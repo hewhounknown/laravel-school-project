@@ -16,10 +16,8 @@
         <div class="container mb-5">
             <div class="row shadow-sm justify-content-md-evenly p-2 bg-body-tertiary rounded">
                 <h3 class="default">Your enrolled courses</h3>
-
                 @foreach ($list as $l)
                     @foreach ($l['course'] as $course)
-                        {{-- {{$data}} --}}
                         <div class="col-md-3 mx-5 my-3">
                             <div class="card " style="width: 20rem;">
                                 @if ($course->course_image == null)

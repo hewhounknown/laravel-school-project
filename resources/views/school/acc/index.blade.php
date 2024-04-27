@@ -109,7 +109,6 @@
                                             style="max-width:230px; max-hieght: 140px;">
                                     @endif
                                     <div>
-                                        {{-- <input type="file" name="image" id="" class="form-control"> --}}
                                         <input type="file" name="image" id="image" class="form-control"
                                             onchange="readURL(this)">
                                     </div>
@@ -218,7 +217,6 @@
                 </div>
             </div>
         </div>
-
         {{-- control modal end --}}
     </div>
 
