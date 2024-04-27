@@ -23,7 +23,6 @@
 
 <body>
     <div class="container-fluid g-1">
-        {{-- <div class="row"> --}}
         <nav class="navbar text-center bg-light-subtle pe-2 sticky-top">
             <div class="nav-item  text-primary m-3">
                 <a href="http://" class="nav-link">
@@ -60,7 +59,6 @@
                 </li>
             </div>
         </nav>
-        {{-- </div> --}}
 
         <div class="row">
             <nav class="col-3 pe-2 bg-light-subtle fs-6">
@@ -138,7 +136,6 @@
 
             $('.pageBtn').on('click', function(e) {
                 e.preventDefault();
-
                 window.location.href = $(this).attr('href');
             });
         });

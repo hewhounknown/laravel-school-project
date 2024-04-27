@@ -32,14 +32,12 @@
     </div>
 
     <div class="shadow-lg p-2 position-relative m-3">
-
         @if (Auth::user()->role == 'admin')
             <span class="position-absolute top-0 start-100 translate-middle p-2 border border-light rounded-circle"
                 style="width: auto;">
                 <button type="button" class="btn" data-bs-toggle="dropdown">
                     <i class="fa-solid fa-bars fa-xl"></i>
                 </button>
-
                 <ul class="dropdown-menu">
                     <li>
                         <a class="dropdown-item" href="http://" data-bs-toggle="modal" data-bs-target="#editForm">Edit</a>
@@ -60,10 +58,8 @@
                         </div>
                         <form enctype="multipart/form-data" action="{{ route('admin.content.edit', $content->id) }}"
                             method="post">
-
                             @csrf
                             <div class="modal-body">
-
                                 <div class="mb-3">
                                     <label for="contentTitle">Title</label>
                                     <input type="text" name="contentTitle" id="contentTitle" class="form-control"
@@ -159,7 +155,6 @@
             .create(document.querySelector('#contentBody'))
             .then(editor => {
                 console.log('Editor initialized:', editor);
-                // You can use the 'editor' instance for further operations
             })
             .catch(error => {
                 console.error('Error initializing the editor:', error);
@@ -168,8 +163,6 @@
         const select = document.getElementById('selectBox');
         const text = document.getElementById('textBox');
         const file = document.getElementById('inputFile');
-        //const currentType = document.getElementById('currentType').value;
-        // console.log(select);
         if (select.value == 'text') {
             file.style.display = 'none';
         } else {

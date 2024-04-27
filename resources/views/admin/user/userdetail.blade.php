@@ -117,7 +117,6 @@
                 </div>
             </div>
         </div>
-
         {{-- control modal end --}}
     </div>
 

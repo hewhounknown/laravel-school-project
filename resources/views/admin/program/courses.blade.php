@@ -247,7 +247,6 @@
         $(document).ready(function() {
             $('#programSelected').on('change', function() {
                 let programId = $(this).val();
-                //console.log(programId);
 
                 $.ajax({
                     url: 'http://localhost:8000/admin/take/categories',
@@ -257,7 +256,6 @@
                     },
                     success: function(cats) {
                         $catsList = '<label class="d-block">choose Category :</label>';
-                        //console.log(cats);
                         cats.forEach(cat => {
                             $catsList += `
                                 <div class="form-check d-inline-block">
@@ -274,7 +272,6 @@
 
             $('#searchCourse').on('keyup', function() {
                 let searchItem = $(this).val();
-                //console.log(searchItem);
 
                 let courseUnpublicRoute = "{{ Route('admin.course.unpublic', ['id' => ':id']) }}";
                 let courseDetailRoute = "{{ Route('admin.course.detail', ['id' => ':id']) }}"
@@ -285,7 +282,6 @@
                         'searchData': searchItem
                     },
                     success: function(courses) {
-                        console.log(courses);
                         $table = '';
                         if (courses.length > 0) {
                             $table = `<table class="table table-success table-striped">
@@ -342,4 +338,3 @@
         });
     </script>
 @endsection
-{{--  --}}

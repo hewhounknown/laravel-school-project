@@ -27,7 +27,6 @@
         </div>
     @endif
 
-    {{-- <div class="container"> --}}
     <div id="userList" class=" text-center" style="overflow-x: auto;">
         <table class="table table-striped table-hover rounded">
             <thead>
@@ -119,7 +118,6 @@
             </tbody>
         </table>
     </div>
-    {{-- </div> --}}
 
 @endsection
 
@@ -128,7 +126,6 @@
         $(document).ready(function() {
             $('#search').on('keyup', function() {
                 let query = $(this).val();
-                //console.log(query);
 
                 let userRoleRoute = "{{ route('admin.user.role', ['id' => ':id', 'role' => ':role']) }}";
                 let userDetailRoute = "{{ route('admin.user.detail', ['id' => ':id']) }}";
@@ -143,7 +140,6 @@
                         'search': query
                     },
                     success: function(response) {
-                        // console.log(response);
                         $table = '';
                         if (response.length > 0) {
                             $table = `

@@ -60,7 +60,6 @@
                                 </div>
                             </div>
                             <hr>
-
                             <div class="mb-2">
                                 <label for="contentTitle">Content Title</label>
                                 <input type="text" name="contentTitle" id="" class="form-control">
@@ -82,8 +81,6 @@
                                 <label for="contentBody">Content</label>
                                 <input type="file" name="contentBody" id="" class="form-control">
                             </div>
-
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -402,7 +399,6 @@
                 .create(element)
                 .then(editor => {
                     console.log('Editor initialized:', editor);
-                    // You can use the 'editor' instance for further operations
                 })
                 .catch(error => {
                     console.error('Error initializing the editor:', error);
@@ -416,7 +412,6 @@
 
             function takeCategories(pId) {
                 let chosenCat = $('#chosenCat').text();
-                console.log(chosenCat);
                 $.ajax({
                     url: 'http://localhost:8000/admin/take/categories',
                     type: 'GET',
@@ -425,7 +420,6 @@
                     },
                     success: function(cats) {
                         $catsList = '<label class="d-block">choose Category :</label>';
-                        //console.log(cats);
                         cats.forEach(cat => {
                             $catsList += `
                                 <div class="form-check d-inline-block">
@@ -443,7 +437,6 @@
             takeCategories(programId); // work for initial program id
 
             $('#programSelected').on('change', function() {
-                programId = $(this).val();
                 console.log(programId);
                 takeCategories(programId); // work for changed program id
 
@@ -452,7 +445,6 @@
             $('#fileArea').hide();
             $('#selectContentType').on('change', function() {
                 let typeSelected = $(this).val();
-                console.log(typeSelected);
                 if (typeSelected == 'text') {
                     $('#textArea').show();
                     $('#fileArea').hide();
@@ -466,7 +458,6 @@
             $('.fileArea2').hide();
             $('.selectContentType2').on('change', function() {
                 let typeSelected2 = $(this).val();
-                console.log(typeSelected2);
                 if (typeSelected2 == 'text') {
                     $('.textArea2').show();
                     $('.fileArea2').hide();
@@ -518,7 +509,6 @@
                             'courseId': courseId
                         },
                         success: function(response) {
-                            console.log(response.length);
                             $content = '';
                             if (response.length > 0) {
                                 $content = `<table class="table table-striped table-hover">
@@ -530,7 +520,6 @@
                                                 <tbody>
                                                     `;
                                 response.forEach(student => {
-                                    //console.log(student);
                                     $content += `<tr>
                                                     <td>
                                                          <a href="${profileViewRoute.replace(':id', student.id)}"

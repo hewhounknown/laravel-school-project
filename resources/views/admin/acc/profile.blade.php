@@ -147,7 +147,6 @@
                                                 style="max-width:230px; max-hieght: 140px;">
                                         @endif
                                         <div>
-                                            {{-- <input type="file" name="image" id="" class="form-control"> --}}
                                             <input type="file" name="image" class="form-control"
                                                 onchange="readURL(this)">
                                         </div>
@@ -308,12 +307,8 @@
         function readURL(input) {
             if (input.files && input.files[0]) {
                 let reader = new FileReader();
-                //let img = document.getElementById('img');
-
                 reader.onload = e => $('#img').attr('src', e.target.result);
-
                 reader.readAsDataURL(input.files[0]);
-                //console.log(reader);
             }
         }
     </script>

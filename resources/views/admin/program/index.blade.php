@@ -162,7 +162,6 @@
                 $('#btnEditCat{{ $index }}').on('click', function(e) {
                     e.preventDefault();
 
-                    //console.log(numOfEditCat);
                     let newEditTag = $('<input type="text" name="cat' + numOfEditCat{{ $index }} +
                         '" id="" class="form-control mb-2" placeholder="category">')
                     $('#newEditCat{{ $index }}').append(newEditTag);

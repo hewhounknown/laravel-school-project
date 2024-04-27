@@ -24,9 +24,7 @@
     <div class="row" id="bookList">
         @foreach ($books as $book)
             <div class="col-md-3 m-2">
-                <!-- Card -->
                 <div class="card">
-                    <!-- Card image -->
                     <div class="view overlay">
                         @if ($book->cover == null)
                             <img class="card-img-top" src="{{ asset('img/default.png') }}" style="height: 120px"
@@ -36,19 +34,14 @@
                                 style="height: 120px" alt="Card image cap">
                         @endif
                     </div>
-                    <!-- Card content -->
                     <div class="card-body">
-                        <!-- Title -->
                         <h4 class="card-title text-center">{{ $book->book_name }}</h4>
-                        <!-- Text -->
                         <p class="card-text fs-6"><i class="fa-solid fa-feather-pointed fa-lg"></i> {{ $book->author_name }}
                         </p>
                         <p class="card-text fs-6"><i class="fa-solid fa-share fa-lg"></i> {{ $book->user->name }}</p>
-                        <!-- Button -->
                         <a href="#" class="btn btn-outline-warning w-100">View</a>
                     </div>
                 </div>
-                <!-- Card -->
             </div>
         @endforeach
     </div>

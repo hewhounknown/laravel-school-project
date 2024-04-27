@@ -48,11 +48,9 @@
                                                 <div class="card-body">
                                                     <h5 class="card-title">{{ _($new->book_name) }}</h5>
                                                     <p class="card-text">{{ _($new->author_name) }}</p>
-                                                    {{-- <p class="card-text"><strong>${{ _('200') }}</strong></p> --}}
                                                 </div>
                                             </div>
                                         </a>
-                                        <!--Confirm Modal -->
                                         <div class="modal fade" id="new{{ $new->id }}" tabindex="-1"
                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -239,12 +237,8 @@
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     let reader = new FileReader();
-                    //let img = document.getElementById('img');
-
                     reader.onload = e => $('#coverImg').attr('src', e.target.result);
-
                     reader.readAsDataURL(input.files[0]);
-                    //console.log(reader);
                 }
             }
         </script>

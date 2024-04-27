@@ -17,12 +17,11 @@
     @endif
 
     <div class="m-3 float-end">
-        <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">
             <i class="fa-solid fa-wrench"></i>
         </button>
 
-        <!-- Modal -->
+        <!--Edit Modal Start-->
         <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -55,6 +54,7 @@
                 </div>
             </div>
         </div>
+        <!--Edit Modal End-->
     </div>
 
     <div class="mt-5">
